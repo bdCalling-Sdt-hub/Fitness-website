@@ -4,6 +4,7 @@ import Footer from './Footer'
 import FAQ from '../../components/Home/FAQ'
 import Hero from '../../components/Home/Hero'
 import Package from '../../components/Home/Package'
+import ShopProductList from '../../components/common/ShopProductList'
 
 const Main = ():React.JSX.Element => {
     return (
@@ -11,6 +12,7 @@ const Main = ():React.JSX.Element => {
             <Navbar/>
             <Hero/>
             <Package/>
+            <ShopProductList/>
             <FAQ/>
             <Footer/>
         </div>
