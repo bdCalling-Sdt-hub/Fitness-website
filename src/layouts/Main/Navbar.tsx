@@ -74,7 +74,7 @@ const Navbar = ():React.JSX.Element => {
                             flex items-center justify-center
                         '
                     >
-                        Login In
+                        Login
                     </div>
                     <div 
                         className='
