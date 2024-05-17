@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { BsCart2 } from "react-icons/bs";
-import Heading from './Heading';
+import Heading from '../common/Heading';
 
 interface IItemProps{
     name: string;
