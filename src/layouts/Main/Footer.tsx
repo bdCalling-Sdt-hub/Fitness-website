@@ -64,12 +64,12 @@ const Footer = ():React.JSX.Element => {
 
             <div className='bg-[#07060A] mt-20 h-[50px] flex items-center justify-center'>
                 <div className="container flex items-center justify-between py-[18px]">
-                    <p className=" text-[18px] font-normal leading-[24px] text-[#D9D9D9]">©2024Spaktech. Agency | All Right Reserved</p>
+                    <p className=" text-[16px] font-normal leading-[24px] text-[#D9D9D9]">©2024 Spaktech. Agency | All Right Reserved</p>
 
                     <div className="flex items-center gap-[42px]">
                         <CiFacebook size={24} color="white"/>
                         <FaInstagram size={24} color="white"/>
-                        <FaXTwitter size={24} color="white"/>
+                        <FaXTwitter size={22} color="white"/>
                     </div>
                 </div>
                 

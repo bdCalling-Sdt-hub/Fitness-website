@@ -12,7 +12,7 @@ const About = ():React.JSX.Element => {
             <div className=' h-fit my-auto'>
                 <button 
                     style={{
-                        width: 226,
+                        width: 133,
                         border: "none",
                         outline: "none",
                         borderRadius: 4,

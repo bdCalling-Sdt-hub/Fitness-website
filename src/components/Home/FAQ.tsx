@@ -1,26 +1,19 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useRef, useState } from 'react'
+import React, {  useState } from 'react'
 import Heading from '../common/Heading';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 
 const FAQ = (): React.JSX.Element => {
     const [tab, setTab] = useState<boolean>(false);
     const [tabID, setTabID] = useState<number>();
-    const elementRef = useRef(null);
-    const [height, setHeight] = useState<number>(0);
-
-    useEffect(() => {
-        if (elementRef.current) {
-            setHeight(elementRef.current.clientHeight);
-        }
-    }, []);
+    
     return (
         <div className='container'>
             <Heading title='Frequently Asked Questions'  style='text-center'/>
 
             <div className='mt-10'>
-                <div className='grid grid-cols-1 gap-6 max-w-[820px] mx-auto'>
+                <div className='grid grid-cols-1 gap-6'>
                     {
                         [...Array(5)].map((_item: any, index)=>{
                             return (
@@ -43,7 +36,7 @@ const FAQ = (): React.JSX.Element => {
                                         </div>
                                         
                                     </div>
-                                    <div ref={elementRef} className='text-[16px] leading-6 font-normal text-secondary'>
+                                    <div className='text-[16px] leading-6 font-normal text-secondary'>
                                         convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada 
                                         tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet
                                     </div>
