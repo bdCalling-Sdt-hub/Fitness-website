@@ -20,7 +20,7 @@ const FAQ = (): React.JSX.Element => {
             <Heading title='Frequently Asked Questions'  style='text-center'/>
 
             <div className='mt-10'>
-                <div className='grid grid-cols-1 gap-6 w-[820px] mx-auto'>
+                <div className='grid grid-cols-1 gap-6 max-w-[820px] mx-auto'>
                     {
                         [...Array(5)].map((_item: any, index)=>{
                             return (
