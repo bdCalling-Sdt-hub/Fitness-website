@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import Logo from "../../assets/log.png";
+import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
 import { BsCart2 } from "react-icons/bs";
 
@@ -46,12 +46,12 @@ const Navbar = ():React.JSX.Element => {
                 
 
                 {/* routes  section*/}
-                <ul className='flex items-center gap-6 p-0 m-0'>
+                <ul className='flex items-center gap-6'>
                     {
                         items?.map((item : IRoutes, index)=>{
                             return (
                                 <Link key={index} to={`${item.path}`}>
-                                    <li className='p-0 m-0 text-secondary font-light text-[16px] leading-[21px]'>{item.name}</li>
+                                    <li className=' text-secondary font-light text-[16px] leading-[21px]'>{item.name}</li>
                                 </Link>
                             )
                         })
