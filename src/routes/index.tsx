@@ -3,6 +3,7 @@ import Main from "../layouts/Main/Main";
 import NotFound from "../pages/NotFound";
 import Home from "../pages/Home";
 import Profile from "../pages/Profile";
+import TermsAndConditions from "../pages/TermsAndConditions";
 
 const router = createBrowserRouter([
     {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
             {
                 path: "profile",
                 element: <Profile />,
+            },
+            {
+                path: "terms-conditions",
+                element: <TermsAndConditions />,
             }
 
         ]
