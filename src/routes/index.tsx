@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import Profile from "../pages/Profile";
 import TermsAndConditions from "../pages/TermsAndConditions";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
+import AboutUs from "../pages/AboutUs";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
             {
                 path: "privacy-policy",
                 element: <PrivacyPolicy />,
+            },
+            {
+                path: "about-us",
+                element: <AboutUs />,
             }
 
         ]
