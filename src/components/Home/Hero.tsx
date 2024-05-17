@@ -3,11 +3,12 @@ import { MdOutlineArrowOutward } from "react-icons/md";
 import Video from "../../assets/video.mp4"
 
 const Hero = ():React.JSX.Element => {
+    
     return (
         <div className='relative w-full' style={{height: "calc(100vh - 80px)"}}>
             
             {/* background video section */}
-            <video autoPlay muted loop>
+            <video autoPlay muted  loop>
                 <source src={Video} />
             </video>
 
