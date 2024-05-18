@@ -6,3 +6,13 @@ video {
     top: 0;
     left: 0;
 }
+
+/* select dropdwon default border color */
+.ant-select-selector{
+    border: none !important;
+}
+
+/* select dropdwon default color change*/
+.ant-select-selection-item{
+    color: #555555 !important;
+}

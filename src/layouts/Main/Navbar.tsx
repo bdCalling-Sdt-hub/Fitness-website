@@ -29,7 +29,7 @@ const Navbar = ():React.JSX.Element => {
         },
         {
             name: "Contacts Us",
-            path: "/contacts"
+            path: "/contact-us"
         },
         {
             name: "Blogs",
