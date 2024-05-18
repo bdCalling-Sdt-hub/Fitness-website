@@ -8,6 +8,7 @@ import PrivacyPolicy from "../pages/PrivacyPolicy";
 import AboutUs from "../pages/AboutUs";
 import BlogDetails from "../pages/BlogDetails";
 import Blogs from "../pages/Blogs";
+import ContactUs from "../pages/ContactUs";
 
 const router = createBrowserRouter([
     {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
             {
                 path: "blog-details/:id",
                 element: <BlogDetails />,
+            },
+            {
+                path: "contact-us",
+                element: <ContactUs />,
             }
 
         ]
