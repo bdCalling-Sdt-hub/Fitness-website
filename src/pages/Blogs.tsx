@@ -25,10 +25,10 @@ const Blogs = ():React.JSX.Element => {
                 {
                     [...Array(6)].map((_item: IBlogProps, index)=>{
                         return (
-                            <div key={index}>
+                            <div key={index} className='group'>
                                 <div className='overflow-hidden w-full  md:w-[424px] object-cover h-[300px]'>
                                     <img 
-                                        src={Photo} style={{width: "100%", height: "100%", objectFit: "cover"}} alt="" />
+                                        src={Photo} className='group-hover:scale-125 transition-all duration-300' style={{width: "100%", height: "100%", objectFit: "cover"}} alt="" />
                                 </div>
 
                                 <div className='flex items-center gap-4 my-2'>
