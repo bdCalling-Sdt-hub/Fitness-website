@@ -3,12 +3,14 @@ import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading';
 import photo from "../assets/photo.png";
 import photo1 from "../assets/photo1.png";
+import MetaTag from '../components/common/MetaTag';
 
 const BlogDetails = ():React.JSX.Element => {
     return (
         <div className='container pb-20'>
-            <Navigation name='Blog Details' />
-            <Heading title='Blog Details' style='mb-6' />
+            <Navigation name='Blog Details' optional="blogs" />
+            <Heading title='Blog Details'  style='mb-6' />
+            <MetaTag title='Blog Details' />
 
             {/* Heading  of particular blog*/}
             <h1 className='text-secondary font-normal text-[32px] leading-[43px] mb-4'>Blog image Stander Post</h1>
