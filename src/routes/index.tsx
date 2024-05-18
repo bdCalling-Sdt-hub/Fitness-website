@@ -6,6 +6,7 @@ import Profile from "../pages/Profile";
 import TermsAndConditions from "../pages/TermsAndConditions";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import AboutUs from "../pages/AboutUs";
+import BlogDetails from "../pages/BlogDetails";
 
 const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
             {
                 path: "privacy-policy",
                 element: <PrivacyPolicy />,
+            },
+            {
+                path: "blog-details/:id",
+                element: <BlogDetails />,
             },
             {
                 path: "about-us",
