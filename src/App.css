@@ -16,3 +16,60 @@ video {
 .ant-select-selection-item{
     color: #555555 !important;
 }
+
+/* academy search input change default placeholder color */
+.customPlaceholder .ant-input::placeholder {
+    color: #905A00 !important; /* Change this to your desired color */
+}
+
+/* ant design calender active date default date background color change */
+.ant-picker-calendar .ant-picker-cell-in-view.ant-picker-cell-selected:not(.ant-picker-cell-disabled) .ant-picker-cell-inner{
+    background: #905A00 !important;
+}
+
+/* ant design calender today date default date border color change */
+.ant-picker-calendar .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before{
+    border: 1px solid #905A00 !important;
+}
+
+/* ant design calender month  default  color change */
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled){
+    color: #905A00 !important;
+}
+
+/* ant design calender month container border  default  color change */
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child{
+    border-color: #905A00 !important;
+}
+
+/* ant design calender month container border  default  color change */
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled){
+    border-color: #905A00 !important;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+    background-color: #905A00 !important;
+}
+
+/* academic class video css */
+
+.video_player {
+    position: relative;
+    overflow: hidden;
+    height: 541px;
+    width: 100%;
+}
+
+.video_player .react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.play-pause-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}

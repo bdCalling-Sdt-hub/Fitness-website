@@ -5,19 +5,20 @@ interface IProps{
     open: boolean;
     setOpen:(open: boolean)=> void;
     body?: React.ReactElement;
+    title?: string;
 }
 
-const Modal: React.FC<IProps> = ( { open, setOpen, body }):React.JSX.Element => {
-    console.log(open, setOpen, body)
+const Modal: React.FC<IProps> = ( { open, setOpen, body, title }):React.JSX.Element => {
 
     const handleClose=()=>{
         setOpen(false)
     }
     return (
         <>
-            <AntModal 
+            <AntModal
+                title={title} 
                 centered
-                open={open}  
+                open={open} 
                 onCancel={handleClose}
                 footer={false}          
             >
