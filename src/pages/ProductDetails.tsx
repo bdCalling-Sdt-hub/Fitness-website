@@ -44,7 +44,7 @@ const ProductDetails = ():React.JSX.Element => {
                     </div>
                     <div className='grid grid-cols-4 gap-[14px] mt-[14px]'>
                         {
-                            [...Array(4)]?.map((_item, index)=>{
+                            [...Array(4)]?.map((item: unknown, index)=>{
                                 return (
                                     <div key={index} className=' h-[160px] flex items-center justify-center border border-[#DADADA] p-3'>
                                         <img src={photo} alt="" />
