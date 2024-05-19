@@ -52,7 +52,6 @@ video {
 }
 
 /* academic class video css */
-
 .video_player {
     position: relative;
     overflow: hidden;
@@ -72,4 +71,29 @@ video {
     left: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
+}
+
+/* rechart default size color change css */
+.recharts-responsive-container{
+    width: 180px !important;
+    height: 180px !important;
+    border-radius: 100%;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    margin: 20px auto;
+}
+
+/* video thumbnail list scroll bar change */
+.video-collection::-webkit-scrollbar {
+    width: 12px;
+}
+
+.video-collection::-webkit-scrollbar-track {
+    background: #D9D9D9;
+    padding: 0 10px;
+    border-radius: 20px;
+}
+
+.video-collection::-webkit-scrollbar-thumb {
+    background: #905A00;
+    border-radius: 20px;
 }
