@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
 import { BsCart2 } from "react-icons/bs";
@@ -10,6 +10,7 @@ interface IRoutes {
 }
 
 const Navbar = ():React.JSX.Element => {
+    const { pathname } = useLocation();
     const items =[
         {
             name: "Home",
@@ -51,7 +52,7 @@ const Navbar = ():React.JSX.Element => {
                         items?.map((item : IRoutes, index)=>{
                             return (
                                 <Link key={index} to={`${item.path}`}>
-                                    <li className=' text-secondary font-light text-[16px] leading-[21px]'>{item.name}</li>
+                                    <li className={`${item.path === pathname ? "text-primary" : "text-secondary"} font-light text-[16px] leading-[21px]`}>{item.name}</li>
                                 </Link>
                             )
                         })
