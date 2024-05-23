@@ -6,12 +6,14 @@ import { BsCart2 } from "react-icons/bs";
 
 interface IRoutes {
     name: string;
-    path : string
+    path: string
+}interface ChildComponentProps {
+    setOpen: (open: boolean) => void;
+    setopenModalFor: (openModalFor: string) => void;
 }
-
-const Navbar = ():React.JSX.Element => {
+const Navbar = ({ setOpen, setopenModalFor }: ChildComponentProps): React.JSX.Element => {
     const { pathname } = useLocation();
-    const items =[
+    const items = [
         {
             name: "Home",
             path: "/"
@@ -40,16 +42,16 @@ const Navbar = ():React.JSX.Element => {
     return (
         <div className='bg-base h-[80px] flex items-center justify-center'>
             <div className='container flex items-center justify-between'>
-                
+
                 <Link to="/">
-                    <img src={Logo} style={{width: 162, height: 62}} alt="" />
+                    <img src={Logo} style={{ width: 162, height: 62 }} alt="" />
                 </Link>
-                
+
 
                 {/* routes  section*/}
                 <ul className='flex items-center gap-6'>
                     {
-                        items?.map((item : IRoutes, index)=>{
+                        items?.map((item: IRoutes, index) => {
                             return (
                                 <Link key={index} to={`${item.path}`}>
                                     <li className={`${item.path === pathname ? "text-primary" : "text-secondary"} font-light text-[16px] leading-[21px]`}>{item.name}</li>
@@ -61,13 +63,16 @@ const Navbar = ():React.JSX.Element => {
 
                 {/* others routes and user menu section */}
                 <div className='flex items-center gap-6'>
-                    <Link to={"/notifications"}>
+                    <Link to={"/cart"}>
                         <BsCart2 size={24} color='#555555' />
                     </Link>
                     <Link to={"/wishlist"}>
                         <IoSearch size={24} color='#555555' />
                     </Link>
-                    <div 
+                    <div onClick={() => {
+                        setopenModalFor('login')
+                        setOpen(true)
+                    }}
                         className='
                             border border-primary text-primary 
                             font-light text-[16px] leading-[21px] 
@@ -77,7 +82,10 @@ const Navbar = ():React.JSX.Element => {
                     >
                         Login
                     </div>
-                    <div 
+                    <div onClick={() => {
+                        setopenModalFor('register')
+                        setOpen(true)
+                    }}
                         className='
                             bg-primary text-[#FBFBFB] 
                             font-light text-[16px] leading-[21px] 

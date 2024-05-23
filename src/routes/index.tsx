@@ -12,6 +12,8 @@ import ContactUs from "../pages/ContactUs";
 import Shop from "../pages/Shop";
 import ProductDetails from "../pages/ProductDetails";
 import Academy from "../pages/Academy";
+import FreeClass from "../pages/FreeClass";
+import Cart from "../pages/Cart";
 
 const router = createBrowserRouter([
     {
@@ -61,7 +63,15 @@ const router = createBrowserRouter([
             {
                 path: "academy",
                 element: <Academy />,
-            }
+            },
+            {
+                path: "free-class",
+                element: <FreeClass />,
+            },
+            {
+                path: "/cart",
+                element: <Cart />,
+            },
 
         ]
     },

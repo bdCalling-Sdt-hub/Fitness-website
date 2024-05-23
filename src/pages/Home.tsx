@@ -1,10 +1,11 @@
-import React from 'react'
-import Hero from '../components/Home/Hero';
+ import Hero from '../components/Home/Hero';
 import FAQ from '../components/Home/FAQ'
 import Package from '../components/Home/Package'
 import ShopProductList from '../components/Home/ShopProductList'
 import About from '../components/Home/About'
 import Class from '../components/Home/Class'
+import Feedback from './Feedback';
+
 
 const Home = ():React.JSX.Element => {
     return (
@@ -26,6 +27,9 @@ const Home = ():React.JSX.Element => {
 
             <div className='my-[100px]'>
                 <Class/>
+            </div>
+            <div className='my-[100px]'>
+              <Feedback/>
             </div>
         </>
     )

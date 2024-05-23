@@ -1,14 +1,16 @@
 import React from 'react';
 import Heading from '../common/Heading';
 import Banner from "../../assets/class_banner.png";
+import { Navigate, useNavigate } from 'react-router-dom';
 
-const Class = ():React.JSX.Element => {
+const Class = (): React.JSX.Element => {
+    const navigate = useNavigate()
     return (
         <div className='container grid grid-cols-2 gap-16'>
             <div className=' h-fit my-auto'>
                 <Heading title='Free Class ' style='my-6' />
                 <p className='text-secondary text-justify font-normal mb-6 text-[16px] leading-5'>This class is a demo class, you get all the exercises, guidelines and tips related to fitness in our fitness course. So don't delay and join our community now.</p>
-                <button 
+                <button
                     style={{
                         width: 226,
                         border: "none",
@@ -25,7 +27,9 @@ const Class = ():React.JSX.Element => {
                 </button>
             </div>
 
-            <div>
+            <div onClick={() => {
+                return navigate(`/free-class`)
+            }}>
                 <img className='cursor-pointer' src={Banner} alt="" />
             </div>
         </div>

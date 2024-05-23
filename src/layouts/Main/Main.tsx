@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import { Outlet } from 'react-router-dom'
+import { Modal } from 'antd'
+import Login from '../../pages/Login'
 
-const Main = ():React.JSX.Element => {
+const Main = (): React.JSX.Element => {
+    const [open, setOpen] = useState(false)
+    const [openModalFor, setopenModalFor] = useState('login')
     return (
         <div>
-            <Navbar/>
+            <Navbar setOpen={setOpen} setopenModalFor={setopenModalFor}/>
             <div>
-                <Outlet/>
+                <Outlet />
             </div>
-            <Footer/>
+            <Footer />
+            <Modal width={1000} centered open={open} onCancel={() => setOpen(false)} footer={false} >
+                <Login openModalFor={openModalFor} setopenModalFor={setopenModalFor}/>
+            </Modal>
         </div>
     )
 }

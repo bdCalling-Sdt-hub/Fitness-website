@@ -10,3 +10,71 @@
   box-sizing: border-box;
   font-family: "Noto Serif", serif;
 }
+.ant-modal-content{
+  padding: 0 !important;
+}
+.mySwiper{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+.custom-next-arrow{
+  margin-right: 70px;
+}
+.custom-prev-arrow{
+  margin-left: 70px;
+}
+.custom-next-arrow:before,
+.custom-prev-arrow:before {
+  font-size: 40px;
+  line-height: 2;
+  opacity: 1;
+  color: #B47000;
+}
+
+
+.custom-dots {
+  bottom: -30px;
+}
+
+.custom-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ddd;
+  display: inline-block;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.custom-dots .slick-active .custom-dot {
+  background: #333;
+}
+
+.slide {
+  transition: transform 0.5s;
+}
