@@ -10,11 +10,20 @@ const images = [
     "https://i.ibb.co/8cFbXBf/xman2.jpg",
     "https://i.ibb.co/9VsmTY2/xman3.jpg"
 ]
-
+interface SliderSettings {
+    infinite: boolean;
+    speed: number;
+    slidesToShow: number;
+    slidesToScroll: number;
+    autoplay: boolean;
+    beforeChange: (current: number, next: number) => void;
+    centerMode: boolean;
+    autoplaySpeed: number;
+}
 const Feedback = () => {
     const [slideIndex, setSlideIndex] = useState(0);
 
-    const settings = {
+    const settings: SliderSettings = {
         infinite: true,
         speed: 500,
         slidesToShow: 3,
