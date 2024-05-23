@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
 import { BsCart2 } from "react-icons/bs";
+import { Modal } from 'antd';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { IoIosSearch } from 'react-icons/io';
 
 interface IRoutes {
     name: string;
@@ -11,8 +14,53 @@ interface IRoutes {
     setOpen: (open: boolean) => void;
     setopenModalFor: (openModalFor: string) => void;
 }
+interface Inputs {
+    search: string
+}
+const dataSource = [
+    {
+        key: '1',
+        name: 'The Dumbbell',
+        img: 'https://i.ibb.co/TcBnDLP/Rectangle-5089.png',
+        price: '150 CND',
+        time: '05/12/2024',
+        quantity: '02',
+    },
+    {
+        key: '1',
+        name: 'The Dumbbell',
+        img: 'https://i.ibb.co/TcBnDLP/Rectangle-5089.png',
+        price: '150 CND',
+        time: '05/12/2024',
+        quantity: '02',
+    },
+    {
+        key: '1',
+        name: 'The Dumbbell',
+        img: 'https://i.ibb.co/TcBnDLP/Rectangle-5089.png',
+        price: '150 CND',
+        time: '05/12/2024',
+        quantity: '02',
+    },
+    {
+        key: '1',
+        name: 'The Dumbbell',
+        img: 'https://i.ibb.co/TcBnDLP/Rectangle-5089.png',
+        price: '150 CND',
+        time: '05/12/2024',
+        quantity: '02',
+    },
+];
 const Navbar = ({ setOpen, setopenModalFor }: ChildComponentProps): React.JSX.Element => {
+    const [openSearchModal, setOpenSearchModal] = useState(false)
     const { pathname } = useLocation();
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm<Inputs>()
+    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
     const items = [
         {
             name: "Home",
@@ -66,9 +114,10 @@ const Navbar = ({ setOpen, setopenModalFor }: ChildComponentProps): React.JSX.El
                     <Link to={"/cart"}>
                         <BsCart2 size={24} color='#555555' />
                     </Link>
-                    <Link to={"/wishlist"}>
+                    <button onClick={() => setOpenSearchModal(true)}>
                         <IoSearch size={24} color='#555555' />
-                    </Link>
+                    </button>
+
                     <div onClick={() => {
                         setopenModalFor('login')
                         setOpen(true)
@@ -97,6 +146,38 @@ const Navbar = ({ setOpen, setopenModalFor }: ChildComponentProps): React.JSX.El
                     </div>
                 </div>
             </div>
+            <Modal
+                centered
+                open={openSearchModal}
+                onCancel={() => setOpenSearchModal(false)}
+                width={700}
+                footer={false}
+            >
+                <div className='p-5 relative pb-10 rounded-lg overflow-hidden'>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className='w-full mt-6 relative'>
+                            <input placeholder="search" className='w-full p-3 border outline-none' {...register("search")} />
+                            <button className='absolute right-5 top-[50%] translate-y-[-50%]'>
+                                <IoIosSearch />
+                            </button>
+                        </div>
+                    </form>
+                    <div className='flex flex-col gap-2 items-start justify-start py-10'>
+                        {
+                            dataSource?.map(item => <div className='flex justify-start items-center gap-4 flex-wrap w-full'>
+                                <div className='w-20 h-20 rounded-xl overflow-hidden'>
+                                    <img className='h-full w-full object-cover' src={item?.img} alt="" />
+                                </div>
+                                <div>
+                                    <p className='text-[16px] lg:text-lg text-[#555555]'>The Dumbbell</p>
+                                    <p className='text-[16px] lg:text-lg text-[#555555]'>150 CND</p>
+                                </div>
+                            </div>)
+                        }
+                    </div>
+                    <button className='text-[#B47000] w-full py-3 bg-[#F8F1E6] absolute bottom-0 left-0 text-lg'>See all results</button>
+                </div>
+            </Modal>
         </div>
     )
 }

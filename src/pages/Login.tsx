@@ -22,14 +22,11 @@ const Login = ({ openModalFor, setopenModalFor }: childProps): React.JSX.Element
         formState: { errors },
     } = useForm<Inputs>()
     const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+
     const [inputType, setInputType] = useState('password')
     return (
         <div className='md:grid md:grid-cols-2 flex flex-col justify-start min-h-[700px] overflow-hidden rounded-[6px] items-start md:items-center gap-0 h-full relative'>
-            {/* <div style={{
-                transition: '1s '
-            }} className={`absolute ${openModalFor === 'login' ? 'left-[50%]' : 'left-0 '} top-0  w-[50%] h-full`}>
 
-            </div> */}
             {
                 openModalFor === 'login' ? <>
                     <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full px-5 py-6 text-center">

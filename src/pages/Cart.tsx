@@ -2,7 +2,7 @@ import React from 'react'
 import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
-import { Table } from 'antd';
+import { Link } from 'react-router-dom';
 const dataSource = [
     {
         key: '1',
@@ -59,7 +59,9 @@ const Cart = (): React.JSX.Element => {
                         <p className='text-lg lg:text-2xl text-[#555555]'>05/12/2024</p>
                         <p className='text-2xl lg:text-3xl text-[#555555]'>02</p>
                         <p className='text-2xl lg:text-3xl text-[#555555]'>150 CND</p>
-                        <button className='px-10 py-3 bg-[#2F2F2F] text-[#FEFEFE]'>Confirm Order</button>
+                        <Link to={`/product-details/item?._id`}>
+                            <button className='px-10 py-3 bg-[#2F2F2F] text-[#FEFEFE]'>Confirm Order</button>
+                        </Link>
                     </div>)
                 }
             </div>
