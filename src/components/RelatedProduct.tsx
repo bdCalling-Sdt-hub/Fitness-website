@@ -32,13 +32,13 @@ const RelatedProduct = ():React.JSX.Element => {
         },
     ]
     return (
-        <div className='flex items-center justify-between mt-10'>
+        <div className='flex flex-col items-start justify-start md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:items-center  gap-6 mt-10'>
                 {
                     data?.slice(0, 4)?.map((item, index)=>{
                         return (
                             <div 
                                 key={index}  
-                                className='relative group w-[272px] rounded-lg border border-[#EEEEEE] p-5 cursor-pointer'
+                                className='relative group w-full rounded-lg border border-[#EEEEEE] p-5 cursor-pointer'
                                 style={{
                                     boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px"
                                 }}

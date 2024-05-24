@@ -59,7 +59,7 @@ const Academy = ():React.JSX.Element => {
             </div>
 
 
-            <div className='grid grid-cols-12 gap-10 mt-8 group'>
+            <div className='md:grid flex flex-col grid-cols-12 gap-10 mt-8 group'>
                 <div className='col-span-8 '>
                     <div className='video_player flex items-center justify-center'>
                         <ReactPlayer 
@@ -120,13 +120,15 @@ const Academy = ():React.JSX.Element => {
                         <StatusLabel/>
                     </div>
 
-                    <div className='w-full h-[700px] overflow-y-scroll video-collection'>
-                        <div className='grid grid-cols-1 gap-6'>
+                    <div className='w-full  md:overflow-y-scroll md:h-[700px] video-collection'>
+                        <div className='sm:grid sm:grid-cols-2 md:flex flex-col gap-6'>
                             {
                                 [...Array(5)].map((item: unknown, index)=>{
                                     return(
-                                        <div key={index}>
-                                            <img src={Thubmnail} style={{height: 229}} alt="video thumbnail" />
+                                        <div key={index} className='w-full my-3'>
+                                            <div className='w-full h-80'>
+                                            <img className='w-full h-full object-cover' src={Thubmnail}  alt="video thumbnail" />
+                                            </div>
                                             <div className='flex items-center gap-4 mt-[14px] mb-2'>
                                                 <LuCalendar size={16} color='#555555' />
                                                 <p className='text-secondary font-normal text-[14px] leading-[10px]'>03 Sep 2024</p>

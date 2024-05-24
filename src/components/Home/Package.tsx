@@ -18,8 +18,8 @@ const Package = ():React.JSX.Element => {
 
     const body = (
         <div className='p-10'>
-            <h1 className='font-light text-2xl leading-8 text-center text-secondary'>Standard Membership</h1>
-            <p className='text-[#B47000] text-center my-8 text-[36px] leading-[49px] '>48 CND <sub className='text-[#B47000] text-[18px] leading-6 font-semibold'>6 month</sub></p>
+            <h1 className='font-light lg:text-2xl text-lg leading-8 text-center text-secondary'>Standard Membership</h1>
+            <p className='text-[#B47000] text-center my-8 lg:text-[36px] text-xl leading-[49px] '>48 CND <sub className='text-[#B47000] text-[18px] leading-6 font-semibold'>6 month</sub></p>
             <div className='grid grid-cols-1 gap-6 '>
                 {
                     [...Array(7)].map((_item, index)=>{
@@ -57,13 +57,13 @@ const Package = ():React.JSX.Element => {
         <div className='container'>
             <Heading title='Membership Options' style='text-center' />
 
-            <div className='mt-[60px] grid grid-cols-3 gap-6'>
+            <div className='mt-10 lg:mt-16 xl:mt-24 md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 flex flex-col justify-start items-start md:items-center'>
                 {
                     items.map((item, index)=>{
                         return (
-                            <div key={index} className='bg-base rounded p-6'>
-                                <p className='text-secondary text-center font-normal text-[24px] leading-8'>{item?.name}</p>
-                                <p className='text-secondary text-center font-semibold text-[32px] leading-[43px]'>{item?.price}</p>
+                            <div key={index} className='bg-base rounded p-6 w-full'>
+                                <p className='text-secondary text-center font-normal lg:text-2xl text-lg leading-8'>{item?.name}</p>
+                                <p className='text-secondary text-center font-semibold lg:text-[32px] text-xl leading-[43px]'>{item?.price}</p>
                                 <button
                                     onClick={()=>setOpen(true)} 
                                     style={{

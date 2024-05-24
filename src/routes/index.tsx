@@ -14,6 +14,7 @@ import ProductDetails from "../pages/ProductDetails";
 import Academy from "../pages/Academy";
 import FreeClass from "../pages/FreeClass";
 import Cart from "../pages/Cart";
+import Order from "../pages/Order";
 
 const router = createBrowserRouter([
     {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
             {
                 path: "/cart",
                 element: <Cart />,
+            },
+            {
+                path: "/order",
+                element: <Order />,
             },
 
         ]
