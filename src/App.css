@@ -119,3 +119,17 @@ video {
     height: 100%;
     object-fit: cover;
   }
+
+  .payment .ant-input-outlined{
+    border-width: 0px;
+    outline: none;  
+  }
+  .payment .ant-input{
+    border-radius: 0px;
+    outline: none;
+  }
+  .payment .ant-otp .ant-otp-input{
+    border-radius: 0px;
+    outline: none;
+    border: 'none';
+  }

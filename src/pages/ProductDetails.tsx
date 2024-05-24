@@ -8,12 +8,15 @@ import { HiOutlinePlusSm, HiOutlineMinusSm } from "react-icons/hi";
 import Button from '../components/common/Button';
 import { Link } from 'react-router-dom';
 import RelatedProduct from '../components/RelatedProduct';
+import { Modal } from 'antd';
+import Payment from '../components/Payment';
 
 interface IItemProps {
     image: string;
 }
 
-const ProductDetails = ():React.JSX.Element => {
+const ProductDetails = (): React.JSX.Element => {
+    const [openPaymentModal, setOpenPaymentModal] = useState(false)
     const [quantity, setQuantity] = useState(0)
 
     const data: IItemProps[] = [
@@ -40,11 +43,11 @@ const ProductDetails = ():React.JSX.Element => {
             <div className='grid grid-cols-2 gap-10'>
                 <div>
                     <div className='w-full  border p-10'>
-                        <img src={photo1} style={{width: "100%", height: "100%", objectFit: "contain"}} alt="" />
+                        <img src={photo1} style={{ width: "100%", height: "100%", objectFit: "contain" }} alt="" />
                     </div>
                     <div className='grid grid-cols-4 gap-[14px] mt-[14px]'>
                         {
-                            [...Array(4)]?.map((item: unknown, index)=>{
+                            [...Array(4)]?.map((item: unknown, index) => {
                                 return (
                                     <div key={index} className=' h-[160px] flex items-center justify-center border border-[#DADADA] p-3'>
                                         <img src={photo} alt="" />
@@ -52,7 +55,7 @@ const ProductDetails = ():React.JSX.Element => {
                                 )
                             })
                         }
-                        
+
                     </div>
                 </div>
 
@@ -62,25 +65,25 @@ const ProductDetails = ():React.JSX.Element => {
 
                     <p className='text-[16px] leading-[21px] text-secondary font-normal mb-4'>Quantity</p>
                     <div className='border w-[160px] h-[48px] flex items-center justify-between px-4 mb-10'>
-                        <button disabled={quantity === 0} onClick={()=>setQuantity(quantity - 1)}>
+                        <button disabled={quantity === 0} onClick={() => setQuantity(quantity - 1)}>
                             <HiOutlineMinusSm className='text-secondary' size={24} />
                         </button>
                         <p className='text-[16px] leading-[21px] text-secondary font-normal'>{quantity}</p>
-                        <button onClick={()=>setQuantity(quantity + 1)}>
+                        <button onClick={() => setQuantity(quantity + 1)}>
                             <HiOutlinePlusSm className='text-secondary' size={24} />
                         </button>
                     </div>
 
                     <Button label='Add to Cart' style='border border-secondary text-secondary w-full mb-6' />
-                    <Button label='Buy Now' style='bg-secondary text-[#FBFBFB] w-full mb-10' />
+                    <Button onSubmit={()=>setOpenPaymentModal(true)} label='Buy Now' style='bg-secondary text-[#FBFBFB] w-full mb-10' />
 
                     <p className='text-[16px] leading-[40px] text-secondary font-normal mb-4'>
-                        It is a long established fact that a reader will be distracted by the 
-                        readable content of a page when looking at its layout. The point of 
-                        using Lorem Ipsum is that it has a more-or-less normal distribution of letters, 
-                        as opposed to using 'Content here, content here', making it look like readable English. 
-                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their default 
-                        model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. 
+                        It is a long established fact that a reader will be distracted by the
+                        readable content of a page when looking at its layout. The point of
+                        using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
+                        as opposed to using 'Content here, content here', making it look like readable English.
+                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their default
+                        model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
                         Various versions have evolved over the years, sometimes by accident
                     </p>
 
@@ -101,7 +104,16 @@ const ProductDetails = ():React.JSX.Element => {
                     View All
                 </Link>
             </div>
-            <RelatedProduct/>
+            <RelatedProduct />
+            <Modal
+                open={openPaymentModal}
+                onCancel={() => setOpenPaymentModal(false)}
+                centered
+                footer={false}
+                width={800}
+            >
+                <Payment setOpenPaymentModal={setOpenPaymentModal} />
+            </Modal>
         </div>
     )
 }
