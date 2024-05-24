@@ -42,7 +42,7 @@ const ShopProductList = (): React.JSX.Element => {
                 </Link>
             </div>
 
-            <div className='flex items-center justify-between mt-10'>
+            <div className='flex items-start md:items-center justify-start md:grid md:grid-cols-2 flex-col lg:grid-cols-3 xl:grid-cols-4 gap-3 mt-10'>
                 {
                     data?.slice(0, 4)?.map((item, index) => {
                         return (
@@ -50,7 +50,7 @@ const ShopProductList = (): React.JSX.Element => {
                                 navigate(`/product-details/${'item?._id'}`)
                             }}
                                 key={index}
-                                className='relative group w-[272px] rounded-lg border border-[#EEEEEE] p-5 cursor-pointer'
+                                className='relative group  rounded-lg border border-[#EEEEEE] p-5 cursor-pointer w-full'
                                 style={{
                                     boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px"
                                 }}
@@ -62,7 +62,7 @@ const ShopProductList = (): React.JSX.Element => {
                                     className='group-hover:scale-105 transition-all duration-75'
                                 />
                                 <h1 className='text-[18px] font-normal leading-6 text-secondary mt-10'>{item?.name}</h1>
-                                <h1 className='text-[32px] font-normal mt-2 text-secondary leading-[43px]'>${item?.price} CND</h1>
+                                <h1 className='lg:text-[32px] text-xl font-normal mt-2 text-secondary leading-[43px]'>${item?.price} CND</h1>
 
                                 <div className='absolute top-4 right-4 ' onClick={(e) => {
                                     // (e.stopPropagation())

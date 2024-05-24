@@ -7,43 +7,48 @@ video {
     left: 0;
 }
 
+#main::-webkit-scrollbar {
+    display: none;
+}
+
 /* select dropdwon default border color */
-.ant-select-selector{
+.ant-select-selector {
     border: none !important;
 }
 
 /* select dropdwon default color change*/
-.ant-select-selection-item{
+.ant-select-selection-item {
     color: #555555 !important;
 }
 
 /* academy search input change default placeholder color */
 .customPlaceholder .ant-input::placeholder {
-    color: #905A00 !important; /* Change this to your desired color */
+    color: #905A00 !important;
+    /* Change this to your desired color */
 }
 
 /* ant design calender active date default date background color change */
-.ant-picker-calendar .ant-picker-cell-in-view.ant-picker-cell-selected:not(.ant-picker-cell-disabled) .ant-picker-cell-inner{
+.ant-picker-calendar .ant-picker-cell-in-view.ant-picker-cell-selected:not(.ant-picker-cell-disabled) .ant-picker-cell-inner {
     background: #905A00 !important;
 }
 
 /* ant design calender today date default date border color change */
-.ant-picker-calendar .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before{
+.ant-picker-calendar .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
     border: 1px solid #905A00 !important;
 }
 
 /* ant design calender month  default  color change */
-.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled){
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
     color: #905A00 !important;
 }
 
 /* ant design calender month container border  default  color change */
-.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child{
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
     border-color: #905A00 !important;
 }
 
 /* ant design calender month container border  default  color change */
-.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled){
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
     border-color: #905A00 !important;
 }
 
@@ -74,7 +79,7 @@ video {
 }
 
 /* rechart default size color change css */
-.recharts-responsive-container{
+.recharts-responsive-container {
     width: 180px !important;
     height: 180px !important;
     border-radius: 100%;
@@ -97,39 +102,49 @@ video {
     background: #905A00;
     border-radius: 20px;
 }
-.swiper {
-    width: 100%;
-    height: 100%;
-  }
-  
-  .swiper-slide {
-    text-align: center;
-    font-size: 18px;
-    background: #fff;
-  
-    /* Center slide text vertically */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .swiper-slide img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
 
-  .payment .ant-input-outlined{
+
+.payment .ant-input-outlined {
     border-width: 0px;
-    outline: none;  
-  }
-  .payment .ant-input{
+    outline: none;
+}
+
+.payment .ant-input {
     border-radius: 0px;
     outline: none;
-  }
-  .payment .ant-otp .ant-otp-input{
+}
+
+.payment .ant-otp .ant-otp-input {
     border-radius: 0px;
     outline: none;
     border: 'none';
-  }
+}
+
+.showMenu {
+    animation: showMenu .5s;
+}
+
+@keyframes showMenu {
+    from {
+        right: -100%;
+    }
+
+    to {
+        right: 0;
+    }
+}
+.showClose {
+    animation: showClose 1s;
+}
+
+@keyframes showClose {
+    from {
+        right: 0;
+        display: flex;
+    }
+
+    to {
+        right: -100%;
+        display: none;
+    }
+}

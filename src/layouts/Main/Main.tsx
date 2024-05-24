@@ -9,7 +9,7 @@ const Main = (): React.JSX.Element => {
     const [open, setOpen] = useState(false)
     const [openModalFor, setopenModalFor] = useState('login')
     return (
-        <div className='w-full overflow-x-hidden overscroll-y-auto'>
+        <div>
             <Navbar />
             <div>
                 <Outlet />
