@@ -55,7 +55,7 @@ const LoginPopUp = ({ signIn, toggle, setOpenForgetPass, setOpenPopUp }: ChildPo
                                 Forgot Password?
                             </button>
                         </div>
-                        <input value={`Sign In`} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer" type="submit" />
+                        <input onClick={()=>setOpenPopUp(false)} value={`Sign In`} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer" type="submit" />
                     </form>
                 </LoginStyle.Form>
             </LoginStyle.SignUpContainer>
@@ -88,7 +88,7 @@ const LoginPopUp = ({ signIn, toggle, setOpenForgetPass, setOpenPopUp }: ChildPo
                                 <p className="text-[#6A6D7C]">Remember Password</p>
                             </div>
                         </div>
-                        <input value={`Sign In`} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer" type="submit" />
+                        <input onClick={()=>setOpenPopUp(false)} value={`Sign In`} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer" type="submit" />
                     </form>
                 </LoginStyle.Form>
             </LoginStyle.SignInContainer>
