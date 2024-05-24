@@ -3,18 +3,26 @@ import { Link, useLocation } from 'react-router-dom';
 import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
 import { BsCart2 } from "react-icons/bs";
-import { Modal } from 'antd';
+import { GetProp, Input, Modal, Typography } from 'antd';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IoIosSearch } from 'react-icons/io';
 import LoginPopUp from '../../pages/LoginPopUp';
-
+import { OTPProps } from 'antd/es/input/OTP';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+const { Title } = Typography;
 interface IRoutes {
     name: string;
     path: string
 }
 
 interface Inputs {
-    search: string
+    search: string | null,
+    email: string | null,
+    password: string,
+    savePass: string | null,
+    username: string | null,
+    contact: string | null,
+    confirmPass: string | null,
 }
 const dataSource = [
     {
@@ -55,6 +63,12 @@ const Navbar = (): React.JSX.Element => {
     const { pathname } = useLocation();
     const [openPopUp, setOpenPopUp] = useState(false)
     const [signIn, toggle] = useState(true);
+    const [openForgetPass, setOpenForgetPass] = useState(false)
+    const [openVerifyPass, setOpenVerifyPass] = useState(false)
+    const [openNewPass, setOpenNewPass] = useState(false)
+    const [inputType, setInputType] = useState('password')
+    const [conFirmPassType, setConFirmPassType] = useState('password')
+    const [openChangedPass, setOpenChangedPass] = useState(false)
     const {
         register,
         handleSubmit,
@@ -87,6 +101,12 @@ const Navbar = (): React.JSX.Element => {
             path: "/blogs"
         }
     ]
+    const onChange: GetProp<typeof Input.OTP, 'onChange'> = (text) => {
+        console.log('onChange:', text);
+    };
+    const sharedProps: OTPProps = {
+        onChange,
+    };
     return (
         <div className='bg-base h-[80px] flex items-center justify-center'>
             <div className='container flex items-center justify-between'>
@@ -119,8 +139,6 @@ const Navbar = (): React.JSX.Element => {
                     </button>
 
                     <div onClick={() => {
-                        // setopenModalFor('login')
-                        // setOpen(true)
                         toggle(false)
                         setOpenPopUp(true)
                     }}
@@ -134,8 +152,6 @@ const Navbar = (): React.JSX.Element => {
                         Login
                     </div>
                     <div onClick={() => {
-                        // setopenModalFor('register')
-                        // setOpen(true)
                         toggle(true)
                         setOpenPopUp(true)
                     }}
@@ -152,13 +168,123 @@ const Navbar = (): React.JSX.Element => {
             </div>
             <Modal
                 centered
-                open={openPopUp}
-                onCancel={() => setOpenPopUp(false)}
-                width={900}
+                open={openChangedPass}
+                onCancel={() => setOpenChangedPass(false)}
+                width={1000}
                 footer={false}
             >
-                <LoginPopUp 
-                signIn={signIn} toggle={toggle}
+                <div className='md:grid md:grid-cols-2 flex flex-col justify-start min-h-[700px] overflow-hidden rounded-[6px] items-start md:items-center gap-0 h-full relative'>
+                    <div className="bg-white w-full px-5 py-6 text-center">
+                        <h3 className="text-[#262727] font-bold text-4xl mb-4">Congratulations</h3>
+                        <button onClick={()=>setOpenChangedPass(false)} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer">
+                            Continue
+                        </button>
+                    </div>
+                    <div className="w-full bg-[#B47000] h-full flex flex-col justify-center items-center text-white gap-9 z-40">
+                        <p className="text-[16px] text-center lg:text-2xl text-[#DADADA]">Your password has been updated, please <br /> change your password regularly to avoid <br /> this happening</p>
+                    </div>
+                </div>
+            </Modal>
+            <Modal
+                centered
+                open={openNewPass}
+                onCancel={() => setOpenNewPass(false)}
+                width={1000}
+                footer={false}
+            >
+                <div className='md:grid md:grid-cols-2 flex flex-col justify-start min-h-[700px] overflow-hidden rounded-[6px] items-start md:items-center gap-0 h-full relative'>
+                    <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full px-5 py-6 text-center">
+                        <h3 className="text-[#262727] font-bold text-4xl mb-4">Set new Password</h3>
+                        <p className="text-left text-[#575757]">New Password</p>
+                        <div className="w-full relative">
+                            <input type={inputType} placeholder="Password" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("password", { required: true })} />
+                            <button className="text-2xl absolute right-2 top-[50%] translate-y-[-50%]">
+                                {inputType === 'text' ? <FaEye onClick={() => setInputType('password')} /> : <FaEyeSlash onClick={() => setInputType('text')} />}
+                            </button>
+                        </div>
+                        {errors.password && <p className="text-red-600 text-left">new Password  is required</p>}
+                        <p className="text-left text-[#575757]">Confirm new Password</p>
+                        <div className="w-full relative">
+                            <input type={conFirmPassType} placeholder="confirm Password" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("confirmPass", { required: true })} />
+                            <button className="text-2xl absolute right-2 top-[50%] translate-y-[-50%]">
+                                {conFirmPassType === 'text' ? <FaEye onClick={() => setConFirmPassType('password')} /> : <FaEyeSlash onClick={() => setConFirmPassType('text')} />}
+                            </button>
+                        </div>
+                        {errors.confirmPass && <p className="text-red-600 text-left">confirm new Password  is required</p>}
+                        <input onClick={() => {
+                            setOpenNewPass(false)
+                            setOpenChangedPass(true)
+                        }} value={`change password`} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer" type="submit" />
+                    </form>
+                    <div className="w-full bg-[#B47000] h-full flex flex-col justify-center items-center text-white gap-9 z-40">
+                        <p className="text-[16px] text-center lg:text-2xl text-[#DADADA]">Create a new password. <br />
+                            insure it differs from previous one.</p>
+                    </div>
+                </div>
+            </Modal>
+            <Modal
+                centered
+                open={openVerifyPass}
+                onCancel={() => setOpenVerifyPass(false)}
+                width={1000}
+                footer={false}
+            >
+                <div className='md:grid md:grid-cols-2 flex flex-col justify-start min-h-[700px] overflow-hidden rounded-[6px] items-start md:items-center gap-0 h-full relative'>
+
+
+                    <div className="bg-white w-full px-5 py-6 text-center">
+                        <h3 className="text-[#262727] font-bold text-4xl mb-4">Verification Code</h3>
+                        <Input.OTP style={{
+                        }} length={6} {...sharedProps} /> <br />
+                        <input onClick={() => {
+                            setOpenVerifyPass(false)
+                            setOpenNewPass(true)
+                        }} value={`Send Code`} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer" type="submit" />
+                    </div>
+                    <div className="w-full bg-[#B47000] h-full flex flex-col justify-center items-center text-white gap-9 z-40">
+                        <p className="text-[16px] text-center lg:text-2xl text-[#DADADA]">Congratulations! <br />
+                            Pleas enter your 6 digit code </p>
+                    </div>
+                </div>
+            </Modal>
+            <Modal
+                centered
+                open={openForgetPass}
+                onCancel={() => setOpenForgetPass(false)}
+                width={1000}
+                footer={false}
+            >
+                <div className='md:grid md:grid-cols-2 flex flex-col justify-start min-h-[700px] overflow-hidden rounded-[6px] items-start md:items-center gap-0 h-full relative'>
+
+
+                    <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full px-5 py-6 text-center">
+                        <h3 className="text-[#262727] font-bold text-4xl">Forgot Password</h3>
+                        <p className="text-left text-[#575757]">Email</p>
+                        <input placeholder="Asadujjaman@gmail.com" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("email", { required: true })} />
+                        {errors.email && <p className="text-red-600 text-left">Email is required</p>}
+                        <div className="w-full flex justify-between items-center">
+                        </div>
+                        <input onClick={() => {
+                            setOpenForgetPass(false)
+                            setOpenVerifyPass(true)
+                        }} value={`Send Code`} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer" type="submit" />
+                    </form>
+                    <div className="w-full bg-[#B47000] h-full flex flex-col justify-center items-center text-white gap-9 z-40">
+                        <p className="text-[16px] text-center lg:text-2xl text-[#DADADA]">Welcome to out forgot password page ! <br />
+                            provide your email for <br />
+                            confirm 6 digit verification code.</p>
+                    </div>
+                </div>
+            </Modal>
+            <Modal
+                centered
+                open={openPopUp}
+                onCancel={() => setOpenPopUp(false)}
+                width={1000}
+                footer={false}
+            >
+                <LoginPopUp
+                    signIn={signIn} toggle={toggle} setOpenForgetPass={setOpenForgetPass} setOpenPopUp={setOpenPopUp}
                 />
             </Modal>
             <Modal

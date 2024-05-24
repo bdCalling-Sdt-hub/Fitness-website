@@ -5,7 +5,9 @@ import { FaEye, FaEyeSlash } from "react-icons/fa"
 import { Link } from "react-router-dom"
 interface ChildPops {
     signIn: boolean,
-    toggle: (signIn: boolean) => void
+    toggle: (signIn: boolean) => void,
+    setOpenForgetPass: (openForgetPass: boolean) => void
+    setOpenPopUp: (openPopUp: boolean) => void
 }
 type Inputs = {
     email: string,
@@ -14,11 +16,8 @@ type Inputs = {
     username: string | null,
     contact: string | null,
 }
-interface childProps {
-    openModalFor: string,
-    setopenModalFor: (openModalFor: string) => void
-}
-const LoginPopUp = ({ signIn, toggle }: ChildPops) => {
+
+const LoginPopUp = ({ signIn, toggle,setOpenForgetPass ,setOpenPopUp}: ChildPops) => {
     const {
         register,
         handleSubmit,
@@ -49,9 +48,12 @@ const LoginPopUp = ({ signIn, toggle }: ChildPops) => {
                                 <input value={`save`} type="checkbox" id="" {...register("savePass", { required: true })} />
                                 <p className="text-[#6A6D7C]">Remember Password</p>
                             </div>
-                            <Link to={`#`} className="text-[#FF0000]">
+                            <button onClick={()=>{
+                                setOpenPopUp(false)
+                                setOpenForgetPass(true)
+                                }} className="text-[#FF0000]">
                                 Forgot Password?
-                            </Link>
+                            </button>
                         </div>
                         <input value={`Sign In`} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer" type="submit" />
                     </form>
@@ -85,9 +87,6 @@ const LoginPopUp = ({ signIn, toggle }: ChildPops) => {
                                 <input value={`save`} type="checkbox" id="" {...register("savePass", { required: true })} />
                                 <p className="text-[#6A6D7C]">Remember Password</p>
                             </div>
-                            <Link to={`#`} className="text-[#FF0000]">
-                                Forgot Password?
-                            </Link>
                         </div>
                         <input value={`Sign In`} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer" type="submit" />
                     </form>
