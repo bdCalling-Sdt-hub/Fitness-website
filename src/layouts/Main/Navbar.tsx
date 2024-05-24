@@ -3,13 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
 import { BsCart2 } from "react-icons/bs";
-import { GetProp, Input, Modal, Typography } from 'antd';
+import { GetProp, Input, Modal } from 'antd';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IoIosSearch } from 'react-icons/io';
 import LoginPopUp from '../../pages/LoginPopUp';
 import { OTPProps } from 'antd/es/input/OTP';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-const { Title } = Typography;
+import { TfiMenu } from 'react-icons/tfi';
 interface IRoutes {
     name: string;
     path: string
@@ -69,6 +69,7 @@ const Navbar = (): React.JSX.Element => {
     const [inputType, setInputType] = useState('password')
     const [conFirmPassType, setConFirmPassType] = useState('password')
     const [openChangedPass, setOpenChangedPass] = useState(false)
+    const [showMenu, setShowMenu] = useState(false)
     const {
         register,
         handleSubmit,
@@ -108,61 +109,68 @@ const Navbar = (): React.JSX.Element => {
         onChange,
     };
     return (
-        <div className='bg-base h-[80px] flex items-center justify-center'>
-            <div className='container flex items-center justify-between'>
+        <div className='bg-base h-[80px] flex items-center justify-center relative w-full'>
+            <div className='container flex items-center  justify-between'>
 
                 <Link to="/">
                     <img src={Logo} style={{ width: 162, height: 62 }} alt="" />
                 </Link>
+                <button style={{
+                    transition:'.5s'
+                }} className={`${showMenu?'rotate-90 bg-white':'rotate-0 '} p-2 rounded-lg`} onClick={()=>setShowMenu(!showMenu)}>
+                    <TfiMenu className='text-2xl font-bold' />
+                </button>
+                <div style={{
+                    transition:'.5s'
+                }} className={`flex items-center lg:flex-row flex-col gap-3 z-50 py-5 lg:py-0 bg-[#F8F1E6] lg:bg-transparent absolute lg:static w-[50%] lg:w-auto  top-20 ${showMenu?'right-0':'-right-[100%]'} h-screen overflow-y-auto`}>
+                    {/* routes  section*/}
+                    <ul className='flex items-center lg:flex-row flex-col gap-6'>
+                        {
+                            items?.map((item: IRoutes, index) => {
+                                return (
+                                    <Link key={index} to={`${item.path}`}>
+                                        <li className={`${item.path === pathname ? "text-primary" : "text-secondary"} font-light text-[16px] leading-[21px]`}>{item.name}</li>
+                                    </Link>
+                                )
+                            })
+                        }
+                    </ul>
 
+                    {/* others routes and user menu section */}
+                    <div className='flex items-center lg:flex-row flex-col gap-6'>
+                        <Link to={"/cart"}>
+                            <BsCart2 size={24} color='#555555' />
+                        </Link>
+                        <button onClick={() => setOpenSearchModal(true)}>
+                            <IoSearch size={24} color='#555555' />
+                        </button>
 
-                {/* routes  section*/}
-                <ul className='flex items-center gap-6'>
-                    {
-                        items?.map((item: IRoutes, index) => {
-                            return (
-                                <Link key={index} to={`${item.path}`}>
-                                    <li className={`${item.path === pathname ? "text-primary" : "text-secondary"} font-light text-[16px] leading-[21px]`}>{item.name}</li>
-                                </Link>
-                            )
-                        })
-                    }
-                </ul>
-
-                {/* others routes and user menu section */}
-                <div className='flex items-center gap-6'>
-                    <Link to={"/cart"}>
-                        <BsCart2 size={24} color='#555555' />
-                    </Link>
-                    <button onClick={() => setOpenSearchModal(true)}>
-                        <IoSearch size={24} color='#555555' />
-                    </button>
-
-                    <div onClick={() => {
-                        toggle(false)
-                        setOpenPopUp(true)
-                    }}
-                        className='
+                        <div onClick={() => {
+                            toggle(false)
+                            setOpenPopUp(true)
+                        }}
+                            className='
                             border border-primary text-primary 
                             font-light text-[16px] leading-[21px] 
                             cursor-pointer w-[137px] h-10
                             flex items-center justify-center
                         '
-                    >
-                        Login
-                    </div>
-                    <div onClick={() => {
-                        toggle(true)
-                        setOpenPopUp(true)
-                    }}
-                        className='
+                        >
+                            Login
+                        </div>
+                        <div onClick={() => {
+                            toggle(true)
+                            setOpenPopUp(true)
+                        }}
+                            className=' lg:flex hidden
                             bg-primary text-[#FBFBFB] 
                             font-light text-[16px] leading-[21px] 
                             cursor-pointer w-[137px] h-10
-                            flex items-center justify-center
+                             items-center justify-center
                         '
-                    >
-                        Sign In
+                        >
+                            Sign Up
+                        </div>
                     </div>
                 </div>
             </div>
@@ -176,7 +184,7 @@ const Navbar = (): React.JSX.Element => {
                 <div className='md:grid md:grid-cols-2 flex flex-col justify-start min-h-[700px] overflow-hidden rounded-[6px] items-start md:items-center gap-0 h-full relative'>
                     <div className="bg-white w-full px-5 py-6 text-center">
                         <h3 className="text-[#262727] font-bold text-4xl mb-4">Congratulations</h3>
-                        <button onClick={()=>setOpenChangedPass(false)} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer">
+                        <button onClick={() => setOpenChangedPass(false)} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer">
                             Continue
                         </button>
                     </div>
