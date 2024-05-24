@@ -1,4 +1,8 @@
 import styled from 'styled-components';
+interface SignInProps {
+  signinIn: boolean;
+}
+
 
 export const Container = styled.div`
 background-color: #fff;
@@ -11,7 +15,7 @@ max-width: 100%;
 min-height: 800px;
 `;
 
-export const SignUpContainer = styled.div`
+export const SignUpContainer = styled.div<SignInProps>`
  position: absolute;
  top: 0;
  height: 100%;
@@ -29,7 +33,7 @@ export const SignUpContainer = styled.div`
 `;
 
 
-export const SignInContainer = styled.div`
+export const SignInContainer = styled.div<SignInProps>`
 position: absolute;
 top: 0;
 height: 100%;
@@ -91,7 +95,7 @@ font-size: 14px;
 text-decoration: none;
 margin: 15px 0;
 `;
-export const OverlayContainer = styled.div`
+export const OverlayContainer = styled.div<SignInProps>`
 position: absolute;
 top: 0;
 left: 50%;
@@ -104,7 +108,7 @@ ${props =>
  props.signinIn !== true ? `transform: translateX(-100%);` : null}
 `;
 
-export const Overlay = styled.div`
+export const Overlay = styled.div<SignInProps>`
 background: #B47000;
 background: -webkit-linear-gradient(to right, #B47000, #B47000);
 background: linear-gradient(to right, #B47000, #B47000);
@@ -135,12 +139,12 @@ export const OverlayPanel = styled.div`
     transition: transform 0.6s ease-in-out;
 `;
 
-export const LeftOverlayPanel = styled(OverlayPanel)`
+export const LeftOverlayPanel = styled(OverlayPanel)<SignInProps>`
   transform: translateX(-20%);
   ${props => props.signinIn !== true ? `transform: translateX(0);` : null}
 `;
 
-export const RightOverlayPanel = styled(OverlayPanel)`
+export const RightOverlayPanel = styled(OverlayPanel)<SignInProps>`
     right: 0;
     transform: translateX(0);
     ${props => props.signinIn !== true ? `transform: translateX(20%);` : null}
