@@ -38,7 +38,7 @@ const Feedback = () => {
         <div className='w-full mx-auto px-4'>
             <div className='pt-16'>
                 <div className='mb-20'>
-                    <h1 className='text-5xl font-semibold  text-center'>What Out Customers <br /> Have to Say</h1>
+                    <h1 className='font-semibold text-2xl md:text-3xl lg:text-4xl xl:text-5xl  text-center'>What Out Customers <br /> Have to Say</h1>
                 </div>
                 <div className="slider">
                     <Slider {...settings}>

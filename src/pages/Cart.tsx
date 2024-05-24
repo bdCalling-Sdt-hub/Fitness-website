@@ -48,17 +48,19 @@ const Cart = (): React.JSX.Element => {
             <MetaTag title='Cart' />
             <div className='flex flex-col gap-2 items-start justify-start py-10'>
                 {
-                    dataSource?.map(item => <div className='flex justify-between items-center gap-4 flex-wrap w-full'>
+                    dataSource?.map(item => <div style={{
+                        boxShadow:"2px .5px 4px #000001"
+                    }} className='flex justify-between items-center gap-4 flex-wrap w-full p-2'>
                         <div className='w-28 h-28 rounded-xl overflow-hidden'>
                             <img className='h-full w-full object-cover' src={item?.img} alt="" />
                         </div>
                         <div>
-                            <p className='text-lg lg:text-2xl text-[#555555]'>The Dumbbell</p>
-                            <p className='text-2xl lg:text-3xl text-[#555555]'>150 CND</p>
+                            <p className='text-[16px] text-lg lg:text-2xl text-[#555555]'>The Dumbbell</p>
+                            <p className='text-[20px] text-2xl lg:text-3xl text-[#555555]'>150 CND</p>
                         </div>
-                        <p className='text-lg lg:text-2xl text-[#555555]'>05/12/2024</p>
-                        <p className='text-2xl lg:text-3xl text-[#555555]'>02</p>
-                        <p className='text-2xl lg:text-3xl text-[#555555]'>150 CND</p>
+                        <p className='text-[14px] lg:text-2xl text-[#555555]'>05/12/2024</p>
+                        <p className='text-[18px] md:text-2xl lg:text-3xl text-[#555555]'>02</p>
+                        <p className='text-[18px] md:text-2xl lg:text-3xl text-[#555555]'>150 CND</p>
                         <Link to={`/product-details/item?._id`}>
                             <button className='px-10 py-3 bg-[#2F2F2F] text-[#FEFEFE]'>Confirm Order</button>
                         </Link>

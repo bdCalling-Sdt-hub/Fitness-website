@@ -18,13 +18,15 @@ const dataSource = [
 const Order = (): React.JSX.Element => {
     return (
         <div className='container mx-auto'>
-            <Navigation name='Cart' />
-            <Heading title='Cart history' style='mb-6' />
-            <MetaTag title='Cart' />
+            <Navigation name='Order' />
+            <Heading title='Order history' style='mb-6' />
+            <MetaTag title='Order' />
             <div className='flex flex-col gap-2 items-start justify-start py-10'>
                 {
-                    dataSource?.map(item => <div className='flex justify-between items-center gap-4 flex-wrap w-full'>
-                        <div className='flex justify-start items-center gap-6'>
+                    dataSource?.map(item => <div style={{
+                        boxShadow:"2px .5px 4px #000001"
+                    }} className='flex justify-between items-center gap-4 flex-wrap w-full p-2'>
+                        <div  className='flex justify-start items-center gap-6 flex-wrap'>
                             <div className='w-28 h-28 rounded-xl overflow-hidden'>
                                 <img className='h-full w-full object-cover' src={item?.img} alt="" />
                             </div>
