@@ -46,7 +46,6 @@ display: flex;
 align-items: center;
 justify-content: center;
 flex-direction: column;
-padding: 0 50px;
 height: 100%;
 text-align: center;
 `;
@@ -59,7 +58,6 @@ margin: 0;
 export const Input = styled.input`
 background-color: #eee;
 border: none;
-padding: 12px 15px;
 margin: 8px 0;
 width: 100%;
 `;
@@ -72,7 +70,6 @@ export const Button = styled.button`
    color: #ffffff;
    font-size: 12px;
    font-weight: bold;
-   padding: 12px 45px;
    letter-spacing: 1px;
    text-transform: uppercase;
    transition: transform 80ms ease-in;
@@ -130,7 +127,6 @@ export const OverlayPanel = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 40px;
     text-align: center;
     top: 0;
     height: 100%;

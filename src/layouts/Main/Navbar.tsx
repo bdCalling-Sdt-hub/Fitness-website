@@ -181,9 +181,9 @@ const Navbar = (): React.JSX.Element => {
                     width={1000}
                     footer={false}
                 >
-                    <div className='md:grid md:grid-cols-2 flex flex-col justify-start min-h-[700px] overflow-hidden rounded-[6px] items-start md:items-center gap-0 h-full relative'>
+                    <div className='grid grid-cols-2 justify-start min-h-[700px] overflow-hidden rounded-[6px] items-center gap-0 h-full relative'>
                         <div className="bg-white w-full px-5 py-6 text-center">
-                            <h3 className="text-[#262727] font-bold text-4xl mb-4">Congratulations</h3>
+                            <h3 className="text-[#262727] font-bold text-lg md:text-2xl lg:text-4xl mb-4">Congratulations</h3>
                             <button onClick={() => setOpenChangedPass(false)} className="text-[#FCFCFC] bg-[#B47000] px-8 py-3 mt-5 cursor-pointer">
                                 Continue
                             </button>
@@ -200,9 +200,9 @@ const Navbar = (): React.JSX.Element => {
                     width={1000}
                     footer={false}
                 >
-                    <div className='md:grid md:grid-cols-2 flex flex-col justify-start min-h-[700px] overflow-hidden rounded-[6px] items-start md:items-center gap-0 h-full relative'>
+                    <div className='grid grid-cols-2 justify-start min-h-[700px] overflow-hidden rounded-[6px] items-center gap-0 h-full relative'>
                         <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full px-5 py-6 text-center">
-                            <h3 className="text-[#262727] font-bold text-4xl mb-4">Set new Password</h3>
+                            <h3 className="text-[#262727] font-bold text-lg md:text-2xl lg:text-4xl mb-4">Set new Password</h3>
                             <p className="text-left text-[#575757]">New Password</p>
                             <div className="w-full relative">
                                 <input type={inputType} placeholder="Password" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("password", { required: true })} />
@@ -237,11 +237,9 @@ const Navbar = (): React.JSX.Element => {
                     width={1000}
                     footer={false}
                 >
-                    <div className='md:grid md:grid-cols-2 flex flex-col justify-start min-h-[700px] overflow-hidden rounded-[6px] items-start md:items-center gap-0 h-full relative'>
-
-
-                        <div className="bg-white w-full px-5 py-6 text-center">
-                            <h3 className="text-[#262727] font-bold text-4xl mb-4">Verification Code</h3>
+                    <div className='grid grid-cols-2 justify-start min-h-[700px] overflow-hidden rounded-[6px] items-center gap-0 h-full relative'>
+                        <div className="bg-white w-full px-1 md:px-5 py-6 text-center">
+                            <h3 className="text-[#262727] font-bold text-lg md:text-2xl lg:text-4xl mb-4">Verification Code</h3>
                             <Input.OTP style={{
                             }} length={6} {...sharedProps} /> <br />
                             <input onClick={() => {
@@ -262,11 +260,9 @@ const Navbar = (): React.JSX.Element => {
                     width={1000}
                     footer={false}
                 >
-                    <div className='md:grid md:grid-cols-2 flex flex-col justify-start min-h-[700px] overflow-hidden rounded-[6px] items-start md:items-center gap-0 h-full relative'>
-
-
-                        <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full px-5 py-6 text-center">
-                            <h3 className="text-[#262727] font-bold text-4xl">Forgot Password</h3>
+                    <div className='grid grid-cols-2  justify-start min-h-[700px] overflow-hidden rounded-[6px]  items-center gap-0 h-full relative'>
+                        <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full px-1 md:px-5 py-6 text-center">
+                            <h3 className="text-[#262727] font-bold text-lg md:text-2xl lg:text-4xl">Forgot Password</h3>
                             <p className="text-left text-[#575757]">Email</p>
                             <input placeholder="Asadujjaman@gmail.com" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("email", { required: true })} />
                             {errors.email && <p className="text-red-600 text-left">Email is required</p>}

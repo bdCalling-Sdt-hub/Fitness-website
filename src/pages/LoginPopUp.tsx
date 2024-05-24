@@ -17,7 +17,7 @@ type Inputs = {
     contact: string | null,
 }
 
-const LoginPopUp = ({ signIn, toggle,setOpenForgetPass ,setOpenPopUp}: ChildPops) => {
+const LoginPopUp = ({ signIn, toggle, setOpenForgetPass, setOpenPopUp }: ChildPops) => {
     const {
         register,
         handleSubmit,
@@ -29,9 +29,9 @@ const LoginPopUp = ({ signIn, toggle,setOpenForgetPass ,setOpenPopUp}: ChildPops
         <LoginStyle.Container>
             <LoginStyle.SignUpContainer signinIn={signIn}>
                 <LoginStyle.Form>
-                    <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full px-5 py-6 text-center">
-                        <h3 className="text-[#262727] font-bold text-4xl">Login to Account</h3>
-                        <p className="text-sm py-6">Please enter your email and password to continue</p>
+                    <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full md:px-5 px-1 py-6 text-center">
+                        <h3 className="text-[#262727] font-bold text-lg md:text-2xl lg:text-4xl">Login to Account</h3>
+                        <p className="text-sm py-2 md:py-4 lg:py-6">Please enter your email and password to continue</p>
                         <p className="text-left text-[#575757]">Email</p>
                         <input placeholder="Asadujjaman@gmail.com" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("email", { required: true })} />
                         {errors.email && <p className="text-red-600 text-left">Email is required</p>}
@@ -43,15 +43,15 @@ const LoginPopUp = ({ signIn, toggle,setOpenForgetPass ,setOpenPopUp}: ChildPops
                             </button>
                         </div>
                         {errors.password && <p className="text-red-600 text-left">Password  is required</p>}
-                        <div className="w-full flex justify-between items-center">
+                        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
                             <div className="flex justify-start items-center gap-2 clear-start ">
                                 <input value={`save`} type="checkbox" id="" {...register("savePass", { required: true })} />
                                 <p className="text-[#6A6D7C]">Remember Password</p>
                             </div>
-                            <button onClick={()=>{
+                            <button onClick={() => {
                                 setOpenPopUp(false)
                                 setOpenForgetPass(true)
-                                }} className="text-[#FF0000]">
+                            }} className="text-[#FF0000]">
                                 Forgot Password?
                             </button>
                         </div>
@@ -62,9 +62,9 @@ const LoginPopUp = ({ signIn, toggle,setOpenForgetPass ,setOpenPopUp}: ChildPops
 
             <LoginStyle.SignInContainer signinIn={signIn}>
                 <LoginStyle.Form>
-                    <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full px-5 py-6 text-center">
-                        <h3 className="text-[#262727] font-bold text-4xl">Register a new account</h3>
-                        <p className="text-sm py-6">Please enter your information to create account</p>
+                    <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full md:px-5 px-1 py-6 text-center">
+                        <h3 className="text-[#262727] font-bold text-lg md:text-2xl lg:text-4xl">Register a new account</h3>
+                        <p className="text-sm py-2 md:py-4 lg:py-6">Please enter your information to create account</p>
                         <p className="text-left text-[#575757]">User name</p>
                         <input placeholder="Asaduj jaman" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("username", { required: true })} />
                         {errors.username && <p className="text-red-600 text-left">username is required</p>}
@@ -95,9 +95,8 @@ const LoginPopUp = ({ signIn, toggle,setOpenForgetPass ,setOpenPopUp}: ChildPops
 
             <LoginStyle.OverlayContainer signinIn={signIn}>
                 <LoginStyle.Overlay signinIn={signIn}>
-
                     <LoginStyle.LeftOverlayPanel signinIn={signIn}>
-                        <div className="w-full bg-[#B47000] h-full flex flex-col justify-center items-center text-white gap-9 z-40">
+                        <div className="w-full bg-[#B47000] h-full flex flex-col justify-center items-center text-white gap-2 md:gap-4 lg:gap-6 xl:gap-9 z-40">
                             <h3 className="text-2xl md:text-3xl xl:text-4xl text-center ">Welcome Back !</h3>
                             <p className="text-[16px] text-center lg:text-2xl text-[#DADADA]">Please Sign in into your <br />
                                 account with the given <br />
@@ -110,17 +109,15 @@ const LoginPopUp = ({ signIn, toggle,setOpenForgetPass ,setOpenPopUp}: ChildPops
                     </LoginStyle.LeftOverlayPanel>
 
                     <LoginStyle.RightOverlayPanel signinIn={signIn}>
-                        <div className="w-full bg-[#B47000] h-full relative overflow-hidden">
-                            <div className={`flex flex-col justify-center items-center text-white gap-9 w-full h-full top-0 `}>
-                                <h3 className="text-2xl md:text-3xl xl:text-4xl text-center ">Hello Friend!</h3>
-                                <p className="text-[16px] text-center lg:text-2xl text-[#DADADA]">Please provide the <br />
-                                    information's to register <br />
-                                    your account</p>
-                                <p className="text-center">Already have an account! Sign in</p>
-                                <button onClick={() => toggle(false)} className="p-7 py-3 border">
-                                    Sign in
-                                </button>
-                            </div>
+                    <div className="w-full bg-[#B47000] h-full flex flex-col justify-center items-center text-white gap-2 md:gap-4 lg:gap-6 xl:gap-9 z-40">
+                            <h3 className="text-2xl md:text-3xl xl:text-4xl text-center ">Hello Friend!</h3>
+                            <p className="text-[16px] text-center lg:text-2xl text-[#DADADA]">Please provide the <br />
+                                information's to register <br />
+                                your account</p>
+                            <p className="text-center">Already have an account! Sign in</p>
+                            <button onClick={() => toggle(false)} className="p-7 py-3 border">
+                                Sign in
+                            </button>
                         </div>
                     </LoginStyle.RightOverlayPanel>
 
