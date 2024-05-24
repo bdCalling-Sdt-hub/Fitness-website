@@ -4,7 +4,7 @@ import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
 import { Select } from 'antd';
 import { BsCart2 } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const { Option } = Select;
 
 
@@ -14,6 +14,7 @@ interface IItemProps{
     price: string;
 }
 const Shop = ():React.JSX.Element => {
+    const navigate = useNavigate()
     const data: IItemProps[] = [
         {
             name: "The Ball",
@@ -104,7 +105,9 @@ const Shop = ():React.JSX.Element => {
                 {
                     data?.map((item, index)=>{
                         return (
-                            <div 
+                            <div onClick={()=>{
+                                navigate(`/product-details/${index}`)
+                            }}
                                 key={index}  
                                 className='relative group w-full h-full rounded-lg border border-[#EEEEEE] p-5 cursor-pointer'
                                 style={{
@@ -121,7 +124,7 @@ const Shop = ():React.JSX.Element => {
                                 <h1 className='text-[26px] font-normal mt-2 text-secondary leading-[36px]'>${item?.price} CND</h1>
 
                                 <div className='absolute top-4 right-4' onClick={(e)=> (e.stopPropagation())}>
-                                    <Link to={`/product-details/2`}>
+                                    <Link to={`/product-details/${index}`}>
                                         <BsCart2 size={24} color='#905A00' />
                                     </Link>
                                 </div>
