@@ -61,10 +61,10 @@ const Shop = ():React.JSX.Element => {
             <Navigation name='Shop' />
             <MetaTag title='Shop' />
 
-            <div className='flex items-center justify-between'>
+            <div className='flex items-center flex-wrap justify-between'>
                 <Heading title='Shop' />
                 {/* filter section */}
-                <div  className='w-[500px] flex items-center gap-6'>
+                <div  className='max-w-[500px] min-w-[280px] sm:min-w-[360px] md:min-w-[500px] grid grid-cols-2 gap-6'>
                     <Select
                         style={{
                             width: "100%",
