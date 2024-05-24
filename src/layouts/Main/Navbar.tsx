@@ -6,14 +6,13 @@ import { BsCart2 } from "react-icons/bs";
 import { Modal } from 'antd';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IoIosSearch } from 'react-icons/io';
+import LoginPopUp from '../../pages/LoginPopUp';
 
 interface IRoutes {
     name: string;
     path: string
-}interface ChildComponentProps {
-    setOpen: (open: boolean) => void;
-    setopenModalFor: (openModalFor: string) => void;
 }
+
 interface Inputs {
     search: string
 }
@@ -51,13 +50,14 @@ const dataSource = [
         quantity: '02',
     },
 ];
-const Navbar = ({ setOpen, setopenModalFor }: ChildComponentProps): React.JSX.Element => {
+const Navbar = (): React.JSX.Element => {
     const [openSearchModal, setOpenSearchModal] = useState(false)
     const { pathname } = useLocation();
+    const [openPopUp, setOpenPopUp] = useState(false)
+    const [signIn, toggle] = useState(true);
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm<Inputs>()
     const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
@@ -119,8 +119,10 @@ const Navbar = ({ setOpen, setopenModalFor }: ChildComponentProps): React.JSX.El
                     </button>
 
                     <div onClick={() => {
-                        setopenModalFor('login')
-                        setOpen(true)
+                        // setopenModalFor('login')
+                        // setOpen(true)
+                        toggle(false)
+                        setOpenPopUp(true)
                     }}
                         className='
                             border border-primary text-primary 
@@ -132,8 +134,10 @@ const Navbar = ({ setOpen, setopenModalFor }: ChildComponentProps): React.JSX.El
                         Login
                     </div>
                     <div onClick={() => {
-                        setopenModalFor('register')
-                        setOpen(true)
+                        // setopenModalFor('register')
+                        // setOpen(true)
+                        toggle(true)
+                        setOpenPopUp(true)
                     }}
                         className='
                             bg-primary text-[#FBFBFB] 
@@ -146,6 +150,17 @@ const Navbar = ({ setOpen, setopenModalFor }: ChildComponentProps): React.JSX.El
                     </div>
                 </div>
             </div>
+            <Modal
+                centered
+                open={openPopUp}
+                onCancel={() => setOpenPopUp(false)}
+                width={900}
+                footer={false}
+            >
+                <LoginPopUp 
+                signIn={signIn} toggle={toggle}
+                />
+            </Modal>
             <Modal
                 centered
                 open={openSearchModal}

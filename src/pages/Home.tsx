@@ -6,7 +6,6 @@ import About from '../components/Home/About'
 import Class from '../components/Home/Class'
 import Feedback from './Feedback';
 
-
 const Home = ():React.JSX.Element => {
     return (
         <>
@@ -31,6 +30,7 @@ const Home = ():React.JSX.Element => {
             <div className='my-[100px]'>
               <Feedback/>
             </div>
+            {/* <Test/> */}
         </>
     )
 }

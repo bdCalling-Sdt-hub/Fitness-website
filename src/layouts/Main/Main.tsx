@@ -11,14 +11,11 @@ const Main = (): React.JSX.Element => {
     const [openModalFor, setopenModalFor] = useState('login')
     return (
         <div>
-            <Navbar setOpen={setOpen} setopenModalFor={setopenModalFor}/>
+            <Navbar />
             <div>
                 <Outlet />
             </div>
             <Footer />
-            <Modal width={1000} centered open={open} onCancel={() => setOpen(false)} footer={false} >
-                <Login openModalFor={openModalFor} setopenModalFor={setopenModalFor}/>
-            </Modal>
         </div>
     )
 }
