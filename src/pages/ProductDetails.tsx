@@ -40,7 +40,7 @@ const ProductDetails = (): React.JSX.Element => {
             <MetaTag title='Product Details' />
             <Heading title='Product Details' style='mb-6' />
 
-            <div className='grid grid-cols-2 gap-10'>
+            <div className='md:grid md:grid-cols-2 flex flex-col gap-10'>
                 <div>
                     <div className='w-full  border p-10'>
                         <img src={photo1} style={{ width: "100%", height: "100%", objectFit: "contain" }} alt="" />
@@ -60,8 +60,8 @@ const ProductDetails = (): React.JSX.Element => {
                 </div>
 
                 <div className=''>
-                    <h1 className='text-[40px] leading-[54px] text-secondary font-normal mb-2'>The Dumbbell</h1>
-                    <p className='text-[20px] leading-[27px] text-secondary font-normal mb-6'>Price: $150 CND</p>
+                    <h1 className='text-xl md:text-2xl lg:text-3xl xl:text-[40px] leading-[54px] text-secondary font-normal mb-2'>The Dumbbell</h1>
+                    <p className='lg:text-[20px] text-[16px] leading-[27px] text-secondary font-normal mb-6'>Price: $150 CND</p>
 
                     <p className='text-[16px] leading-[21px] text-secondary font-normal mb-4'>Quantity</p>
                     <div className='border w-[160px] h-[48px] flex items-center justify-between px-4 mb-10'>
@@ -87,7 +87,7 @@ const ProductDetails = (): React.JSX.Element => {
                         Various versions have evolved over the years, sometimes by accident
                     </p>
 
-                    <p className='text-[24px] leading-[15px] text-[#242424] font-normal'>INCLUDES:</p>
+                    <p className='text-lg lg:text-[24px] leading-[15px] text-[#242424] font-normal'>INCLUDES:</p>
                     <ul className='list-disc pl-4 mt-6'>
                         <li className='text-[18px] leading-[11px] text-[#242424] font-light mb-3'>1 x The Ball</li>
                         <li className='text-[18px] leading-[11px] text-[#242424] font-light'>1 x The Ball</li>
