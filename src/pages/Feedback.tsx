@@ -1,63 +1,97 @@
 import React, { useState } from 'react';
-import Slider from "react-slick";
-import '../Style/Feedback.css'
+import Slider, { CustomArrowProps, Settings } from "react-slick";
+import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
 
-const images = [
-    "https://i.ibb.co/DzpSzTF/xman1.jpg",
-    "https://i.ibb.co/8cFbXBf/xman2.jpg",
-    "https://i.ibb.co/9VsmTY2/xman3.jpg",
-    "https://i.ibb.co/DzpSzTF/xman1.jpg",
-    "https://i.ibb.co/8cFbXBf/xman2.jpg",
-    "https://i.ibb.co/9VsmTY2/xman3.jpg"
-]
-interface SliderSettings {
-    infinite: boolean;
-    speed: number;
-    slidesToShow: number;
-    slidesToScroll: number;
-    autoplay: boolean;
-    beforeChange: (current: number, next: number) => void;
-    centerMode: boolean;
-    autoplaySpeed: number;
-}
+
+const ArrowLeft = ({ ...props } : CustomArrowProps) => (
+    <button
+        {...props}
+        className="prev"
+    >
+        <BiChevronLeft size={24} color='#B47000'  />
+    </button>
+  );
+
+  const ArrowRight = ({ ...props } : CustomArrowProps) => (
+    <button
+      {...props}
+      className="next"
+    >
+        <BiChevronRight size={24} color='#B47000' />
+    </button>
+  );
+
+
 const Feedback = () => {
     const [slideIndex, setSlideIndex] = useState(0);
 
-    const settings: SliderSettings = {
+    const settings:Settings = {
         infinite: true,
         speed: 500,
+        arrows: true,
         slidesToShow: 3,
-        slidesToScroll: 1,
+        slidesToScroll: 2,
         autoplay: true,
+        dots: false,
+        prevArrow: <ArrowLeft />,
+        nextArrow: <ArrowRight />,
         beforeChange: (current, next) => setSlideIndex(next),
         centerMode: true,
-        autoplaySpeed: 2000
+        autoplaySpeed: 2000,
+        responsive: [
+            {
+                breakpoint: 1110,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll:1,
+                    initialSlide: 1
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
     };
 
     return (
-        <div className='w-full mx-auto px-4'>
-            <div className='pt-16'>
-                <div className='mb-20'>
-                    <h1 className='font-semibold text-2xl md:text-3xl lg:text-4xl xl:text-5xl  text-center'>What Out Customers <br /> Have to Say</h1>
-                </div>
-                <div className="slider">
-                    <Slider {...settings}>
-                        {
-                            images.map((img, index) => (
-                                <div className={index === slideIndex ? 'slide slide-active' : 'slide'} key={index}>
-                                    <div className='px-14 py-6 font-extralight text-[#555555] text-center flex flex-col justify-center items-center gap-3 '>
-                                        <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more.</p>
-                                        <div className='h-20 w-20 rounded-full overflow-hidden'>
-                                            <img src='https://i.ibb.co/qszbKLH/Ellipse-213.png' className='h-full w-full object-cover' alt="" />
-                                        </div>
-                                        <h4 className='text-[#555555] font-semibold'>Wade Warren</h4>
-                                        <p className='text-[#555555] font-thin'>Actor</p>
+        <div className='w-full mx-auto'>
+            <div className='mb-[50px]'>
+                <h1 className='font-semibold leading-[65px] text-secondary text-2xl md:text-3xl lg:text-4xl xl:text-5xl  text-center'>What Clients Say</h1>
+            </div>
+            <div className="slider">
+                <Slider {...settings}>
+                    {
+                        [...Array(5)].map((img, index) => (
+                            <div 
+                                className={`${index === slideIndex ? 'slide slide-active' : 'slide'} relative`} 
+                                key={index}  
+                                style={{boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px"}}
+                            >
+                                <div className='px-14 py-6 font-extralight text-[#555555] text-center flex flex-col justify-center items-center gap-3 '>
+                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more.</p>
+                                    <div className='h-20 w-20 rounded-full overflow-hidden'>
+                                        <img src='https://i.ibb.co/qszbKLH/Ellipse-213.png' className='h-full w-full object-cover' alt="" />
                                     </div>
+                                    <h4 className='text-[#555555] font-semibold'>Wade Warren</h4>
+                                    <p className='text-[#555555] font-thin'>Actor</p>
                                 </div>
-                            ))
-                        }
-                    </Slider>
-                </div>
+                            </div>
+                        ))
+                    }
+                </Slider>
             </div>
         </div>
     );

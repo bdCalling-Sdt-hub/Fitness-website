@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MdOutlineArrowOutward } from "react-icons/md";
 import Video from "../../assets/video.mp4"
 const Hero = (): React.JSX.Element => {
@@ -6,7 +6,7 @@ const Hero = (): React.JSX.Element => {
 
     return (
         <>
-            <div className='relative w-full' style={{ height: "calc(100vh - 80px)" }}>
+            <div className='relative w-full' style={{ height: "calc(100vh - 0px)" }}>
                 <video autoPlay muted loop>
                     <source src={Video} />
                 </video>
