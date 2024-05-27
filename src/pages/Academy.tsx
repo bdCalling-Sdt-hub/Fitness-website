@@ -35,7 +35,7 @@ const Academy = ():React.JSX.Element => {
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library'  />
-            <Heading title='Trainee Board'  style='mb-6' />
+            <Heading title='Studio'  style='mb-6' />
             <MetaTag title='Academy' />
 
             <div className='customPlaceholder flex items-end gap-3 justify-end bg-primary p-2'>

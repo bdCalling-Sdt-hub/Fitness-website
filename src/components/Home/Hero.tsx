@@ -13,7 +13,7 @@ const Hero = (): React.JSX.Element => {
 
                 <div className='absolute top-0 left-0 flex items-center justify-center w-[100%] h-[100%]' style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} >
                     <div className=''>
-                        <h1 className='text-[#F2F2F2] text-2xl md:text-4xl xl:text-[64px] leading-8  xl:leading-[87px] font-light text-center'>Functional Movement. <br /> Anytime Anywhere.</h1>
+                        <h1 className='text-[#F2F2F2] text-2xl md:text-4xl xl:text-[64px] leading-8  xl:leading-[87px] font-light text-center'>aligning mindfulness and movement</h1>
                         <button 
                             style={{
                                 width: 226,

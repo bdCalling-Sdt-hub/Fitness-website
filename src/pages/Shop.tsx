@@ -65,22 +65,7 @@ const Shop = ():React.JSX.Element => {
             <div className='flex items-center flex-wrap justify-between'>
                 <Heading title='Shop' />
                 {/* filter section */}
-                <div  className='max-w-[500px] min-w-[280px] sm:min-w-[360px] md:min-w-[500px] grid grid-cols-2 gap-6'>
-                    <Select
-                        style={{
-                            width: "100%",
-                            height: 48,
-                            border: "1px solid #E7EBED",
-                            outline: "none",
-                            borderRadius: 8
-                        }}
-                        className="poppins-regular text-[#6A6A6A] text-[14px] leading-5"
-                        defaultValue={"Gender"}
-                    >
-                        <Option value="girl">Girl</Option>
-                        <Option value="boy">Boy</Option>
-                        <Option value="baby">Baby</Option>
-                    </Select>
+                <div  className='max-w-[500px] min-w-[280px] '> 
 
                     <Select
                         style={{

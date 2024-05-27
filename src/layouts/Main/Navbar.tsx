@@ -82,7 +82,7 @@ const Navbar = (): React.JSX.Element => {
             path: "/"
         },
         {
-            name: "Academy",
+            name: "Studio",
             path: "/academy"
         },
         {
