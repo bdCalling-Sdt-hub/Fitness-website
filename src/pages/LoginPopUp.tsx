@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import * as  LoginStyle from '../components/LoginStyle'
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FaEye, FaEyeSlash } from "react-icons/fa"
-import { Link } from "react-router-dom"
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 interface ChildPops {
     signIn: boolean,
     toggle: (signIn: boolean) => void,

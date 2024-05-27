@@ -109,7 +109,7 @@ const Navbar = (): React.JSX.Element => {
         onChange,
     };
     return (
-            <div className='bg-base h-[80px] flex items-center justify-center relative w-full'>
+            <div className='bg-base fixed top-0 h-[80px] z-50 flex items-center justify-center  w-full'>
                 <div className='container flex items-center  justify-between'>
 
                     <Link to="/">
