@@ -15,7 +15,7 @@ import Academy from "../pages/Academy";
 import FreeClass from "../pages/FreeClass";
 import Cart from "../pages/Cart";
 import Order from "../pages/Order";
-
+import Studio from "../pages/Studio";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -63,6 +63,10 @@ const router = createBrowserRouter([
             },
             {
                 path: "academy",
+                element: <Studio />,
+            },
+            {
+                path: "academy/:id",
                 element: <Academy />,
             },
             {

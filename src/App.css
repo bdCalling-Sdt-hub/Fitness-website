@@ -89,7 +89,7 @@ video {
 
 /* video thumbnail list scroll bar change */
 .video-collection::-webkit-scrollbar {
-    width: 12px;
+    width: 8px;
 }
 
 .video-collection::-webkit-scrollbar-track {
