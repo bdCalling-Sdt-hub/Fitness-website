@@ -1,6 +1,4 @@
-interface childProp {
-    setOpenPaymentModal: (openPaymentModal: boolean) => void
-}
+
 import type { FormProps, GetProp } from 'antd';
 import { Button, Col, Form, Input, Row } from 'antd';
 import { OTPProps } from 'antd/es/input/OTP';
@@ -16,7 +14,7 @@ const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
 };
 
 
-const Payment = ({ setOpenPaymentModal }: childProp) => {
+const Payment = () => {
     const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };

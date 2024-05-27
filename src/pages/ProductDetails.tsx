@@ -112,7 +112,7 @@ const ProductDetails = (): React.JSX.Element => {
                 footer={false}
                 width={800}
             >
-                <Payment setOpenPaymentModal={setOpenPaymentModal} />
+                <Payment />
             </Modal>
         </div>
     )
