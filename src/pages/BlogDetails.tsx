@@ -37,9 +37,6 @@ const BlogDetails = ():React.JSX.Element => {
                     Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions 
                     of Lorem Ipsum.
                 </p>
-
-                <img src={photo1} style={{width: "100%", height: 400, objectFit: "fill"}} alt="" className='my-6' />
-
                 <p className='text-secondary text-[16px] leading-[30px] font-normal'>
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
                     standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make 

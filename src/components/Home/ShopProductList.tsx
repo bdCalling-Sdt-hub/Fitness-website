@@ -37,7 +37,7 @@ const ShopProductList = (): React.JSX.Element => {
         <div className='container'>
             <div className='flex items-center justify-between mb-6'>
                 <Heading title='Shop' style='mb-0' />
-                <Link to={"/"} className='text-[16px] text-primary leading-5 font-medium underline'>
+                <Link to={"/shop"} className='text-[16px] text-primary leading-5 font-medium underline'>
                     View All
                 </Link>
             </div>

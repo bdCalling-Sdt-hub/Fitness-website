@@ -46,10 +46,10 @@ const Cart = (): React.JSX.Element => {
             <Navigation name='Cart' />
             <Heading title='Cart history' style='mb-6' />
             <MetaTag title='Cart' />
-            <div className='flex flex-col gap-2 items-start justify-start py-10'>
+            <div className='flex flex-col gap-6 items-start justify-start py-10'>
                 {
                     dataSource?.map(item => <div style={{
-                        boxShadow:"2px .5px 4px #000001"
+                        boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
                     }} className='flex justify-between items-center gap-4 flex-wrap w-full p-2'>
                         <div className='w-28 h-28 rounded-xl overflow-hidden'>
                             <img className='h-full w-full object-cover' src={item?.img} alt="" />
