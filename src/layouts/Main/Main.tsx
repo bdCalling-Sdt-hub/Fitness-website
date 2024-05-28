@@ -11,7 +11,7 @@ const Main = (): React.JSX.Element => {
     return (
         <div>
             <Navbar />
-            <div>
+            <div className='mt-14'>
                 <Outlet />
             </div>
             <Footer />

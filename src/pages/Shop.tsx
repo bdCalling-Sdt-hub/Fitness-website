@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
@@ -7,13 +7,15 @@ import { BsCart2 } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
 const { Option } = Select;
 
+interface CategoryType {
 
-interface IItemProps{
+}
+interface IItemProps {
     name: string;
     image: string;
     price: string;
 }
-const Shop = ():React.JSX.Element => {
+const Shop = (): React.JSX.Element => {
     const navigate = useNavigate()
     const data: IItemProps[] = [
         {
@@ -57,23 +59,21 @@ const Shop = ():React.JSX.Element => {
             price: "640"
         },
     ]
+    const [category, setCategory] = useState<string[]>([])
     return (
         <div className='container pb-20'>
             <Navigation name='Shop' />
             <MetaTag title='Shop' />
-
-            <div className='flex items-center flex-wrap justify-between'>
+            <div className='flex justify-between items-center gap-2 flex-wrap'>
                 <Heading title='Shop' />
-                {/* filter section */}
-                <div  className='max-w-[500px] min-w-[280px] '> 
-
+                <div className='max-w-[500px] min-w-[280px] gap-[1%] flex justify-start items-center '>
                     <Select
                         style={{
-                            width: "100%",
+                            width: "49.5%",
                             height: 48,
                             border: "1px solid #E7EBED",
                             outline: "none",
-                            borderRadius: 8
+                            borderRadius: 8,
                         }}
                         className="poppins-regular text-[#6A6A6A] text-[14px] leading-5"
                         defaultValue={"Sort By"}
@@ -82,33 +82,72 @@ const Shop = ():React.JSX.Element => {
                         <Option value="high_to_low">High to Low</Option>
                         <Option value="avarage">Avarage</Option>
                     </Select>
+                    <Select
+                        style={{
+                            width: "49.5%",
+                            height: 48,
+                            border: "1px solid #E7EBED",
+                            outline: "none",
+                            borderRadius: 8
+                        }}
+                        className="poppins-regular text-[#6A6A6A] text-[14px] leading-5"
+                        value={"Category"}
+                    >
+                        <Option key={`1`}>
+                            <label onClick={() => {
+                                if (category.find(item => item == 'Starter Kit')) {
+                                    const newCategory = category.filter(item => item != 'Starter Kit')
+                                    console.log(newCategory)
+                                    setCategory(newCategory)
+                                } else {
+                                    setCategory([...category, 'Starter Kit'])
+                                }
+                            }} className='w-full flex justify-start items-center gap-2 z-50' htmlFor="Starter">
+                                <input type="checkbox" name="" id="Starter" />
+                                Starter Kit
+                            </label>
+                        </Option>
+                        <Option key={`2`}>
+                            <label onClick={() => {
+                                if (category.find(item => item == 'Travel Kit')) {
+                                    const newCategory = category.filter(item => item != 'Travel Kit')
+                                    setCategory(newCategory)
+                                } else {
+                                    setCategory([...category, 'Travel Kit'])
+                                }
+                            }} className='w-full flex justify-start items-center gap-2 z-50' htmlFor="Travel">
+                                <input type="checkbox" name="" id="Travel" />
+                                Travel Kit
+                            </label>
+                        </Option>
+
+                    </Select>
                 </div>
             </div>
 
-
             <div className='flex flex-col items-start justify-start md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:items-center  gap-6 mt-10'>
                 {
-                    data?.map((item, index)=>{
+                    data?.map((item, index) => {
                         return (
-                            <div onClick={()=>{
+                            <div onClick={() => {
                                 navigate(`/product-details/${index}`)
                             }}
-                                key={index}  
+                                key={index}
                                 className='relative group w-full h-full rounded-lg border border-[#EEEEEE] p-5 cursor-pointer'
                                 style={{
                                     boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px"
                                 }}
                             >
-                                <img 
-                                    src={item?.image} 
-                                    style={{width: 194, height: 194, margin: "0 auto"}} 
+                                <img
+                                    src={item?.image}
+                                    style={{ width: 194, height: 194, margin: "0 auto" }}
                                     alt=""
                                     className='group-hover:scale-105 transition-all duration-100'
                                 />
                                 <h1 className='text-[16px] font-normal leading-5 text-secondary mt-10'>{item?.name}</h1>
                                 <h1 className='text-[26px] font-normal mt-2 text-secondary leading-[36px]'>${item?.price} CND</h1>
 
-                                <div className='absolute top-4 right-4' onClick={(e)=> (e.stopPropagation())}>
+                                <div className='absolute top-4 right-4' onClick={(e) => (e.stopPropagation())}>
                                     <Link to={`/product-details/${index}`}>
                                         <BsCart2 size={24} color='#905A00' />
                                     </Link>
