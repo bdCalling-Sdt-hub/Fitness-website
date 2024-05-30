@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
@@ -13,8 +13,6 @@ import { IoPlaySharp } from "react-icons/io5";
 import { GrPauseFill } from "react-icons/gr";
 import Chart from '../Academy/Chart';
 import StatusLabel from '../Academy/StatusLabel';
-import Thubmnail from "../assets/video_thumbnail.png"
-import { LuCalendar } from 'react-icons/lu';
 import {
     Accordion,
     AccordionItem,
@@ -86,6 +84,8 @@ const data: ProgramData[] = [
 ]
 import { FaCheckCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { MdKeyboardArrowRight } from 'react-icons/md';
+type ContentRef = HTMLDivElement | null;
 const Academy = (): React.JSX.Element => {
     const [openCalender, setOpenCalender] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<string | null>("");
@@ -99,15 +99,32 @@ const Academy = (): React.JSX.Element => {
     const disableTomorrowAndFutureDates = (current: Dayjs) => {
         return current.isAfter(dayjs().endOf('day'));
     };
+    //accordion
+    const [openIndex, setOpenIndex] = useState<number | null>(null);
+    const contentRefs = useRef<ContentRef[]>([]);
 
+    const toggleAccordion = (index: number) => {
+        setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
+    };
 
+    useEffect(() => {
+        if (openIndex !== null && contentRefs.current[openIndex]) {
+            contentRefs.current[openIndex]!.style.maxHeight = `${contentRefs.current[openIndex]!.scrollHeight}px`;
+        }
 
+        contentRefs.current.forEach((ref, index) => {
+            if (ref && index !== openIndex) {
+                ref.style.maxHeight = '0px';
+            }
+        });
+    }, [openIndex]);
+
+    //accordion 
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
             <Heading title='Series' style='mb-6' />
             <MetaTag title='Academy' />
-
             <div className='customPlaceholder flex items-end gap-3 justify-end bg-primary p-2'>
                 <Input
                     onChange={(e) => setKeyword(e.target.value)}
@@ -127,8 +144,6 @@ const Academy = (): React.JSX.Element => {
                     <CiCalendarDate color='#905A00' size={35} />
                 </div>
             </div>
-
-
             <div className='md:grid flex flex-col grid-cols-12 gap-10 mt-8 group'>
                 <div className='col-span-8 '>
                     <div className='video_player flex items-center justify-center'>
@@ -191,50 +206,48 @@ const Academy = (): React.JSX.Element => {
                     </div>
 
                     <div className='w-full  md:overflow-y-scroll md:max-h-[700px] video-collection'>
-                        <div className=' md:flex flex-col gap-6'>
-                            <Accordion>
-                                {
-                                    [...Array(5)].map((item: unknown, index) => {
-                                        return (
-                                            <div className='my-5 p-3 bg-[#F2F2F2]'>
-                                                <AccordionItem>
-                                                    <AccordionItemHeading>
-                                                        <AccordionItemButton>
-                                                            <div className=' relative'>
-                                                                <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Series No {index + 1} : advance vinyasa yoga</p>
-                                                                <div className='flex justify-start items-center gap-3 mt-3'>
-                                                                    <p className='text-[#919191] text-xs'>Total video : 04</p> <p className='text-[#919191] text-xs'>3 h 40 m</p>
-                                                                </div>
-                                                                <IoIosArrowDown className='text-2xl absolute right-1 top-1' />
-                                                            </div>
-                                                        </AccordionItemButton>
-                                                    </AccordionItemHeading>
-                                                    <AccordionItemPanel>
-                                                        {
-                                                            [...Array(5)].map((item: unknown, index) => {
-                                                                return (
-                                                                    <div key={index} className='flex justify-start items-start gap-3 mt-6'>
-                                                                        <div>
-                                                                            <FaCheckCircle className='text-green-500 text-lg' />
-                                                                        </div>
-                                                                        <div>
-                                                                            <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Class No {index + 1} : advance vinyasa yoga</p>
-                                                                            <div className='flex justify-start items-center gap-3 mt-2'>
-                                                                                <p className='text-[#919191] text-sm'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quam earum consequuntur,</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                )
-                                                            }
-                                                            )}
+                        <div className=' md:flex flex-col gap-3'>
 
-                                                    </AccordionItemPanel>
-                                                </AccordionItem>
+                            {
+                                [...Array(10)].map((_, index) => (
+                                    <div key={index} className='cursor-pointer p-3 bg-[#F2F2F2]'>
+                                        <div onClick={() => toggleAccordion(index)} className=' relative'>
+                                            <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Series No {index + 1} : advance vinyasa yoga</p>
+                                            <div className='flex justify-start items-center gap-3 mt-3'>
+                                                <p className='text-[#919191] text-xs'>Total video : 04</p> <p className='text-[#919191] text-xs'>3 h 40 m</p>
                                             </div>
-                                        )
-                                    })
-                                }
-                            </Accordion>
+                                            <IoIosArrowDown className='text-2xl absolute right-1 top-1' />
+                                        </div>
+                                        <div
+                                            ref={(el) => (contentRefs.current[index] = el)}
+                                            className='accordion-content overflow-hidden transition-max-height duration-300 ease-in-out'
+                                            style={{
+                                                maxHeight: openIndex === index ? `${contentRefs.current[index]?.scrollHeight}px` : '0px'
+                                            }}
+                                        >
+                                            {
+                                                [...Array(5)].map((item: unknown, index) => {
+                                                    return (
+                                                        <div key={index} className='flex justify-start items-start gap-3 mt-6'>
+                                                            <div>
+                                                                <FaCheckCircle className='text-green-500 text-lg' />
+                                                            </div>
+                                                            <div>
+                                                                <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Class No {index + 1} : advance vinyasa yoga</p>
+                                                                <div className='flex justify-start items-center gap-3 mt-2'>
+                                                                    <p className='text-[#919191] text-sm'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quam earum consequuntur,</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+                                                )}
+                                        </div>
+
+
+                                    </div>
+                                ))
+                            }
                         </div>
                     </div>
                 </div>
