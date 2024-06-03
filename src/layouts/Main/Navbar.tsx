@@ -10,6 +10,7 @@ import LoginPopUp from '../../pages/LoginPopUp';
 import { OTPProps } from 'antd/es/input/OTP';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { TfiMenu } from 'react-icons/tfi';
+import { useAppSelector } from '../../Store/hook';
 interface IRoutes {
     name: string;
     path: string
@@ -70,6 +71,8 @@ const Navbar = (): React.JSX.Element => {
     const [conFirmPassType, setConFirmPassType] = useState('password')
     const [openChangedPass, setOpenChangedPass] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
+    const {user}=useAppSelector(state => state.login)
+    console.log(user)
     const {
         register,
         handleSubmit,

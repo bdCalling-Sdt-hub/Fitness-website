@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import AxiosRequest from '../../AxiosConfig/AxiosRequest';
+import baseURL from '../../AxiosConfig/Config';
 const initialState = {
     error: false,
     success: false,
@@ -12,19 +12,13 @@ interface IValue {
     email: string;
     password: string;
 }
-const baseURL = AxiosRequest()
 export const login = createAsyncThunk(
     'login',
     async (value: IValue, thunkApi) => {
         try {
-            const response = await baseURL.post(`/auth/login`, { email: value.email, password: value.password }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    authorization: `Bearer ${localStorage.getItem('token')}`,
-                }
-            });
-            localStorage.setItem('token', response?.data?.access_token);
-            return response?.data.user;
+            const response = await baseURL.post(`/auth/login`, { email: value.email, password: value.password });
+            console.log(response)
+            return response?.data.data.userInfo;
         } catch (error) {
             const axiosError = error as AxiosError;
             const message = axiosError?.response?.data;
