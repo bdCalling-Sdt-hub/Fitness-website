@@ -9,41 +9,42 @@ const initialState = {
     user: {},
 };
 interface IValue {
-    email: string;
-    password: string;
+    email: string | null,
+    password:string | null,
+    username: string | null,
+    contact: string | null,
 }
-export const login = createAsyncThunk(
-    'login',
+export const signUp = createAsyncThunk(
+    'signUp',
     async (value: IValue, thunkApi) => {
         try {
-            const response = await baseURL.post(`/auth/login`, { email: value.email, password: value.password });
-            localStorage.setItem('token', response?.data.data.accessToken)
-            return response?.data.data.accessToken;
+            const response = await baseURL.post(`/auth/register`, { name: value.username, email: value.email, phone_number: value.contact, password: value.password });
+            console.log(response)
+            return response?.data.data;
         } catch (error) {
             const axiosError = error as AxiosError;
             const message = axiosError?.response?.data;
             return thunkApi.rejectWithValue(message);
         }
-
     }
 )
-export const loginSlice = createSlice({
-    name: 'login',
+export const signSlice = createSlice({
+    name: 'signup',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(login.pending, (state) => {
+        builder.addCase(signUp.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(login.fulfilled, (state, action) => {
+            builder.addCase(signUp.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
                 state.user = action.payload;
             }),
-            builder.addCase(login.rejected, (state) => {
+            builder.addCase(signUp.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
@@ -52,4 +53,4 @@ export const loginSlice = createSlice({
             })
     }
 })
-export default loginSlice.reducer
+export default signSlice.reducer
