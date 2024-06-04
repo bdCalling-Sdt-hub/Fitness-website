@@ -1,10 +1,24 @@
-import React from 'react'
+import { createContext, useEffect, useState } from "react";
+import { useAppDispatch } from "../Store/hook";
+import { Profile } from "../States/Authentication/ProfileSlice";
 
-const UserProvider = (): React.JSX.Element  => {
+const UserContext = createContext({});
+const UserProvider = ({ children }: { children: React.ReactNode }): React.JSX.Element => {
+    const [useData, setUserData] = useState({})
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(Profile())
+            .then((res) => {
+                setUserData(res.payload)
+            })
+    }, [])
+    const userData = {
+        useData
+    }
     return (
-        <div>
-
-        </div>
+        <UserContext.Provider value={userData}>
+            {children}
+        </UserContext.Provider>
     )
 }
 

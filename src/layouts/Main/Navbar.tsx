@@ -72,7 +72,7 @@ const Navbar = (): React.JSX.Element => {
     const [openNewPass, setOpenNewPass] = useState(false)
     const [openChangedPass, setOpenChangedPass] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
-    const { user } = useAppSelector(state => state.login)
+    const { user } = useAppSelector(state => state.Profile)
     console.log(user)
     const {
         register,

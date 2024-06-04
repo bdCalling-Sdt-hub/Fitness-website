@@ -26,7 +26,7 @@ const SignInFoorm = ({ setOpenPopUp, setOpenForgetPass }: ChildPops) => {
         dispatch(login({ email: data.email, password: data.password }))
             .then(response => {
                 console.log(response)
-                if (response?.payload.id) {
+                if (response?.type==='login/fulfilled') {
                     Swal.fire({
                         position: "center",
                         icon: "success",

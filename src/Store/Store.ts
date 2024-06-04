@@ -4,6 +4,7 @@ import SignUpSlice from '../States/Authentication/SignUpSlice';
 import ForgatePasswordSlice from '../States/Authentication/ForgatePasswordSlice';
 import VerifyCodeSlice from '../States/Authentication/VerifyCodeSlice';
 import SetNewPassSlice from '../States/Authentication/SetNewPassSlice';
+import ProfileSlice from '../States/Authentication/ProfileSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ export const Store = configureStore({
         ForgtePass : ForgatePasswordSlice,
         VerifyCode:VerifyCodeSlice,
         SetNewPass:SetNewPassSlice,
+        Profile:ProfileSlice,
     },
 })
 
