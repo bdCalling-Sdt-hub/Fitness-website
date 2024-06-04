@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
@@ -8,12 +8,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { IoIosSearch } from 'react-icons/io';
 import LoginPopUp from '../../pages/LoginPopUp';
 import { OTPProps } from 'antd/es/input/OTP';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaRegUser } from 'react-icons/fa';
 import { TfiMenu } from 'react-icons/tfi';
 import { useAppSelector } from '../../Store/hook';
 import ForgetPassword from '../../components/Form/ForgetPassword';
 import VerifyCodeForm from '../../components/Form/VerifyCodeForm';
 import SetNewPassword from '../../components/Form/SetNewPassword';
+import { MdOutlineFeedback, MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { CiLogout, CiTimer } from 'react-icons/ci';
 interface IRoutes {
     name: string;
     path: string
@@ -74,6 +76,9 @@ const Navbar = (): React.JSX.Element => {
     const [showMenu, setShowMenu] = useState(false)
     const { user }: any = useAppSelector(state => state.Profile)
     console.log(user)
+    const [showUserOptions, setShowUserOptions] = useState(false);
+
+
     const {
         register,
         handleSubmit,
@@ -127,7 +132,7 @@ const Navbar = (): React.JSX.Element => {
                 </button>
                 <div style={{
                     transition: '.5s'
-                }} className={`flex items-center lg:flex-row flex-col gap-3 z-50 lg:z-0 py-5 lg:py-0 bg-[#F8F1E6] lg:bg-transparent absolute lg:static w-[50%] lg:w-auto  top-20 ${showMenu ? 'right-0 flex showMenu' : '-right-[100%] showClose hidden lg:flex'} h-screen lg:h-fit overflow-y-auto`}>
+                }} className={`flex items-center lg:flex-row flex-col gap-3 z-50 lg:z-0 py-5 lg:py-0 bg-[#F8F1E6] lg:bg-transparent absolute lg:static w-[50%] lg:w-auto  top-20 ${showMenu ? 'right-0 flex showMenu' : '-right-[100%] showClose hidden lg:flex'} h-screen lg:h-fit overflow-y-auto `}>
                     {/* routes  section*/}
                     <ul className='flex items-center lg:flex-row flex-col gap-6'>
                         {
@@ -150,11 +155,38 @@ const Navbar = (): React.JSX.Element => {
                             <IoSearch size={24} color='#555555' />
                         </button>
                         {
-                            user?.email ? <div>
-                                <div className='w-10 h-10 rounded-full cursor-pointer'>
-                                    <img className='h-10 w-10 rounded-full' src={user.profile_image.includes('undefined') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : user.profile_image} alt="" />
-                                </div>
-                            </div> : <>
+                            user?.email ? <>
+                                <img onClick={() => setShowUserOptions(!showUserOptions)} className='h-10 w-10 rounded-full cursor-pointer' src={user.profile_image.includes('undefined') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : user.profile_image} alt="" />
+                                {
+                                    showUserOptions && <div className='w-[250px]  bg-white fixed top-24 flex flex-col gap-1'>
+                                        <Link onClick={() => {
+                                            setShowUserOptions(false)
+                                        }} className='flex justify-start items-center gap-2 text-gray-500 hover:bg-[#F8F1E6] py-1 px-4 transition-all w-full' to={`#`}>
+                                            <FaRegUser className='text-xl' />
+                                            My Profile
+                                        </Link>
+                                        <Link onClick={() => {
+                                            setShowUserOptions(false)
+                                        }} className='flex justify-start items-center  gap-2 text-gray-500 hover:bg-[#F8F1E6] py-1 px-4 transition-all w-full' to={`#`}>
+                                            <CiTimer className='text-xl' />
+                                            Order History
+                                        </Link>
+                                        <Link onClick={() => {
+                                            setShowUserOptions(false)
+                                        }} className='flex justify-start items-center  gap-2 text-gray-500 hover:bg-[#F8F1E6] py-1 px-4 transition-all w-full' to={`#`}>
+                                            <MdOutlineFeedback className='text-xl' />
+                                            Feedback
+                                        </Link>
+                                        <button onClick={() => {
+                                            setShowUserOptions(false)
+                                        }} className='flex justify-start items-center  gap-2 text-gray-500 hover:bg-[#F8F1E6] py-1 px-4 transition-all w-full'>
+                                            <CiLogout className='text-xl' />
+                                            Log Out
+                                        </button>
+                                    </div>
+                                }
+
+                            </> : <>
                                 <div onClick={() => {
                                     toggle(false)
                                     setOpenPopUp(true)
@@ -176,7 +208,7 @@ const Navbar = (): React.JSX.Element => {
                             bg-primary text-[#FBFBFB] 
                             font-light text-[16px] leading-[21px] 
                             cursor-pointer w-[137px] h-10
-                             items-center justify-center
+                            items-center justify-center
                         '
                                 >
                                     Sign Up
