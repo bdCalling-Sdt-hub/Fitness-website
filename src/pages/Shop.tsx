@@ -97,7 +97,7 @@ const Shop = (): React.JSX.Element => {
                             <label onClick={() => {
                                 if (category.find(item => item == 'Starter Kit')) {
                                     const newCategory = category.filter(item => item != 'Starter Kit')
-                                    console.log(newCategory)
+                                    //console.log(newCategory)
                                     setCategory(newCategory)
                                 } else {
                                     setCategory([...category, 'Starter Kit'])

@@ -1,6 +1,10 @@
+
 import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import Swal from 'sweetalert2'
+import { useAppDispatch } from '../../Store/hook'
+import { SetNewPass } from '../../States/Authentication/SetNewPassSlice'
 interface Inputs {
     search: string | null,
     email: string | null,
@@ -14,13 +18,41 @@ interface ChildPops {
     setOpenNewPass: (arg0: boolean) => void
     setOpenChangedPass: (arg0: boolean) => void
 }
-const SetNewPassword = ({ setOpenNewPass, setOpenChangedPass }: ChildPops) => {
+const SetNewPassword = ({ setOpenNewPass, setOpenChangedPass }: ChildPops) => {//email:localStorage.getItem('resetEmail'),
+    const dispatch = useAppDispatch()
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<Inputs>()
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        const { confirmPass, password } = data
+        if (confirmPass !== password) {
+            return Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "confirm password doesn't match",
+                showConfirmButton: false,
+                timer: 1500,
+                imageWidth: 300,
+                imageHeight: 400,
+            })
+        }
+        dispatch(SetNewPass({ email: localStorage.getItem('resetEmail'), password: password, confirmPassword: confirmPass }))
+            .then((res) => {
+                if (res.type === 'SetNewPass/fulfilled') {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "password changed",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    setOpenNewPass(false)
+                    setOpenChangedPass(false)
+                }
+            })
+    }
     const [inputType, setInputType] = useState('password')
     const [conFirmPassType, setConFirmPassType] = useState('password')
     return (
@@ -37,7 +69,7 @@ const SetNewPassword = ({ setOpenNewPass, setOpenChangedPass }: ChildPops) => {
             <p className="text-left text-[#575757]">Confirm new Password</p>
             <div className="w-full relative">
                 <input type={conFirmPassType} placeholder="confirm Password" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("confirmPass", { required: true })} />
-                <button className="text-2xl absolute right-2 top-[50%] translate-y-[-50%]">
+                <button type='button' className="text-2xl absolute right-2 top-[50%] translate-y-[-50%]">
                     {conFirmPassType === 'text' ? <FaEye onClick={() => setConFirmPassType('password')} /> : <FaEyeSlash onClick={() => setConFirmPassType('text')} />}
                 </button>
             </div>

@@ -25,7 +25,7 @@ const SignInFoorm = ({ setOpenPopUp, setOpenForgetPass }: ChildPops) => {
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         dispatch(login({ email: data.email, password: data.password }))
             .then(response => {
-                console.log(response)
+                //console.log(response)
                 if (response?.type==='login/fulfilled') {
                     Swal.fire({
                         position: "center",

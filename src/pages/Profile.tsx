@@ -8,7 +8,7 @@ import { Button, Form, Input } from 'antd';
 const Profile = ():React.JSX.Element => {
     const [imgURL, setImgURL] = useState<string>();
     const [image, setImage] = useState<object>();
-    console.log(image)
+    //console.log(image)
     const [tab, setTab] = useState(new URLSearchParams(window.location.search).get('tab') || "Profile");
 
     const handlePageChange = (tab: string) => {

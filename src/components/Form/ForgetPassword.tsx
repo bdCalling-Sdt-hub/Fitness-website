@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useAppDispatch } from "../../Store/hook"
 import { ForgetPass } from "../../States/Authentication/ForgatePasswordSlice"
+import Swal from "sweetalert2"
 
 interface Inputs {
     email: string | null,
@@ -20,6 +21,15 @@ const ForgetPassword = ({ setOpenForgetPass, setOpenVerifyPass }: ChildPops): Re
         dispatch(ForgetPass({ email: data.email }))
             .then(response => {
                 if (response?.payload?.success && data.email) {
+                    Swal.fire({
+                        title: "please check your email",
+                        text: "a verification code has been sent to your email",
+                        icon: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "okey"
+                    })
                     localStorage.setItem('resetEmail', data.email)
                     setOpenForgetPass(false)
                     setOpenVerifyPass(true)

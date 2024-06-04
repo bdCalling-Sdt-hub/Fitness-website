@@ -72,14 +72,16 @@ const Navbar = (): React.JSX.Element => {
     const [openNewPass, setOpenNewPass] = useState(false)
     const [openChangedPass, setOpenChangedPass] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
-    const { user } = useAppSelector(state => state.Profile)
+    const { user }: any = useAppSelector(state => state.Profile)
     console.log(user)
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<Inputs>()
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        //console.log(data)
+    }
     const items = [
         {
             name: "Home",
@@ -107,7 +109,7 @@ const Navbar = (): React.JSX.Element => {
         }
     ]
     const onChange: GetProp<typeof Input.OTP, 'onChange'> = (text) => {
-        console.log('onChange:', text);
+        //console.log('onChange:', text);
     };
     const sharedProps: OTPProps = {
         onChange,
@@ -147,33 +149,40 @@ const Navbar = (): React.JSX.Element => {
                         <button onClick={() => setOpenSearchModal(true)}>
                             <IoSearch size={24} color='#555555' />
                         </button>
-
-                        <div onClick={() => {
-                            toggle(false)
-                            setOpenPopUp(true)
-                        }}
-                            className='
+                        {
+                            user?.email ? <div>
+                                <div className='w-10 h-10 rounded-full cursor-pointer'>
+                                    <img className='h-10 w-10 rounded-full' src={user.profile_image.includes('undefined') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : user.profile_image} alt="" />
+                                </div>
+                            </div> : <>
+                                <div onClick={() => {
+                                    toggle(false)
+                                    setOpenPopUp(true)
+                                }}
+                                    className='
                             border border-primary text-primary 
                             font-light text-[16px] leading-[21px] 
                             cursor-pointer w-[137px] h-10
                             flex items-center justify-center
                         '
-                        >
-                            Login
-                        </div>
-                        <div onClick={() => {
-                            toggle(true)
-                            setOpenPopUp(true)
-                        }}
-                            className=' lg:flex hidden
+                                >
+                                    Login
+                                </div>
+                                <div onClick={() => {
+                                    toggle(true)
+                                    setOpenPopUp(true)
+                                }}
+                                    className=' lg:flex hidden
                             bg-primary text-[#FBFBFB] 
                             font-light text-[16px] leading-[21px] 
                             cursor-pointer w-[137px] h-10
                              items-center justify-center
                         '
-                        >
-                            Sign Up
-                        </div>
+                                >
+                                    Sign Up
+                                </div>
+                            </>
+                        }
                     </div>
                 </div>
             </div>

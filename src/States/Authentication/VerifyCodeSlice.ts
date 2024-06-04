@@ -16,8 +16,13 @@ export const VerifyCode = createAsyncThunk(
     'VerifyCode',
     async (value: IValue, thunkApi) => {
         try {
-            const response = await baseURL.post(`/auth/verify-otp`, { code: value.code, email: value.email });
-            console.log(response)
+            //console.log({ code: value.code, email: value.email })
+            const response = await baseURL.post(`/auth/verify-otp`, { code: value.code, email: value.email }, {
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+            //console.log(response)
             return response?.data.data;
         } catch (error) {
             const axiosError = error as AxiosError;

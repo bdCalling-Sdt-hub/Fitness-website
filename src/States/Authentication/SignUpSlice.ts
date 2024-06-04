@@ -20,7 +20,7 @@ export const signUp = createAsyncThunk(
     async (value: IValue, thunkApi) => {
         try {
             const response = await baseURL.post(`/auth/register`, { name: value.username, email: value.email, phone_number: value.contact, password: value.password });
-            console.log(response)
+            //console.log(response)
             return response?.data.data;
         } catch (error) {
             const axiosError = error as AxiosError;

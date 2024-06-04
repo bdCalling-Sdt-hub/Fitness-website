@@ -11,13 +11,14 @@ const initialState = {
 interface IValue {
     password: string | null,
     confirmPassword: string | null,
+    email: string | null,
 }
 export const SetNewPass = createAsyncThunk(
     'SetNewPass',
     async (value: IValue, thunkApi) => {
         try {
-            const response = await baseURL.post(`/auth/verify-otp`, { password: value.password, confirmPassword: value.confirmPassword });
-            console.log(response)
+            const response = await baseURL.post(`/auth/reset-password`, { email: value.email, newPassword: value.password, confirmPassword: value.confirmPassword });
+            //console.log(response)
             return response?.data.data;
         } catch (error) {
             const axiosError = error as AxiosError;

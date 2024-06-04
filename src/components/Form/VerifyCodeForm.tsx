@@ -11,7 +11,7 @@ const VerifyCodeForm = ({ setOpenVerifyPass, setOpenNewPass }: ChildPops): React
     const [code, setCode] = useState('')
     const dispatch = useAppDispatch()
     const onChange: GetProp<typeof Input.OTP, 'onChange'> = (text) => {
-        // console.log('onChange:', text);
+        // //console.log('onChange:', text);
         setCode(text)
     };
     const sharedProps: OTPProps = {
