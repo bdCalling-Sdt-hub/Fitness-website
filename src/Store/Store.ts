@@ -8,6 +8,7 @@ import ProfileSlice from '../States/Authentication/ProfileSlice';
 import ChangePassSlice from '../States/Authentication/ChangePassSlice';
 import EditProfileSlice from '../States/Authentication/EditProfileSlice';
 import SubscriptionSlice from '../States/Subscription/SubscriptionSlice';
+import ShopSlice from '../States/Shop/ShopSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -22,6 +23,8 @@ export const Store = configureStore({
         EditProfile:EditProfileSlice,
         //subscription
         Subscription:SubscriptionSlice,
+        // shop
+        ShopItems:ShopSlice
     },
 })
 
