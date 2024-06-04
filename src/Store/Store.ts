@@ -6,6 +6,7 @@ import VerifyCodeSlice from '../States/Authentication/VerifyCodeSlice';
 import SetNewPassSlice from '../States/Authentication/SetNewPassSlice';
 import ProfileSlice from '../States/Authentication/ProfileSlice';
 import ChangePassSlice from '../States/Authentication/ChangePassSlice';
+import EditProfileSlice from '../States/Authentication/EditProfileSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -16,7 +17,8 @@ export const Store = configureStore({
         VerifyCode:VerifyCodeSlice,
         SetNewPass:SetNewPassSlice,
         Profile:ProfileSlice,
-        ChangePass:ChangePassSlice
+        ChangePass:ChangePassSlice,
+        EditProfile:EditProfileSlice,
     },
 })
 

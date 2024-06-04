@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
@@ -8,7 +8,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { IoIosSearch } from 'react-icons/io';
 import LoginPopUp from '../../pages/LoginPopUp';
 import { OTPProps } from 'antd/es/input/OTP';
-import {  FaRegUser } from 'react-icons/fa';
+import { FaRegUser } from 'react-icons/fa';
 import { TfiMenu } from 'react-icons/tfi';
 import { useAppSelector } from '../../Store/hook';
 import ForgetPassword from '../../components/Form/ForgetPassword';
@@ -16,6 +16,7 @@ import VerifyCodeForm from '../../components/Form/VerifyCodeForm';
 import SetNewPassword from '../../components/Form/SetNewPassword';
 import { MdOutlineFeedback } from 'react-icons/md';
 import { CiLogout, CiTimer } from 'react-icons/ci';
+import { ServerUrl } from '../../AxiosConfig/Config';
 interface IRoutes {
     name: string;
     path: string
@@ -76,8 +77,9 @@ const Navbar = (): React.JSX.Element => {
     const [showMenu, setShowMenu] = useState(false)
     const { user }: any = useAppSelector(state => state.Profile)
     const [showUserOptions, setShowUserOptions] = useState(false);
-
-
+    
+    const url = `${ServerUrl}/${user.profile_image}`
+    console.log(url);
     const {
         register,
         handleSubmit,
@@ -159,7 +161,7 @@ const Navbar = (): React.JSX.Element => {
                         </button>
                         {
                             user?.email ? <>
-                                <img onClick={() => setShowUserOptions(!showUserOptions)} className='h-10 w-10 rounded-full cursor-pointer' src={user.profile_image.includes('undefined') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : user.profile_image} alt="" />
+                                <img onClick={() => setShowUserOptions(!showUserOptions)} className='h-10 w-10 rounded-full cursor-pointer' src={user.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${user.profile_image}`} alt="" />
                                 {
                                     showUserOptions && <div className='w-[250px]  bg-white fixed top-20 flex flex-col gap-1'>
                                         <Link onClick={() => {

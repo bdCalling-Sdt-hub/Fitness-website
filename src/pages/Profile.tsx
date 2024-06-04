@@ -6,15 +6,22 @@ import { CiEdit } from 'react-icons/ci';
 import { Button, Form, FormProps, Input } from 'antd';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { ChangePass } from '../States/Authentication/ChangePassSlice';
+import { EditProfile } from '../States/Authentication/EditProfileSlice';
 import Swal from 'sweetalert2';
-
+import { ServerUrl } from '../AxiosConfig/Config';
+interface IValue {
+    profile_image: File | undefined,
+    name: string | null,
+    contact: string | null,
+    address: string | null,
+}
 const Profile = (): React.JSX.Element => {
     const [image, setImage] = useState();
     const [form] = Form.useForm()
     const [tab, setTab] = useState(new URLSearchParams(window.location.search).get('tab') || "Profile");
     const dispatch = useAppDispatch()
     const { user }: any = useAppSelector(state => state.Profile)
-    console.log(user)
+    // console.log(user)
     const handlePageChange = (tab: string) => {
         setTab(tab);
         const params = new URLSearchParams(window.location.search);
@@ -56,12 +63,16 @@ const Profile = (): React.JSX.Element => {
     };
     const onEditProfile: FormProps['onFinish'] = (values) => {
         console.log(values)
-        const data = {
+        const data:IValue = {
             profile_image: image,
             name : values.fullName,
             contact:values.mobileNumber,
             address:values.address
         }
+        dispatch(EditProfile(data))
+        .then((res)=>{
+            console.log(res)
+        })
     }
     return (
         <div className='container pb-16'>
@@ -69,11 +80,11 @@ const Profile = (): React.JSX.Element => {
             <Heading title='Profile' style='mb-6' />
 
             <div className='bg-base py-9 px-10 rounded flex items-center gap-6' >
-                <div className='relative w-[124px] h-[124px] mx-auto'>
+                <div className='relative w-[140px] h-[124px] mx-auto'>
                     <input type="file" onChange={handleChange} id='img' style={{ display: "none" }} />
                     <img
-                        style={{ width: 124, height: 124, borderRadius: "100%" }}
-                        src={`${image ? URL.createObjectURL(image) : "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D"}`}
+                        style={{ width: 140, height: 124, borderRadius: "100%" }}
+                        src={`${image ? URL.createObjectURL(image) : user.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${user.profile_image}`}`}
                         alt=""
                     />
                     <label
@@ -149,7 +160,6 @@ const Profile = (): React.JSX.Element => {
                                     placeholder="Enter User Name"
                                 />
                             </Form.Item>
-
                             <Form.Item
                                 name="email"
                                 label={<p className="text-[#919191] text-[16px] leading-5 font-normal">Email</p>}
@@ -164,7 +174,6 @@ const Profile = (): React.JSX.Element => {
                                         color: "#919191",
                                         outline: "none"
                                     }}
-                                    defaultValue={user.email}
                                     className='text-[16px] leading-5'
                                     placeholder={user.email}
                                 />

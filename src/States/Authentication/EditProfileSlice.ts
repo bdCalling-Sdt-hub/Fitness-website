@@ -9,16 +9,19 @@ const initialState = {
     user: {},
 };
 interface IValue {
-    oldPassword: string | null,
-    newPassword: string | null,
+    profile_image: File | undefined,
+    name: string | null,
+    contact: string | null,
+    address: string | null,
 }
-export const ChangePass = createAsyncThunk(
-    'ChangePass',
+export const EditProfile = createAsyncThunk(
+    'EditProfile',
     async (value: IValue, thunkApi) => {
         try {
-            const response = await baseURL.patch(`/auth/change-password`, { oldPassword: value.oldPassword, newPassword: value.newPassword }, {
+            console.log({...value})
+            const response = await baseURL.patch(`/auth/edit-profile`, {...value}, {
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
@@ -30,23 +33,23 @@ export const ChangePass = createAsyncThunk(
         }
     }
 )
-export const ChangePassSlice = createSlice({
-    name: 'ChangePass',
+export const EditProfileSlice = createSlice({
+    name: 'EditProfile',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(ChangePass.pending, (state) => {
+        builder.addCase(EditProfile.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(ChangePass.fulfilled, (state, action) => {
+            builder.addCase(EditProfile.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
                 state.user = action.payload;
             }),
-            builder.addCase(ChangePass.rejected, (state) => {
+            builder.addCase(EditProfile.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
@@ -55,4 +58,21 @@ export const ChangePassSlice = createSlice({
             })
     }
 })
-export default ChangePassSlice.reducer
+export default EditProfileSlice.reducer
+
+
+
+// try {
+//     const response = await baseURL.post(`/auth/change-password`, { oldPassword: value.oldPassword, newPassword: value.newPassword }, {
+//         headers: {
+//             "Content-Type": "application/json",
+//             authorization: `Bearer ${localStorage.getItem('token')}`,
+//         }
+//     });
+//     return response?.data;
+// } catch (error) {
+//     const axiosError = error as AxiosError;
+//     const message = axiosError?.response?.data;
+//     return thunkApi.rejectWithValue(message);
+// }
+// }
