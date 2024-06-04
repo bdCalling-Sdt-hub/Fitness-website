@@ -18,7 +18,6 @@ export const EditProfile = createAsyncThunk(
     'EditProfile',
     async (value: IValue, thunkApi) => {
         try {
-            console.log({...value})
             const response = await baseURL.patch(`/auth/edit-profile`, {...value}, {
                 headers: {
                     "Content-Type": "multipart/form-data",

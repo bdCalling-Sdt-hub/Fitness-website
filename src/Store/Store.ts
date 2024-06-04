@@ -7,6 +7,7 @@ import SetNewPassSlice from '../States/Authentication/SetNewPassSlice';
 import ProfileSlice from '../States/Authentication/ProfileSlice';
 import ChangePassSlice from '../States/Authentication/ChangePassSlice';
 import EditProfileSlice from '../States/Authentication/EditProfileSlice';
+import SubscriptionSlice from '../States/Subscription/SubscriptionSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -19,6 +20,8 @@ export const Store = configureStore({
         Profile:ProfileSlice,
         ChangePass:ChangePassSlice,
         EditProfile:EditProfileSlice,
+        //subscription
+        Subscription:SubscriptionSlice,
     },
 })
 

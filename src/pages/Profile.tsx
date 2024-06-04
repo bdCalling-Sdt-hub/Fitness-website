@@ -62,7 +62,7 @@ const Profile = (): React.JSX.Element => {
             })
     };
     const onEditProfile: FormProps['onFinish'] = (values) => {
-        console.log(values)
+        // console.log(values)
         const data:IValue = {
             profile_image: image,
             name : values.fullName,
@@ -71,7 +71,7 @@ const Profile = (): React.JSX.Element => {
         }
         dispatch(EditProfile(data))
         .then((res)=>{
-            console.log(res)
+            // console.log(res)
         })
     }
     return (
@@ -112,7 +112,7 @@ const Profile = (): React.JSX.Element => {
                     onClick={() => handlePageChange("Profile")}
                     className={`
                         ${tab === "Profile" ? "border-primary border-b-2 font-semibold" : "border-b-2 border-transparent font-normal"}
-                        pb-2 cursor-pointer text-[16px] leading-5  text-[#6D6D6D]
+                        pb-2 cursor-pointer text-[16px] leading-5  text-gray-600
                     `}
                 >
                     Edit Profile
@@ -120,8 +120,8 @@ const Profile = (): React.JSX.Element => {
                 <p
                     onClick={() => handlePageChange("Change Password")}
                     className={`
-                        ${tab === "Change Password" ? "border-primary border-b-2 font-semibold" : "border-b-2 border-transparent font-normal"}
-                        pb-2 cursor-pointer text-base leading-[18px]  text-[#6D6D6D]
+                        ${tab === "Change Password" ? "border-primary border-b-2 font-semibold " : "border-b-2 border-transparent font-normal"}
+                        pb-2 cursor-pointer text-base leading-[18px]   text-gray-600
                     `}
                 >
                     Change Password
