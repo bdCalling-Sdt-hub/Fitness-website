@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
-import { Select } from 'antd';
+import { Pagination, PaginationProps, Select } from 'antd';
 import { BsCart2 } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
@@ -22,14 +22,30 @@ interface IItemProps {
     updatedAt: string,
     id: string,
 }
+interface Meta {
+    page: number,
+    limit: number,
+    total: number,
+    totalPage: number,
+}
 const Shop = (): React.JSX.Element => {
+    const [itemPerPage, setItemPerPage] = useState(10)
+    const [page, setPage] = useState(1)
     const navigate = useNavigate()
     const [category, setCategory] = useState<string[]>([])
     const dispatch = useAppDispatch()
-    const { Products } = useAppSelector(state => state.ShopItems)
+    const { Products, meta } = useAppSelector(state => state.ShopItems)
     useEffect(() => {
-        dispatch(ShopItems())
-    }, [])
+        dispatch(ShopItems({ page: page, limit: itemPerPage }))
+    }, [itemPerPage, page])
+    // console.log(meta)
+    const onChange: PaginationProps['onChange'] = (pageNumber) => {
+        setPage(pageNumber)
+    };
+    const onShowSizeChange = (current: any, size: any) => {
+        setItemPerPage(size);
+
+    }
     return (
         <div className='container pb-20'>
             <Navigation name='Shop' />
@@ -96,11 +112,11 @@ const Shop = (): React.JSX.Element => {
             </div>
 
             <div className='flex flex-col items-start justify-start md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:items-center  gap-6 mt-10'>
-            {
+                {
                     Products?.slice(0, 4)?.map((item: IItemProps) => {
                         return (
                             <div onClick={(): void => {
-                                navigate(`/product-details/${'item?._id'}`)
+                                navigate(`/product-details/${item?._id}`)
                             }}
                                 key={item?._id}
                                 className='relative group  rounded-lg border border-[#EEEEEE] p-5 cursor-pointer w-full'
@@ -111,7 +127,7 @@ const Shop = (): React.JSX.Element => {
                                 <div className='w-full h-[150px] rounded-md overflow-hidden'>
                                     <img
                                         src={`${ServerUrl}${item?.images[0]}`}
-                                        style={{ width: '100%', height: '100%',objectFit:'cover' ,margin: "0 auto" }}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover', margin: "0 auto" }}
                                         alt=""
                                         className='group-hover:scale-105 transition-all duration-75'
                                     />
@@ -130,8 +146,9 @@ const Shop = (): React.JSX.Element => {
                 }
             </div>
 
-
-
+            <div className='text-center mt-8'>
+                <Pagination defaultCurrent={page} total={meta?.total} pageSize={itemPerPage} onShowSizeChange={onShowSizeChange} onChange={onChange} />
+            </div>
         </div>
     )
 }

@@ -22,10 +22,9 @@ const ShopProductList = (): React.JSX.Element => {
     const dispatch = useAppDispatch()
     const { Products } = useAppSelector(state => state.ShopItems)
     useEffect(() => {
-        dispatch(ShopItems())
+        dispatch(ShopItems({ page: 1, limit: 4 }))
     }, [])
     const navigate = useNavigate()
-    console.log(Products)
     return (
         <div className='container'>
             <div className='flex items-center justify-between mb-6'>
@@ -40,7 +39,7 @@ const ShopProductList = (): React.JSX.Element => {
                     Products?.slice(0, 4)?.map((item: IItemProps) => {
                         return (
                             <div onClick={(): void => {
-                                navigate(`/product-details/${'item?._id'}`)
+                                navigate(`/product-details/${item?._id}`)
                             }}
                                 key={item?._id}
                                 className='relative group  rounded-lg border border-[#EEEEEE] p-5 cursor-pointer w-full'
@@ -51,7 +50,7 @@ const ShopProductList = (): React.JSX.Element => {
                                 <div className='w-full h-[150px] rounded-md overflow-hidden'>
                                     <img
                                         src={`${ServerUrl}${item?.images[0]}`}
-                                        style={{ width: '100%', height: '100%',objectFit:'cover' ,margin: "0 auto" }}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover', margin: "0 auto" }}
                                         alt=""
                                         className='group-hover:scale-105 transition-all duration-75'
                                     />

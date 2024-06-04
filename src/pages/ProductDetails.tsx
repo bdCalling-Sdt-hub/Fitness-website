@@ -6,7 +6,7 @@ import photo from "../assets/details.png";
 import photo1 from "../assets/details1.jpg";
 import { HiOutlinePlusSm, HiOutlineMinusSm } from "react-icons/hi";
 import Button from '../components/common/Button';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import RelatedProduct from '../components/RelatedProduct';
 import { Modal } from 'antd';
 import Payment from '../components/Payment';
@@ -17,6 +17,8 @@ interface IItemProps {
 
 const ProductDetails = (): React.JSX.Element => {
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
+    const {id} = useParams()
+    console.log(id)
     const [quantity, setQuantity] = useState(0)
 
     const data: IItemProps[] = [
