@@ -12,17 +12,17 @@ interface IValue {
     oldPassword: string | null,
     newPassword: string | null,
 }
-const ChangePass = createAsyncThunk(
+export const ChangePass = createAsyncThunk(
     'ChangePass',
     async (value: IValue, thunkApi) => {
         try {
-            const response = await baseURL.post(`/auth/change-password`, { oldPassword: value.oldPassword, newPassword: value.newPassword }, {
+            const response = await baseURL.patch(`/auth/change-password`, { oldPassword: value.oldPassword, newPassword: value.newPassword }, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            return response?.data;
+            return response?.data.data;
         } catch (error) {
             const axiosError = error as AxiosError;
             const message = axiosError?.response?.data;
@@ -34,7 +34,7 @@ export const ChangePassSlice = createSlice({
     name: 'ChangePass',
     initialState,
     reducers: {},
-    extraReducers(builder) {
+    extraReducers: (builder) => {
         builder.addCase(ChangePass.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
@@ -53,5 +53,23 @@ export const ChangePassSlice = createSlice({
                 state.isSuccess = false;
                 state.user = {}
             })
-    },
+    }
 })
+export default ChangePassSlice.reducer
+
+
+
+// try {
+//     const response = await baseURL.post(`/auth/change-password`, { oldPassword: value.oldPassword, newPassword: value.newPassword }, {
+//         headers: {
+//             "Content-Type": "application/json",
+//             authorization: `Bearer ${localStorage.getItem('token')}`,
+//         }
+//     });
+//     return response?.data;
+// } catch (error) {
+//     const axiosError = error as AxiosError;
+//     const message = axiosError?.response?.data;
+//     return thunkApi.rejectWithValue(message);
+// }
+// }
