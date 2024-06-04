@@ -75,7 +75,6 @@ const Navbar = (): React.JSX.Element => {
     const [openChangedPass, setOpenChangedPass] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
     const { user }: any = useAppSelector(state => state.Profile)
-    console.log(user)
     const [showUserOptions, setShowUserOptions] = useState(false);
 
 
@@ -162,10 +161,10 @@ const Navbar = (): React.JSX.Element => {
                             user?.email ? <>
                                 <img onClick={() => setShowUserOptions(!showUserOptions)} className='h-10 w-10 rounded-full cursor-pointer' src={user.profile_image.includes('undefined') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : user.profile_image} alt="" />
                                 {
-                                    showUserOptions && <div className='w-[250px]  bg-white fixed top-24 flex flex-col gap-1'>
+                                    showUserOptions && <div className='w-[250px]  bg-white fixed top-20 flex flex-col gap-1'>
                                         <Link onClick={() => {
                                             setShowUserOptions(false)
-                                        }} className='flex justify-start items-center gap-2 text-gray-500 hover:bg-[#F8F1E6] py-1 px-4 transition-all w-full' to={`#`}>
+                                        }} className='flex justify-start items-center gap-2 text-gray-500 hover:bg-[#F8F1E6] py-1 px-4 transition-all w-full' to={`/profile`}>
                                             <FaRegUser className='text-xl' />
                                             My Profile
                                         </Link>
