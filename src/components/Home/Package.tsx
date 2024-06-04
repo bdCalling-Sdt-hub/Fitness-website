@@ -7,27 +7,37 @@ import { useAppDispatch, useAppSelector } from '../../Store/hook';
 import { Subscription } from '../../States/Subscription/SubscriptionSlice';
 
 interface Plans {
-
-}
+    _id: string,
+    title: 'Gold Subscription',
+    items: [{ title: string, _id: string, id: string, }],
+    price: number,
+    status: true,
+    duration: number,
+    plan_type: string,
+    createdAt: string,
+    updatedAt: string,
+    __v: number,
+    id: string,
+} 
 const Package = (): React.JSX.Element => {
     const dispatch = useAppDispatch()
     const [open, setOpen] = useState(false)
     const [openPayment, setOpenPayment] = useState(false)
-    const {plan}:any= useAppSelector(state => state.Subscription);
-    const [ModalData,setModalData]=useState({})
+    const { plan } = useAppSelector(state => state.Subscription);
+    const [ModalData, setModalData] = useState<Plans>()
     useEffect(() => {
         dispatch(Subscription())
 
     }, [])
     console.log(ModalData);
-    
+
     const body = (
         <div className='p-10'>
             <h1 className='font-light lg:text-2xl text-lg leading-8 text-center text-secondary'>{ModalData?.title}</h1>
             <p className='text-[#B47000] text-center my-8 lg:text-[36px] text-xl leading-[49px] '>${ModalData?.price}<sub className='text-[#B47000] text-[18px] leading-6 font-semibold ml-2'>{ModalData?.duration} month</sub></p>
             <div className='grid grid-cols-1 gap-6 '>
                 {
-                   ModalData?.items?.map((_item:any) => {
+                    ModalData?.items?.map((_item: any) => {
                         return (
                             <div key={_item?._id} className='flex items-center text-secondary text-[16px] leading-5 font-normal gap-[14px]'>
                                 <h1></h1>
@@ -66,7 +76,7 @@ const Package = (): React.JSX.Element => {
 
             <div className='mt-10 lg:mt-16 xl:mt-24 md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 flex flex-col justify-start items-start md:items-center'>
                 {
-                    plan?.map((item:any) => {
+                    plan?.map((item: Plans) => {
                         return (
                             <div key={item?._id} className='bg-base rounded p-6 w-full'>
                                 <p className='text-secondary text-center font-normal lg:text-2xl text-lg leading-8'>{item?.title}</p>
@@ -74,7 +84,8 @@ const Package = (): React.JSX.Element => {
                                 <button
                                     onClick={() => {
                                         setModalData(item)
-                                        setOpen(true)}
+                                        setOpen(true)
+                                    }
                                     }
                                     style={{
                                         width: 174,
