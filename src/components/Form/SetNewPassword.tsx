@@ -61,7 +61,7 @@ const SetNewPassword = ({ setOpenNewPass, setOpenChangedPass }: ChildPops) => {/
             <p className="text-left text-[#575757]">New Password</p>
             <div className="w-full relative">
                 <input type={inputType} placeholder="Password" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("password", { required: true })} />
-                <button className="text-2xl absolute right-2 top-[50%] translate-y-[-50%]">
+                <button type="button" className="text-2xl absolute right-2 top-[50%] translate-y-[-50%]">
                     {inputType === 'text' ? <FaEye onClick={() => setInputType('password')} /> : <FaEyeSlash onClick={() => setInputType('text')} />}
                 </button>
             </div>
@@ -69,7 +69,7 @@ const SetNewPassword = ({ setOpenNewPass, setOpenChangedPass }: ChildPops) => {/
             <p className="text-left text-[#575757]">Confirm new Password</p>
             <div className="w-full relative">
                 <input type={conFirmPassType} placeholder="confirm Password" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("confirmPass", { required: true })} />
-                <button type='button' className="text-2xl absolute right-2 top-[50%] translate-y-[-50%]">
+                <button type="button" className="text-2xl absolute right-2 top-[50%] translate-y-[-50%]">
                     {conFirmPassType === 'text' ? <FaEye onClick={() => setConFirmPassType('password')} /> : <FaEyeSlash onClick={() => setConFirmPassType('text')} />}
                 </button>
             </div>

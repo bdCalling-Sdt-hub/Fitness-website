@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, {  useState } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
@@ -8,13 +8,13 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { IoIosSearch } from 'react-icons/io';
 import LoginPopUp from '../../pages/LoginPopUp';
 import { OTPProps } from 'antd/es/input/OTP';
-import { FaEye, FaEyeSlash, FaRegUser } from 'react-icons/fa';
+import {  FaRegUser } from 'react-icons/fa';
 import { TfiMenu } from 'react-icons/tfi';
 import { useAppSelector } from '../../Store/hook';
 import ForgetPassword from '../../components/Form/ForgetPassword';
 import VerifyCodeForm from '../../components/Form/VerifyCodeForm';
 import SetNewPassword from '../../components/Form/SetNewPassword';
-import { MdOutlineFeedback, MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { MdOutlineFeedback } from 'react-icons/md';
 import { CiLogout, CiTimer } from 'react-icons/ci';
 interface IRoutes {
     name: string;
@@ -119,6 +119,10 @@ const Navbar = (): React.JSX.Element => {
     const sharedProps: OTPProps = {
         onChange,
     };
+    const handleLogOut = () => {
+        localStorage.removeItem('token')
+        location.reload();
+    }
     return (
         <div className='bg-base fixed top-0 h-[80px] z-50 flex items-center justify-center  w-full'>
             <div className='container flex items-center justify-between'>
@@ -179,6 +183,7 @@ const Navbar = (): React.JSX.Element => {
                                         </Link>
                                         <button onClick={() => {
                                             setShowUserOptions(false)
+                                            handleLogOut()
                                         }} className='flex justify-start items-center  gap-2 text-gray-500 hover:bg-[#F8F1E6] py-1 px-4 transition-all w-full'>
                                             <CiLogout className='text-xl' />
                                             Log Out
