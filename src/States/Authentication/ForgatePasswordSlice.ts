@@ -10,18 +10,13 @@ const initialState = {
 };
 interface IValue {
     email: string | null,
-    password:string | null,
-    username: string | null,
-    contact: string | null,
 }
-
-export const signUp = createAsyncThunk(
-    'signUp',
+export const ForgetPass = createAsyncThunk(
+    'ForgetPass',
     async (value: IValue, thunkApi) => {
         try {
-            const response = await baseURL.post(`/auth/register`, { name: value.username, email: value.email, phone_number: value.contact, password: value.password });
-            console.log(response)
-            return response?.data.data;
+            const response = await baseURL.post(`/auth/forgot-password`, { email: value.email });
+            return response?.data;
         } catch (error) {
             const axiosError = error as AxiosError;
             const message = axiosError?.response?.data;
@@ -29,23 +24,23 @@ export const signUp = createAsyncThunk(
         }
     }
 )
-export const signSlice = createSlice({
-    name: 'signup',
+export const ForgetPassSlice = createSlice({
+    name: 'ForgetPass',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(signUp.pending, (state) => {
+        builder.addCase(ForgetPass.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(signUp.fulfilled, (state, action) => {
+            builder.addCase(ForgetPass.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
                 state.user = action.payload;
             }),
-            builder.addCase(signUp.rejected, (state) => {
+            builder.addCase(ForgetPass.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
@@ -54,4 +49,4 @@ export const signSlice = createSlice({
             })
     }
 })
-export default signSlice.reducer
+export default ForgetPassSlice.reducer

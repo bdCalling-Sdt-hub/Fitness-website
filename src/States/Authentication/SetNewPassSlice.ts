@@ -9,17 +9,14 @@ const initialState = {
     user: {},
 };
 interface IValue {
-    email: string | null,
-    password:string | null,
-    username: string | null,
-    contact: string | null,
+    password: string | null,
+    confirmPassword: string | null,
 }
-
-export const signUp = createAsyncThunk(
-    'signUp',
+export const SetNewPass = createAsyncThunk(
+    'SetNewPass',
     async (value: IValue, thunkApi) => {
         try {
-            const response = await baseURL.post(`/auth/register`, { name: value.username, email: value.email, phone_number: value.contact, password: value.password });
+            const response = await baseURL.post(`/auth/verify-otp`, { password: value.password, confirmPassword: value.confirmPassword });
             console.log(response)
             return response?.data.data;
         } catch (error) {
@@ -29,23 +26,23 @@ export const signUp = createAsyncThunk(
         }
     }
 )
-export const signSlice = createSlice({
-    name: 'signup',
+export const SetNewPassSlice = createSlice({
+    name: 'SetNewPass',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(signUp.pending, (state) => {
+        builder.addCase(SetNewPass.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(signUp.fulfilled, (state, action) => {
+            builder.addCase(SetNewPass.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
                 state.user = action.payload;
             }),
-            builder.addCase(signUp.rejected, (state) => {
+            builder.addCase(SetNewPass.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
@@ -54,4 +51,4 @@ export const signSlice = createSlice({
             })
     }
 })
-export default signSlice.reducer
+export default SetNewPassSlice.reducer

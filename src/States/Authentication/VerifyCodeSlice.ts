@@ -9,17 +9,14 @@ const initialState = {
     user: {},
 };
 interface IValue {
+    code: string | null,
     email: string | null,
-    password:string | null,
-    username: string | null,
-    contact: string | null,
 }
-
-export const signUp = createAsyncThunk(
-    'signUp',
+export const VerifyCode = createAsyncThunk(
+    'VerifyCode',
     async (value: IValue, thunkApi) => {
         try {
-            const response = await baseURL.post(`/auth/register`, { name: value.username, email: value.email, phone_number: value.contact, password: value.password });
+            const response = await baseURL.post(`/auth/verify-otp`, { code: value.code, email: value.email });
             console.log(response)
             return response?.data.data;
         } catch (error) {
@@ -29,23 +26,23 @@ export const signUp = createAsyncThunk(
         }
     }
 )
-export const signSlice = createSlice({
-    name: 'signup',
+export const VerifyCodeSlice = createSlice({
+    name: 'VerifyCode',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(signUp.pending, (state) => {
+        builder.addCase(VerifyCode.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(signUp.fulfilled, (state, action) => {
+            builder.addCase(VerifyCode.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
                 state.user = action.payload;
             }),
-            builder.addCase(signUp.rejected, (state) => {
+            builder.addCase(VerifyCode.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
@@ -54,4 +51,4 @@ export const signSlice = createSlice({
             })
     }
 })
-export default signSlice.reducer
+export default VerifyCodeSlice.reducer
