@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
@@ -10,13 +10,14 @@ import LoginPopUp from '../../pages/LoginPopUp';
 import { OTPProps } from 'antd/es/input/OTP';
 import { FaRegUser } from 'react-icons/fa';
 import { TfiMenu } from 'react-icons/tfi';
-import { useAppSelector } from '../../Store/hook';
+import { useAppDispatch, useAppSelector } from '../../Store/hook';
 import ForgetPassword from '../../components/Form/ForgetPassword';
 import VerifyCodeForm from '../../components/Form/VerifyCodeForm';
 import SetNewPassword from '../../components/Form/SetNewPassword';
 import { MdOutlineFeedback } from 'react-icons/md';
 import { CiLogout, CiTimer } from 'react-icons/ci';
 import { ServerUrl } from '../../AxiosConfig/Config';
+import { ShopItems } from '../../States/Shop/ShopSlice';
 interface IRoutes {
     name: string;
     path: string
@@ -77,9 +78,12 @@ const Navbar = (): React.JSX.Element => {
     const [showMenu, setShowMenu] = useState(false)
     const { user }: any = useAppSelector(state => state.Profile)
     const [showUserOptions, setShowUserOptions] = useState(false);
-    
-    const url = `${ServerUrl}/${user.profile_image}`
-    console.log(url);
+    const [searchValue, setSearchValue] = useState<string>('')
+    const dispatch = useAppDispatch()
+    const { Products, meta } = useAppSelector(state => state.ShopItems)
+    useEffect(() => {
+        dispatch(ShopItems({ page: 1, limit: 5, sort: '', searchTerm: searchValue }))
+    }, [searchValue])
     const {
         register,
         handleSubmit,
@@ -88,6 +92,7 @@ const Navbar = (): React.JSX.Element => {
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         //console.log(data)
     }
+
     const items = [
         {
             name: "Home",
@@ -123,6 +128,10 @@ const Navbar = (): React.JSX.Element => {
     const handleLogOut = () => {
         localStorage.removeItem('token')
         location.reload();
+    }
+
+    const handleChange = (e:any) => {
+        setSearchValue(e.target.value)
     }
     return (
         <div className='bg-base fixed top-0 h-[80px] z-50 flex items-center justify-center  w-full'>
@@ -308,19 +317,17 @@ const Navbar = (): React.JSX.Element => {
                 footer={false}
             >
                 <div className='p-5 relative pb-10 rounded-lg overflow-hidden'>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className='w-full mt-6 relative'>
-                            <input placeholder="search" className='w-full p-3 border outline-none' {...register("search")} />
-                            <button className='absolute right-5 top-[50%] translate-y-[-50%]'>
-                                <IoIosSearch />
-                            </button>
-                        </div>
-                    </form>
-                    <div className='flex flex-col gap-2 items-start justify-start py-10'>
+                    <div className='w-full mt-6 relative'>
+                        <input onChange={handleChange} placeholder="search" className='w-full p-3 border outline-none' />
+                        <button className='absolute right-5 top-[50%] translate-y-[-50%]'>
+                            <IoIosSearch />
+                        </button>
+                    </div>
+                    <div className='flex flex-col gap-2 items-start justify-start py-10  h-[530px] overflow-y-auto'>
                         {
-                            dataSource?.map(item => <div className='flex justify-start items-center gap-4 flex-wrap w-full'>
+                            Products?.map(item => <div className='flex justify-start items-center gap-4 flex-wrap w-full'>
                                 <div className='w-20 h-20 rounded-xl overflow-hidden'>
-                                    <img className='h-full w-full object-cover' src={item?.img} alt="" />
+                                    <img className='h-full w-full object-cover' src={`${ServerUrl}/${item?.images[0]}`} alt="" />
                                 </div>
                                 <div>
                                     <p className='text-[16px] lg:text-lg text-[#555555]'>The Dumbbell</p>
@@ -329,7 +336,7 @@ const Navbar = (): React.JSX.Element => {
                             </div>)
                         }
                     </div>
-                    <button className='text-[#B47000] w-full py-3 bg-[#F8F1E6] absolute bottom-0 left-0 text-lg'>See all results</button>
+                    <Link onClick={() => setOpenSearchModal(false)} to={`/shop?search=${searchValue}`} className='text-[#B47000] w-full py-3 bg-[#F8F1E6] absolute text-center bottom-0 left-0 text-lg'>See all results</Link>
                 </div>
             </Modal>
         </div>
