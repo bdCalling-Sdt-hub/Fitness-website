@@ -22,7 +22,7 @@ const ShopProductList = (): React.JSX.Element => {
     const dispatch = useAppDispatch()
     const { Products } = useAppSelector(state => state.ShopItems)
     useEffect(() => {
-        dispatch(ShopItems({ page: 1, limit: 4 }))
+        dispatch(ShopItems({ page: 1, limit: 4 ,sort:''}))
     }, [])
     const navigate = useNavigate()
     return (
@@ -69,9 +69,6 @@ const ShopProductList = (): React.JSX.Element => {
                 }
             </div>
         </div>
-    )
-    return (
-        <div>ShopProductList</div>
     )
 }
 

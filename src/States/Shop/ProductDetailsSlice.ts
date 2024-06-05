@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import baseURL from "../../AxiosConfig/Config";
 import { AxiosError } from "axios";
+
 interface initialState {
     error: boolean;
     success: boolean;
     loading: boolean;
     isSuccess: boolean;
-    Products: {
+    Product: {
         _id: string,
         productName: string,
         gender: string,
@@ -17,32 +18,24 @@ interface initialState {
         createdAt: string,
         updatedAt: string,
         id: string,
-    }[],
-    meta: {
-        page: number;
-        limit: number;
-        total: number;
-        totalPage: number;
-    } | null
+    } | null | undefined
+
 }
 const initialState: initialState = {
     error: false,
     success: false,
     loading: false,
     isSuccess: false,
-    Products: [],
-    meta: null
+    Product: null,
 };
 interface Permitter {
-    page: number | null | undefined,
-    limit: number | null | undefined,
-    sort: string | null | undefined
+    id: string
 }
-export const ShopItems = createAsyncThunk(
-    'ShopItems',
+export const SingleProduct = createAsyncThunk(
+    'SingleProduct',
     async (value: Permitter, thunkApi) => {
         try {
-            const response = await baseURL.get(`/product/products?page=${value?.page}&limit=${value?.limit}${value.sort && `&sort=${value.sort}`}`, {
+            const response = await baseURL.get(`/product/${value?.id}`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -56,31 +49,29 @@ export const ShopItems = createAsyncThunk(
         }
     }
 )
-export const ShopItemsSlice = createSlice({
-    name: 'ShopItems',
+export const SingleProductSlice = createSlice({
+    name: 'SingleProduct',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(ShopItems.pending, (state) => {
+        builder.addCase(SingleProduct.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(ShopItems.fulfilled, (state, action) => {
+            builder.addCase(SingleProduct.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
-                state.Products = action.payload.data;
-                state.meta = action.payload.meta;
+                state.Product = action.payload;
             }),
-            builder.addCase(ShopItems.rejected, (state) => {
+            builder.addCase(SingleProduct.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
                 state.isSuccess = false;
-                state.Products = []
-                state.meta = null
+                state.Product = null
             })
     }
 })
-export default ShopItemsSlice.reducer
+export default SingleProductSlice.reducer

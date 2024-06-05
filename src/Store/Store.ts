@@ -9,22 +9,24 @@ import ChangePassSlice from '../States/Authentication/ChangePassSlice';
 import EditProfileSlice from '../States/Authentication/EditProfileSlice';
 import SubscriptionSlice from '../States/Subscription/SubscriptionSlice';
 import ShopSlice from '../States/Shop/ShopSlice';
+import ProductDetailsSlice from '../States/Shop/ProductDetailsSlice';
 
 export const Store = configureStore({
     reducer: {
         //authentication 
         login: loginSlice,
-        signup:SignUpSlice,
-        ForgtePass : ForgatePasswordSlice,
-        VerifyCode:VerifyCodeSlice,
-        SetNewPass:SetNewPassSlice,
-        Profile:ProfileSlice,
-        ChangePass:ChangePassSlice,
-        EditProfile:EditProfileSlice,
+        signup: SignUpSlice,
+        ForgtePass: ForgatePasswordSlice,
+        VerifyCode: VerifyCodeSlice,
+        SetNewPass: SetNewPassSlice,
+        Profile: ProfileSlice,
+        ChangePass: ChangePassSlice,
+        EditProfile: EditProfileSlice,
         //subscription
-        Subscription:SubscriptionSlice,
+        Subscription: SubscriptionSlice,
         // shop
-        ShopItems:ShopSlice
+        ShopItems: ShopSlice,
+        SingleProduct: ProductDetailsSlice,
     },
 })
 

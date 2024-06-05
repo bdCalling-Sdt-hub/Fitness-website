@@ -4,47 +4,28 @@ import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
 import { Pagination, PaginationProps, Select } from 'antd';
 import { BsCart2 } from 'react-icons/bs';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { ShopItems } from '../States/Shop/ShopSlice';
 import { ServerUrl } from '../AxiosConfig/Config';
 const { Option } = Select;
-
-interface IItemProps {
-    _id: string,
-    productName: string,
-    gender: string,
-    date: string,
-    price: string,
-    images: [string],
-    description: string,
-    createdAt: string,
-    updatedAt: string,
-    id: string,
-}
-interface Meta {
-    page: number,
-    limit: number,
-    total: number,
-    totalPage: number,
-}
 const Shop = (): React.JSX.Element => {
     const [itemPerPage, setItemPerPage] = useState(10)
     const [page, setPage] = useState(1)
     const navigate = useNavigate()
-    const [category, setCategory] = useState<string[]>([])
+    const [sortOrder, setSortOrder] = useState('')
+    // const [category, setCategory] = useState<string[]>([])
     const dispatch = useAppDispatch()
     const { Products, meta } = useAppSelector(state => state.ShopItems)
     useEffect(() => {
-        dispatch(ShopItems({ page: page, limit: itemPerPage }))
-    }, [itemPerPage, page])
+        dispatch(ShopItems({ page: page, limit: itemPerPage, sort: sortOrder }))
+    }, [itemPerPage, page, sortOrder])
     // console.log(meta)
     const onChange: PaginationProps['onChange'] = (pageNumber) => {
         setPage(pageNumber)
     };
     const onShowSizeChange = (current: any, size: any) => {
         setItemPerPage(size);
-
     }
     return (
         <div className='container pb-20'>
@@ -52,8 +33,10 @@ const Shop = (): React.JSX.Element => {
             <MetaTag title='Shop' />
             <div className='flex justify-between items-center gap-2 flex-wrap'>
                 <Heading title='Shop' />
-                <div className='max-w-[500px] min-w-[280px] gap-[1%] flex justify-start items-center '>
-                    <Select
+                <div className='max-w-[500px] min-w-[380px] gap-[1%] flex justify-end items-center '>
+                    <Select onChange={(e) => {
+                        setSortOrder(e)
+                    }}
                         style={{
                             width: "49.5%",
                             height: 48,
@@ -64,11 +47,12 @@ const Shop = (): React.JSX.Element => {
                         className="poppins-regular text-[#6A6A6A] text-[14px] leading-5"
                         defaultValue={"Sort By"}
                     >
-                        <Option value="low_to_high">Low to High</Option>
-                        <Option value="high_to_low">High to Low</Option>
-                        <Option value="avarage">Avarage</Option>
+                        <Option value="productName">name Low to High</Option>
+                        <Option value="-productName">name High to Low</Option>
+                        <Option value="price">price Low to High</Option>
+                        <Option value="-price">price  High to Low</Option>
                     </Select>
-                    <Select
+                    {/* <Select
                         style={{
                             width: "49.5%",
                             height: 48,
@@ -107,13 +91,13 @@ const Shop = (): React.JSX.Element => {
                             </label>
                         </Option>
 
-                    </Select>
+                    </Select> */}
                 </div>
             </div>
 
             <div className='flex flex-col items-start justify-start md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:items-center  gap-6 mt-10'>
                 {
-                    Products?.slice(0, 4)?.map((item: IItemProps) => {
+                    Products?.slice(0, 4)?.map((item) => {
                         return (
                             <div onClick={(): void => {
                                 navigate(`/product-details/${item?._id}`)
