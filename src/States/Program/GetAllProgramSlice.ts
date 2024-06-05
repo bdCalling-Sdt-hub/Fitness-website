@@ -31,12 +31,16 @@ const initialState: initialState = {
     meta: null
 
 };
-
+interface Permitter {
+    page: number | null | undefined,
+    limit: number | null | undefined,
+    title: string | null | undefined
+}
 export const GetAllProgram = createAsyncThunk(
     'GetAllProgram',
-    async (value, thunkApi) => {
+    async (value:Permitter, thunkApi) => {
         try {
-            const response = await baseURL.get(`/program/all`, {
+            const response = await baseURL.get(`/program/all?page=${value?.page}&limit=${value?.limit}${value.title && `&title=${value.title}`}`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
