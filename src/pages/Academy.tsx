@@ -13,13 +13,6 @@ import { IoPlaySharp } from "react-icons/io5";
 import { GrPauseFill } from "react-icons/gr";
 import Chart from '../Academy/Chart';
 import StatusLabel from '../Academy/StatusLabel';
-import {
-    Accordion,
-    AccordionItem,
-    AccordionItemHeading,
-    AccordionItemButton,
-    AccordionItemPanel,
-} from 'react-accessible-accordion';
 import { IoIosArrowDown } from 'react-icons/io';
 interface ProgramData {
     _id: string,
@@ -83,15 +76,25 @@ const data: ProgramData[] = [
     },
 ]
 import { FaCheckCircle } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import { MdKeyboardArrowRight } from 'react-icons/md';
+import { Link, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../Store/hook';
+import { SingleProgram } from '../States/Program/SingleProgramSlice';
+import { ServerUrl } from '../AxiosConfig/Config';
 type ContentRef = HTMLDivElement | null;
 const Academy = (): React.JSX.Element => {
     const [openCalender, setOpenCalender] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<string | null>("");
     const [keyword, setKeyword] = useState<string | undefined>("");
     const [playing, setPlaying] = useState(false);
-
+    const { SingleProgramData } = useAppSelector(state => state.SingleProgram)
+    const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
+    console.log(SingleProgramData)
+    // console.log(CurrentClass)
+    useEffect(() => {
+        setCurrentClass(SingleProgramData?.series[0]?.classes[0])
+    }, [SingleProgramData])
+    const { id } = useParams()
+    const dispatch = useAppDispatch()
     const onChange = (value: Dayjs) => {
         setSelectedDate(dayjs(value).format('YYYY-MM-DD'))
     };
@@ -118,8 +121,9 @@ const Academy = (): React.JSX.Element => {
             }
         });
     }, [openIndex]);
-
-    //accordion 
+    useEffect(() => {
+        dispatch(SingleProgram({ id }))
+    }, [id])
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
@@ -152,11 +156,12 @@ const Academy = (): React.JSX.Element => {
                             height='100%'
                             controls
                             playing={playing}
-                            url='https://res.cloudinary.com/ddqovbzxy/video/upload/v1716027602/mzimld8b9vgqhargfrmt.mp4'
-
+                            onPlay={() => setPlaying(true)}
+                            onPause={() => setPlaying(false)}
+                            url={`${ServerUrl}/${CurrentClass?.video}`}
                         />
                         <div className='play-pause-button' onClick={() => setPlaying(!playing)} >
-                            <div className='w-20 h-20  rounded-full bg-primary bg-opacity-50 flex items-center justify-center'>
+                            <div className={`w-20 h-20 ${playing ? 'hover:flex hidden' : 'flex'} rounded-full bg-primary bg-opacity-50  items-center justify-center`}>
                                 {
                                     playing
                                         ?
@@ -170,29 +175,12 @@ const Academy = (): React.JSX.Element => {
 
                     {/* video description */}
                     <div className='flex items-center gap-4 my-4'>
-                        <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>Topic : Yoga</p>
-                        <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>03 Sep 2024</p>
+                        <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>Topic : {CurrentClass?.topic}</p>
+                        <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>{CurrentClass?.date.split('T')[0]}</p>
                     </div>
-                    <p className='text-[#242424] font-semibold text-[24px] leading-[18px] mb-6'>45-min advance vinyasa yoga</p>
-
-
+                    <p className='text-[#242424] font-semibold text-[24px] leading-[18px] mb-6'>{CurrentClass?.title}</p>
                     <p className='text-secondary font-normal text-[14px] leading-7'>
-                        dignissim, Vestibulum nec Nunc Nullam amet, quis quis convallis.
-                        dui placerat. vitae eget dignissim, Praesent est. sed sit sit vitae tincidunt Nunc nec
-                        Vestibulum ultrices Sed ac lacus vel malesuada Ut nulla, varius lacus sapien luctus maximus
-                        vitae nec dolor ex. efficitur. Nullam amet, elementum amet, eget amet, eu orci sodales. sodales.
-                        odio vitae at Nam orci leo. nec malesuada Lorem Nunc ac placerat Lorem Ut in Quisque amet, Nam non.
-                        est. venenatis lacus varius sapien orci nulla, tincidunt
-
-                        <br />
-                        <br />
-
-                        dignissim, Vestibulum nec Nunc Nullam amet, quis quis convallis.
-                        dui placerat. vitae eget dignissim, Praesent est. sed sit sit vitae tincidunt Nunc nec
-                        Vestibulum ultrices Sed ac lacus vel malesuada Ut nulla, varius lacus sapien luctus maximus
-                        vitae nec dolor ex. efficitur. Nullam amet, elementum amet, eget amet, eu orci sodales. sodales.
-                        odio vitae at Nam orci leo. nec malesuada Lorem Nunc ac placerat Lorem Ut in Quisque amet, Nam non.
-                        est. venenatis lacus varius sapien orci nulla, tincidunt
+                        {CurrentClass?.description}
                     </p>
                 </div>
 
@@ -207,46 +195,44 @@ const Academy = (): React.JSX.Element => {
 
                     <div className='w-full  md:overflow-y-scroll md:max-h-[700px] video-collection'>
                         <div className=' md:flex flex-col gap-3'>
-
                             {
-                                [...Array(10)].map((_, index) => (
-                                    <div key={index} className='cursor-pointer p-3 bg-[#F2F2F2]'>
-                                        <div onClick={() => toggleAccordion(index)} className=' relative'>
-                                            <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Series No {index + 1} : advance vinyasa yoga</p>
-                                            <div className='flex justify-start items-center gap-3 mt-3'>
-                                                <p className='text-[#919191] text-xs'>Total video : 04</p> <p className='text-[#919191] text-xs'>3 h 40 m</p>
-                                            </div>
-                                            <IoIosArrowDown className='text-2xl absolute right-1 top-1' />
+                                SingleProgramData?.series?.map((item,index) => <div key={index} className='cursor-pointer p-3 bg-[#F2F2F2]'>
+                                    <div onClick={() => toggleAccordion(index)} className=' relative'>
+                                        <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Series No {index + 1} : {item?.title}</p>
+                                        <div className='flex justify-start items-center gap-3 mt-3'>
+                                            <p className='text-[#919191] text-xs'>Total video : {item?.classes?.length}</p> 
+                                            {/* <p className='text-[#919191] text-xs'>3 h 40 m</p> */}
                                         </div>
-                                        <div
-                                            ref={(el) => (contentRefs.current[index] = el)}
-                                            className='accordion-content overflow-hidden transition-max-height duration-300 ease-in-out'
-                                            style={{
-                                                maxHeight: openIndex === index ? `${contentRefs.current[index]?.scrollHeight}px` : '0px'
-                                            }}
-                                        >
-                                            {
-                                                [...Array(5)].map((item: unknown, index) => {
-                                                    return (
-                                                        <div key={index} className='flex justify-start items-start gap-3 mt-6'>
-                                                            <div>
-                                                                <FaCheckCircle className='text-green-500 text-lg' />
-                                                            </div>
-                                                            <div>
-                                                                <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Class No {index + 1} : advance vinyasa yoga</p>
-                                                                <div className='flex justify-start items-center gap-3 mt-2'>
-                                                                    <p className='text-[#919191] text-sm'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quam earum consequuntur,</p>
-                                                                </div>
+                                        <IoIosArrowDown className='text-2xl absolute right-1 top-1' />
+                                    </div>
+                                    <div
+                                        ref={(el) => (contentRefs.current[index] = el)}
+                                        className='accordion-content overflow-hidden transition-max-height duration-300 ease-in-out'
+                                        style={{
+                                            maxHeight: openIndex === index ? `${contentRefs.current[index]?.scrollHeight}px` : '0px'
+                                        }}
+                                    >
+                                        {
+                                           item?.classes?.map((item, index) => {
+                                                return (
+                                                    <div onClick={()=>setCurrentClass(item)} key={index} className='flex justify-start items-start gap-3 mt-6'>
+                                                        <div>
+                                                            <FaCheckCircle className='text-green-500 text-lg' />
+                                                        </div>
+                                                        <div>
+                                                            <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Class No {index + 1} :{item?.title}</p>
+                                                            <div className='flex justify-start items-center gap-3 mt-2'>
+                                                                <p className='text-[#919191] text-sm'>{item?.description.slice(0,150)}..</p>
                                                             </div>
                                                         </div>
-                                                    )
-                                                }
-                                                )}
-                                        </div>
-
-
+                                                    </div>
+                                                )
+                                            }
+                                            )}
                                     </div>
-                                ))
+
+
+                                </div>)
                             }
                         </div>
                     </div>

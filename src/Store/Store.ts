@@ -14,6 +14,7 @@ import AddToCartSlice from '../States/Cart/AddToCartSlice';
 import GetToCartSlice from '../States/Cart/GetToCartSlice';
 import GetAllSeriesSlice from '../States/Series/GetAllSeriesSlice';
 import GetAllProgramSlice from '../States/Program/GetAllProgramSlice';
+import SingleProgramSlice from '../States/Program/SingleProgramSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -38,6 +39,7 @@ export const Store = configureStore({
         GetAllSeries: GetAllSeriesSlice,
         //program
         GetAllProgram: GetAllProgramSlice,
+        SingleProgram:SingleProgramSlice
     },
 })
 
