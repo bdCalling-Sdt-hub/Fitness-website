@@ -1,38 +1,30 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { BsCart2 } from "react-icons/bs";
 import Heading from '../common/Heading';
-
+import { useAppDispatch, useAppSelector } from '../../Store/hook';
+import { ShopItems } from '../../States/Shop/ShopSlice';
+import { ServerUrl } from '../../AxiosConfig/Config';
 interface IItemProps {
-    name: string;
-    image: string;
-    price: string;
+    _id: string,
+    productName: string,
+    gender: string,
+    date: string,
+    price: string,
+    images: [string],
+    description: string,
+    createdAt: string,
+    updatedAt: string,
+    id: string,
 }
 
 const ShopProductList = (): React.JSX.Element => {
+    const dispatch = useAppDispatch()
+    const { Products } = useAppSelector(state => state.ShopItems)
+    useEffect(() => {
+        dispatch(ShopItems({ page: 1, limit: 4, sort: '', searchTerm: '' }))
+    }, [])
     const navigate = useNavigate()
-    const data: IItemProps[] = [
-        {
-            name: "The Ball",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/d1opftabkgftkzjbgo36.png",
-            price: "5000"
-        },
-        {
-            name: "Ab Wheel",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/jjri74hg3q5poredozzq.png",
-            price: "1500"
-        },
-        {
-            name: "Ab Wheel",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/wzsmnlkbvphcyvoxwzcj.png",
-            price: "500"
-        },
-        {
-            name: "Ab Wheel",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/ss6aiiwjlu1tsd3xy2hd.png",
-            price: "640"
-        },
-    ]
     return (
         <div className='container'>
             <div className='flex items-center justify-between mb-6'>
@@ -44,28 +36,30 @@ const ShopProductList = (): React.JSX.Element => {
 
             <div className='flex items-start md:items-center justify-start md:grid md:grid-cols-2 flex-col lg:grid-cols-3 xl:grid-cols-4 gap-3 mt-10'>
                 {
-                    data?.slice(0, 4)?.map((item, index) => {
+                    Products?.slice(0, 4)?.map((item: IItemProps) => {
                         return (
                             <div onClick={(): void => {
-                                navigate(`/product-details/${'item?._id'}`)
+                                navigate(`/product-details/${item?._id}`)
                             }}
-                                key={index}
+                                key={item?._id}
                                 className='relative group  rounded-lg border border-[#EEEEEE] p-5 cursor-pointer w-full'
                                 style={{
                                     boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px"
                                 }}
                             >
-                                <img
-                                    src={item?.image}
-                                    style={{ width: 194, height: 194, margin: "0 auto" }}
-                                    alt=""
-                                    className='group-hover:scale-105 transition-all duration-75'
-                                />
-                                <h1 className='text-[18px] font-normal leading-6 text-secondary mt-10'>{item?.name}</h1>
-                                <h1 className='lg:text-[32px] text-xl font-normal mt-2 text-secondary leading-[43px]'>${item?.price} CND</h1>
+                                <div className='w-full h-[150px] rounded-md overflow-hidden'>
+                                    <img
+                                        src={`${ServerUrl}${item?.images[0]}`}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover', margin: "0 auto" }}
+                                        alt=""
+                                        className='group-hover:scale-105 transition-all duration-75'
+                                    />
+                                </div>
+                                <h1 className='text-[18px] font-normal leading-6 text-secondary mt-10'>{item?.productName}</h1>
+                                <h1 className='lg:text-[32px] text-xl font-normal mt-2 text-secondary leading-[43px]'>${item?.price}</h1>
 
-                                <div className='absolute top-4 right-4 ' onClick={(e) => {
-                                    // (e.stopPropagation())
+                                <div className='absolute top-4 right-4 bg-white p-1 rounded-full' onClick={(e) => {
+                                    (e.stopPropagation())
                                 }}>
                                     <BsCart2 size={24} color='#905A00' />
                                 </div>
@@ -75,9 +69,6 @@ const ShopProductList = (): React.JSX.Element => {
                 }
             </div>
         </div>
-    )
-    return (
-        <div>ShopProductList</div>
     )
 }
 

@@ -1,67 +1,61 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BsCart2 } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../Store/hook';
+import { ShopItems } from '../States/Shop/ShopSlice';
+import { ServerUrl } from '../AxiosConfig/Config';
 
-interface IItemProps{
+interface IItemProps {
     name: string;
     image: string;
     price: string;
 }
-
-const RelatedProduct = ():React.JSX.Element => {
-    const data: IItemProps[] = [
-        {
-            name: "The Ball",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/d1opftabkgftkzjbgo36.png",
-            price: "5000"
-        },
-        {
-            name: "Ab Wheel",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/jjri74hg3q5poredozzq.png",
-            price: "1500"
-        },
-        {
-            name: "Ab Wheel",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/wzsmnlkbvphcyvoxwzcj.png",
-            price: "500"
-        },
-        {
-            name: "Ab Wheel",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/ss6aiiwjlu1tsd3xy2hd.png",
-            price: "640"
-        },
-    ]
+interface ChildProp {
+    id: string | null | undefined
+    gender: string | null | undefined
+}
+const RelatedProduct = ({ id, gender }: ChildProp): React.JSX.Element => {
+    const dispatch = useAppDispatch()
+    const { Products } = useAppSelector(state => state.ShopItems)
+    useEffect(() => {
+        dispatch(ShopItems({ page: 1, limit: 100, sort: '' }))
+    }, [id])
+    const navigate = useNavigate()
     return (
         <div className='flex flex-col items-start justify-start md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:items-center  gap-6 mt-10'>
-                {
-                    data?.slice(0, 4)?.map((item, index)=>{
-                        return (
-                            <div 
-                                key={index}  
-                                className='relative group w-full rounded-lg border border-[#EEEEEE] p-5 cursor-pointer'
-                                style={{
-                                    boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px"
-                                }}
-                            >
-                                <img 
-                                    src={item?.image} 
-                                    style={{width: 194, height: 194, margin: "0 auto"}} 
+            {
+                Products?.filter(item => item?.gender === gender)?.slice(0, 4)?.map((item) => {
+                    return (
+                        <div onClick={(): void => {
+                            navigate(`/product-details/${item?._id}`)
+                        }}
+                            key={item?._id}
+                            className='relative group  rounded-lg border border-[#EEEEEE] p-5 cursor-pointer w-full'
+                            style={{
+                                boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px"
+                            }}
+                        >
+                            <div className='w-full h-[150px] rounded-md overflow-hidden'>
+                                <img
+                                    src={`${ServerUrl}${item?.images[0]}`}
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover', margin: "0 auto" }}
                                     alt=""
                                     className='group-hover:scale-105 transition-all duration-75'
                                 />
-                                <h1 className='text-[16px] font-normal leading-5 text-secondary mt-10'>{item?.name}</h1>
-                                <h1 className='text-[26px] font-normal mt-2 text-secondary leading-[36px]'>${item?.price} CND</h1>
-
-                                <div className='absolute top-4 right-4' onClick={(e)=> (e.stopPropagation())}>
-                                    <Link to={`/product-details/2`}>
-                                        <BsCart2 size={24} color='#905A00' />
-                                    </Link>
-                                </div>
                             </div>
-                        )
-                    })
-                }
-            </div>
+                            <h1 className='text-[18px] font-normal leading-6 text-secondary mt-10'>{item?.productName}</h1>
+                            <h1 className='lg:text-[32px] text-xl font-normal mt-2 text-secondary leading-[43px]'>${item?.price}</h1>
+
+                            <div className='absolute top-4 right-4 bg-white p-1 rounded-full' onClick={(e) => {
+                                (e.stopPropagation())
+                            }}>
+                                <BsCart2 size={24} color='#905A00' />
+                            </div>
+                        </div>
+                    )
+                })
+            }
+        </div>
     )
 }
 

@@ -10,16 +10,16 @@ type FieldType = {
 };
 
 const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values);
+    //console.log('Success:', values);
 };
 
 
 const Payment = () => {
     const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+        //console.log('Failed:', errorInfo);
     };
     const onChange: GetProp<typeof Input.OTP, 'onChange'> = (text) => {
-        console.log('onChange:', text);
+        //console.log('onChange:', text);
     };
     const sharedProps: OTPProps = {
         onChange,

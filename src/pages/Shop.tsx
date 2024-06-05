@@ -1,73 +1,43 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
-import { Select } from 'antd';
+import { Pagination, PaginationProps, Select } from 'antd';
 import { BsCart2 } from 'react-icons/bs';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../Store/hook';
+import { ShopItems } from '../States/Shop/ShopSlice';
+import { ServerUrl } from '../AxiosConfig/Config';
 const { Option } = Select;
-
-interface CategoryType {
-
-}
-interface IItemProps {
-    name: string;
-    image: string;
-    price: string;
-}
 const Shop = (): React.JSX.Element => {
+    const [searchTerm, setsearchTerm] = useState(new URLSearchParams(window.location.search).get('search') || "");
+    const [itemPerPage, setItemPerPage] = useState(10)
+    const [page, setPage] = useState(1)
     const navigate = useNavigate()
-    const data: IItemProps[] = [
-        {
-            name: "The Ball",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/d1opftabkgftkzjbgo36.png",
-            price: "5000"
-        },
-        {
-            name: "Ab Wheel",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/jjri74hg3q5poredozzq.png",
-            price: "1500"
-        },
-        {
-            name: "Ab Wheel",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/wzsmnlkbvphcyvoxwzcj.png",
-            price: "500"
-        },
-        {
-            name: "Ab Wheel",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/ss6aiiwjlu1tsd3xy2hd.png",
-            price: "640"
-        },
-        {
-            name: "The Ball",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/d1opftabkgftkzjbgo36.png",
-            price: "5000"
-        },
-        {
-            name: "Ab Wheel",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/jjri74hg3q5poredozzq.png",
-            price: "1500"
-        },
-        {
-            name: "Ab Wheel",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/wzsmnlkbvphcyvoxwzcj.png",
-            price: "500"
-        },
-        {
-            name: "Ab Wheel",
-            image: "https://res.cloudinary.com/ddqovbzxy/image/upload/v1715939210/ss6aiiwjlu1tsd3xy2hd.png",
-            price: "640"
-        },
-    ]
-    const [category, setCategory] = useState<string[]>([])
+    const [sortOrder, setSortOrder] = useState('')
+    // const [category, setCategory] = useState<string[]>([])
+    const dispatch = useAppDispatch()
+    const { Products, meta } = useAppSelector(state => state.ShopItems)
+    useEffect(() => {
+        dispatch(ShopItems({ page: page, limit: itemPerPage, sort: sortOrder, searchTerm: searchTerm }))
+    }, [itemPerPage, page, sortOrder])
+    // console.log(meta)
+    const onChange: PaginationProps['onChange'] = (pageNumber) => {
+        setPage(pageNumber)
+    };
+    const onShowSizeChange = (current: any, size: any) => {
+        setItemPerPage(size);
+    }
     return (
         <div className='container pb-20'>
             <Navigation name='Shop' />
             <MetaTag title='Shop' />
             <div className='flex justify-between items-center gap-2 flex-wrap'>
                 <Heading title='Shop' />
-                <div className='max-w-[500px] min-w-[280px] gap-[1%] flex justify-start items-center '>
-                    <Select
+                <div className='max-w-[500px] min-w-[380px] gap-[1%] flex justify-end items-center '>
+                    <Select onChange={(e) => {
+                        setSortOrder(e)
+                    }}
                         style={{
                             width: "49.5%",
                             height: 48,
@@ -78,11 +48,12 @@ const Shop = (): React.JSX.Element => {
                         className="poppins-regular text-[#6A6A6A] text-[14px] leading-5"
                         defaultValue={"Sort By"}
                     >
-                        <Option value="low_to_high">Low to High</Option>
-                        <Option value="high_to_low">High to Low</Option>
-                        <Option value="avarage">Avarage</Option>
+                        <Option value="productName">name Low to High</Option>
+                        <Option value="-productName">name High to Low</Option>
+                        <Option value="price">price Low to High</Option>
+                        <Option value="-price">price  High to Low</Option>
                     </Select>
-                    <Select
+                    {/* <Select
                         style={{
                             width: "49.5%",
                             height: 48,
@@ -97,7 +68,7 @@ const Shop = (): React.JSX.Element => {
                             <label onClick={() => {
                                 if (category.find(item => item == 'Starter Kit')) {
                                     const newCategory = category.filter(item => item != 'Starter Kit')
-                                    console.log(newCategory)
+                                    //console.log(newCategory)
                                     setCategory(newCategory)
                                 } else {
                                     setCategory([...category, 'Starter Kit'])
@@ -121,36 +92,38 @@ const Shop = (): React.JSX.Element => {
                             </label>
                         </Option>
 
-                    </Select>
+                    </Select> */}
                 </div>
             </div>
 
             <div className='flex flex-col items-start justify-start md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:items-center  gap-6 mt-10'>
                 {
-                    data?.map((item, index) => {
+                    Products?.slice(0, 4)?.map((item) => {
                         return (
-                            <div onClick={() => {
-                                navigate(`/product-details/${index}`)
+                            <div onClick={(): void => {
+                                navigate(`/product-details/${item?._id}`)
                             }}
-                                key={index}
-                                className='relative group w-full h-full rounded-lg border border-[#EEEEEE] p-5 cursor-pointer'
+                                key={item?._id}
+                                className='relative group  rounded-lg border border-[#EEEEEE] p-5 cursor-pointer w-full'
                                 style={{
                                     boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px"
                                 }}
                             >
-                                <img
-                                    src={item?.image}
-                                    style={{ width: 194, height: 194, margin: "0 auto" }}
-                                    alt=""
-                                    className='group-hover:scale-105 transition-all duration-100'
-                                />
-                                <h1 className='text-[16px] font-normal leading-5 text-secondary mt-10'>{item?.name}</h1>
-                                <h1 className='text-[26px] font-normal mt-2 text-secondary leading-[36px]'>${item?.price} CND</h1>
+                                <div className='w-full h-[150px] rounded-md overflow-hidden'>
+                                    <img
+                                        src={`${ServerUrl}${item?.images[0]}`}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover', margin: "0 auto" }}
+                                        alt=""
+                                        className='group-hover:scale-105 transition-all duration-75'
+                                    />
+                                </div>
+                                <h1 className='text-[18px] font-normal leading-6 text-secondary mt-10'>{item?.productName}</h1>
+                                <h1 className='lg:text-[32px] text-xl font-normal mt-2 text-secondary leading-[43px]'>${item?.price}</h1>
 
-                                <div className='absolute top-4 right-4' onClick={(e) => (e.stopPropagation())}>
-                                    <Link to={`/product-details/${index}`}>
-                                        <BsCart2 size={24} color='#905A00' />
-                                    </Link>
+                                <div className='absolute top-4 right-4 bg-white p-1 rounded-full' onClick={(e) => {
+                                    (e.stopPropagation())
+                                }}>
+                                    <BsCart2 size={24} color='#905A00' />
                                 </div>
                             </div>
                         )
@@ -158,8 +131,9 @@ const Shop = (): React.JSX.Element => {
                 }
             </div>
 
-
-
+            <div className='text-center mt-8'>
+                <Pagination defaultCurrent={page} total={meta?.total} pageSize={itemPerPage} onShowSizeChange={onShowSizeChange} onChange={onChange} />
+            </div>
         </div>
     )
 }
