@@ -181,7 +181,7 @@ const Navbar = (): React.JSX.Element => {
                                         </Link>
                                         <Link onClick={() => {
                                             setShowUserOptions(false)
-                                        }} className='flex justify-start items-center  gap-2 text-gray-500 hover:bg-[#F8F1E6] py-1 px-4 transition-all w-full' to={`#`}>
+                                        }} className='flex justify-start items-center  gap-2 text-gray-500 hover:bg-[#F8F1E6] py-1 px-4 transition-all w-full' to={`/order`}>
                                             <CiTimer className='text-xl' />
                                             Order History
                                         </Link>
@@ -312,7 +312,10 @@ const Navbar = (): React.JSX.Element => {
             <Modal
                 centered
                 open={openSearchModal}
-                onCancel={() => setOpenSearchModal(false)}
+                onCancel={() => {
+                    setSearchValue('')
+                    setOpenSearchModal(false)
+                }}
                 width={700}
                 footer={false}
             >

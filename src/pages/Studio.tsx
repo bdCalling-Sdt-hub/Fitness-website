@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
@@ -8,14 +8,10 @@ import { CiCalendarDate } from "react-icons/ci";
 import Modal from '../components/common/Modal';
 import dayjs, { Dayjs } from 'dayjs';
 import { IoClose } from "react-icons/io5";
-import ReactPlayer from 'react-player'
-import { IoPlaySharp } from "react-icons/io5";
-import { GrPauseFill } from "react-icons/gr";
-import Chart from '../Academy/Chart';
-import StatusLabel from '../Academy/StatusLabel';
-import Thubmnail from "../assets/video_thumbnail.png"
-import { LuCalendar } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../Store/hook';
+import { GetAllSeries } from '../States/Series/GetAllSeriesSlice';
+import { ServerUrl } from '../AxiosConfig/Config';
 interface ProgramData {
     _id: string,
     img: string,
@@ -82,7 +78,13 @@ const Studio = (): React.JSX.Element => {
     const [selectedDate, setSelectedDate] = useState<string | null>("");
     const [keyword, setKeyword] = useState<string | undefined>("");
     const [playing, setPlaying] = useState(false);
-
+    const dispatch = useAppDispatch()
+    const {AllSeries}=useAppSelector(state=>state.GetAllSeries)
+    // console.log(AllSeries);
+    
+    useEffect(() => {
+        dispatch(GetAllSeries())
+    }, [])
     const onChange = (value: Dayjs) => {
         setSelectedDate(dayjs(value).format('YYYY-MM-DD'))
     };
@@ -119,19 +121,19 @@ const Studio = (): React.JSX.Element => {
                 </div>
             </div>
             <div className='md:grid flex flex-col md:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-8 justify-start md:items-center items-start py-8'>
-                {data?.map(item => <div className='w-full h-full' key={item?._id}>
+                {AllSeries?.map(item => <div className='w-full h-full' key={item?._id}>
                     <div className='w-full h-60'>
-                        <img className='w-full h-full object-cover' src={item?.img} alt="" />
+                        <img className='w-full h-full object-cover' src={`${ServerUrl}/${item?.program.image}`} alt="" />
                     </div>
                     <div className='flex justify-between items-center gap-2 flex-wrap mt-4'>
                         <h3 className='text-[#2F2F2F] text-lg md:text-2xl'>{item?.title}</h3>
                         <Link to={`/academy/${item?._id}`} className='py-2 px-6 bg-[#555555] text-white'>
-                        Details
+                            Details
                         </Link>
                     </div>
                 </div>)}
             </div>
-         
+
             <Modal
                 title='Pick Your Date'
                 open={openCalender}

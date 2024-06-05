@@ -12,6 +12,7 @@ import ShopSlice from '../States/Shop/ShopSlice';
 import ProductDetailsSlice from '../States/Shop/ProductDetailsSlice';
 import AddToCartSlice from '../States/Cart/AddToCartSlice';
 import GetToCartSlice from '../States/Cart/GetToCartSlice';
+import GetAllSeriesSlice from '../States/Series/GetAllSeriesSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -32,6 +33,8 @@ export const Store = configureStore({
         //cart 
         AddToCart: AddToCartSlice,
         GetToCart: GetToCartSlice,
+        //series
+        GetAllSeries: GetAllSeriesSlice,
     },
 })
 

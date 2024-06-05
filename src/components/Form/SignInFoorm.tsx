@@ -23,10 +23,12 @@ const SignInFoorm = ({ setOpenPopUp, setOpenForgetPass }: ChildPops) => {
         formState: { errors },
     } = useForm<Inputs>()
     const onSubmit: SubmitHandler<Inputs> = (data) => {
+        console.log("email", data.email, "password", data?.password)
+
+
         dispatch(login({ email: data.email, password: data.password }))
             .then(response => {
-                //console.log(response)
-                if (response?.type==='login/fulfilled') {
+                if (response?.type === 'login/fulfilled') {
                     Swal.fire({
                         position: "center",
                         icon: "success",
@@ -71,7 +73,7 @@ const SignInFoorm = ({ setOpenPopUp, setOpenForgetPass }: ChildPops) => {
                     <input value={`save`} type="checkbox" id="" {...register("savePass", { required: false })} />
                     <p className="text-[#6A6D7C]">Remember Password</p>
                 </div>
-                <button onClick={() => {
+                <button type='button' onClick={() => {
                     setOpenPopUp(false)
                     setOpenForgetPass(true)
                 }} className="text-[#FF0000]">
