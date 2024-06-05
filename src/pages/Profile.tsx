@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading'
 import { CiEdit } from 'react-icons/ci';
@@ -63,17 +63,33 @@ const Profile = (): React.JSX.Element => {
     };
     const onEditProfile: FormProps['onFinish'] = (values) => {
         // console.log(values)
-        const data:IValue = {
+        const data: IValue = {
             profile_image: image,
-            name : values.fullName,
-            contact:values.mobileNumber,
-            address:values.address
+            name: values.fullName,
+            contact: values.mobileNumber,
+            address: values.address
         }
         dispatch(EditProfile(data))
-        .then((res)=>{
-            // console.log(res)
-        })
+            .then((res) => {
+                if (res.type === 'EditProfile/fulfilled') {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your profile has been updated",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
     }
+    useEffect(() => {
+        const data = {
+            fullName: user.name,
+            mobileNumber: user.phone_number,
+            address: user.address
+        }
+        form.setFieldsValue(data)
+    }, [user])
     return (
         <div className='container pb-16'>
             <Navigation name={`${tab}`} />
@@ -84,7 +100,7 @@ const Profile = (): React.JSX.Element => {
                     <input type="file" onChange={handleChange} id='img' style={{ display: "none" }} />
                     <img
                         style={{ width: 140, height: 124, borderRadius: "100%" }}
-                        src={`${image ? URL.createObjectURL(image) : user.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${user.profile_image}`}`}
+                        src={`${image ? URL.createObjectURL(image) : user?.profile_image?.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${user.profile_image}`}`}
                         alt=""
                     />
                     <label
@@ -142,6 +158,7 @@ const Profile = (): React.JSX.Element => {
                         <Form
                             onFinish={onEditProfile}
                             layout="vertical"
+                            form={form}
                         >
                             <Form.Item
                                 name="fullName"
