@@ -36,16 +36,17 @@ const initialState: initialState = {
 interface Permitter {
     page: number | null | undefined,
     limit: number | null | undefined,
-    sort: string | null | undefined
+    sort: string | null | undefined,
+    searchTerm: string | null | undefined
 }
 export const ShopItems = createAsyncThunk(
     'ShopItems',
     async (value: Permitter, thunkApi) => {
         try {
-            const response = await baseURL.get(`/product/products?page=${value?.page}&limit=${value?.limit}${value.sort && `&sort=${value.sort}`}`, {
+            const response = await baseURL.get(`/product/products?page=${value?.page}&limit=${value?.limit}${value.sort && `&sort=${value.sort}`}${value.searchTerm && `&searchTerm=${value.searchTerm}`}`, {
                 headers: {
                     "Content-Type": "application/json",
-                    authorization: `Bearer ${localStorage.getItem('token')}`,
+                    authorization: `Bearer ${ localStorage.getItem('token') } `,
                 }
             });
             return response?.data.data;

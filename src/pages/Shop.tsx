@@ -10,6 +10,7 @@ import { ShopItems } from '../States/Shop/ShopSlice';
 import { ServerUrl } from '../AxiosConfig/Config';
 const { Option } = Select;
 const Shop = (): React.JSX.Element => {
+    const [searchTerm, setsearchTerm] = useState(new URLSearchParams(window.location.search).get('search') || "");
     const [itemPerPage, setItemPerPage] = useState(10)
     const [page, setPage] = useState(1)
     const navigate = useNavigate()
@@ -18,7 +19,7 @@ const Shop = (): React.JSX.Element => {
     const dispatch = useAppDispatch()
     const { Products, meta } = useAppSelector(state => state.ShopItems)
     useEffect(() => {
-        dispatch(ShopItems({ page: page, limit: itemPerPage, sort: sortOrder }))
+        dispatch(ShopItems({ page: page, limit: itemPerPage, sort: sortOrder, searchTerm: searchTerm }))
     }, [itemPerPage, page, sortOrder])
     // console.log(meta)
     const onChange: PaginationProps['onChange'] = (pageNumber) => {

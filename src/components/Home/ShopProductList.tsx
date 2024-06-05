@@ -22,7 +22,7 @@ const ShopProductList = (): React.JSX.Element => {
     const dispatch = useAppDispatch()
     const { Products } = useAppSelector(state => state.ShopItems)
     useEffect(() => {
-        dispatch(ShopItems({ page: 1, limit: 4 ,sort:''}))
+        dispatch(ShopItems({ page: 1, limit: 4, sort: '', searchTerm: '' }))
     }, [])
     const navigate = useNavigate()
     return (
