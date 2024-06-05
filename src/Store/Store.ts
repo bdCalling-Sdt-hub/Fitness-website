@@ -10,6 +10,7 @@ import EditProfileSlice from '../States/Authentication/EditProfileSlice';
 import SubscriptionSlice from '../States/Subscription/SubscriptionSlice';
 import ShopSlice from '../States/Shop/ShopSlice';
 import ProductDetailsSlice from '../States/Shop/ProductDetailsSlice';
+import AddToCartSlice from '../States/Cart/AddToCartSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -27,6 +28,8 @@ export const Store = configureStore({
         // shop
         ShopItems: ShopSlice,
         SingleProduct: ProductDetailsSlice,
+        //cart 
+        AddToCart: AddToCartSlice,
     },
 })
 

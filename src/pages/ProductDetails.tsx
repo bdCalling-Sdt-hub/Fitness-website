@@ -11,8 +11,8 @@ import Payment from '../components/Payment';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { SingleProduct } from '../States/Shop/ProductDetailsSlice';
 import { ServerUrl } from '../AxiosConfig/Config';
-import { ShopItems } from '../States/Shop/ShopSlice';
-
+import { AddToCart } from '../States/Cart/AddToCartSlice';
+import Swal from 'sweetalert2';
 const ProductDetails = (): React.JSX.Element => {
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
     const [banerImageIndex, setbanerImageIndex] = useState(0)
@@ -25,7 +25,29 @@ const ProductDetails = (): React.JSX.Element => {
             dispatch(SingleProduct({ id: id }))
         }
     }, [id])
+    const handelAddToCart = () => {
+        dispatch(AddToCart({ id: id, quantity: quantity }))
+            .then((res) => {
+                console.log(res);
+                if (res.payload.message === 'Already added your cart list') {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Already added your cart list",
+                    });
+                }
+                if (res.type === 'AddToCart/fulfilled') {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Item added to your cart list",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
 
+    }
     return (
         <div className='container pb-20'>
             <Navigation name='Product Details' />
@@ -66,7 +88,9 @@ const ProductDetails = (): React.JSX.Element => {
                         </button>
                     </div>
 
-                    <Button label='Add to Cart' style='border border-secondary text-secondary w-full mb-6' />
+                    <button onClick={handelAddToCart} className='border border-secondary text-secondary w-full mb-6 py-3' >
+                        Add to Cart
+                    </button>
                     <Button onSubmit={() => setOpenPaymentModal(true)} label='Buy Now' style='bg-secondary text-[#FBFBFB] w-full mb-10' />
 
                     <p className='text-[16px] leading-[40px] text-secondary font-normal mb-4'>
@@ -90,7 +114,7 @@ const ProductDetails = (): React.JSX.Element => {
                     View All
                 </Link>
             </div>
-            <RelatedProduct id={id} gender={Product?.gender}/>
+            <RelatedProduct id={id} gender={Product?.gender} />
             <Modal
                 open={openPaymentModal}
                 onCancel={() => setOpenPaymentModal(false)}
