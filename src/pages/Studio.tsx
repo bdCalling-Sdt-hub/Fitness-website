@@ -12,78 +12,18 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { GetAllSeries } from '../States/Series/GetAllSeriesSlice';
 import { ServerUrl } from '../AxiosConfig/Config';
-interface ProgramData {
-    _id: string,
-    img: string,
-    title: String
-}
-const data: ProgramData[] = [
-    {
-        _id: '1',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
+import { GetAllProgram } from '../States/Program/GetAllProgramSlice';
 
-    },
-    {
-        _id: '2',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '3',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '4',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '5',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '6',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '7',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '8',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '9',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-]
 const Studio = (): React.JSX.Element => {
     const [openCalender, setOpenCalender] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<string | null>("");
     const [keyword, setKeyword] = useState<string | undefined>("");
-    const [playing, setPlaying] = useState(false);
     const dispatch = useAppDispatch()
-    const {AllSeries}=useAppSelector(state=>state.GetAllSeries)
-    // console.log(AllSeries);
-    
+    const { AllProgram, meta } = useAppSelector(state => state.GetAllProgram)
+    console.log(AllProgram, meta);
+
     useEffect(() => {
-        dispatch(GetAllSeries())
+        dispatch(GetAllProgram())
     }, [])
     const onChange = (value: Dayjs) => {
         setSelectedDate(dayjs(value).format('YYYY-MM-DD'))
@@ -121,9 +61,9 @@ const Studio = (): React.JSX.Element => {
                 </div>
             </div>
             <div className='md:grid flex flex-col md:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-8 justify-start md:items-center items-start py-8'>
-                {AllSeries?.map(item => <div className='w-full h-full' key={item?._id}>
+                {AllProgram?.map(item => <div className='w-full h-full' key={item?._id}>
                     <div className='w-full h-60'>
-                        <img className='w-full h-full object-cover' src={`${ServerUrl}/${item?.program.image}`} alt="" />
+                        <img className='w-full h-full object-cover' src={`${ServerUrl}/${item?.image}`} alt="" />
                     </div>
                     <div className='flex justify-between items-center gap-2 flex-wrap mt-4'>
                         <h3 className='text-[#2F2F2F] text-lg md:text-2xl'>{item?.title}</h3>

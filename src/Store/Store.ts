@@ -13,6 +13,7 @@ import ProductDetailsSlice from '../States/Shop/ProductDetailsSlice';
 import AddToCartSlice from '../States/Cart/AddToCartSlice';
 import GetToCartSlice from '../States/Cart/GetToCartSlice';
 import GetAllSeriesSlice from '../States/Series/GetAllSeriesSlice';
+import GetAllProgramSlice from '../States/Program/GetAllProgramSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -35,6 +36,8 @@ export const Store = configureStore({
         GetToCart: GetToCartSlice,
         //series
         GetAllSeries: GetAllSeriesSlice,
+        //program
+        GetAllProgram: GetAllProgramSlice,
     },
 })
 
