@@ -8,33 +8,33 @@ interface initialState {
     isSuccess: boolean;
     Feedback: {
         _id: string,
-        productId: {
+        user: {
+            profile_image: string,
             _id: string,
-            productName: string,
-            gender:string,
-            date: string,
-            price: string,
-            images: string[],
-            description: string,
-            createdAt: string,
-            updatedAt: string,
-            __v:number,
+            name: string,
+            email: string,
+            role: string,
             id: string,
         },
-        user: string,
-        quantity:number,
+        text: string,
         createdAt: string,
         updatedAt: string,
-        __v: number,
         id: string,
     }[]
+    meta: {
+        page: number,
+        limit: number,
+        total: number,
+        totalPage: number,
+    } | null
 }
 const initialState: initialState = {
     error: false,
     success: false,
     loading: false,
     isSuccess: false,
-    Feedback: []
+    Feedback: [],
+    meta: null
 };
 
 export const GetAllFeedback = createAsyncThunk(
@@ -69,13 +69,15 @@ export const GetAllFeedbackSlice = createSlice({
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
-                state.Feedback = action.payload;
+                state.Feedback = action.payload.data;
+                state.meta = action.payload.meta
             }),
             builder.addCase(GetAllFeedback.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
                 state.Feedback = []
+                state.meta = null
             })
     }
 })
