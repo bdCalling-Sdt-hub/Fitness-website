@@ -8,7 +8,7 @@ import { Subscription } from '../../States/Subscription/SubscriptionSlice';
 
 interface Plans {
     _id: string,
-    title: 'Gold Subscription',
+    title: string,
     items: [{ title: string, _id: string, id: string, }],
     price: number,
     status: true,
@@ -29,8 +29,6 @@ const Package = (): React.JSX.Element => {
         dispatch(Subscription())
 
     }, [])
-    console.log(ModalData);
-
     const body = (
         <div className='p-10'>
             <h1 className='font-light lg:text-2xl text-lg leading-8 text-center text-secondary'>{ModalData?.title}</h1>

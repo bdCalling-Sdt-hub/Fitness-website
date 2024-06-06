@@ -32,7 +32,6 @@ const Academy = (): React.JSX.Element => {
     const { SingleProgramData } = useAppSelector(state => state.SingleProgram)
     const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
     const [anyties, setanalayties] = useState()
-
     useEffect(() => {
         baseURL.get(`/class/single/${CurrentClass?._id}`, {
             headers: {
@@ -61,6 +60,10 @@ const Academy = (): React.JSX.Element => {
 
     const dispatch = useAppDispatch()
     const onChange = (value: Dayjs) => {
+        const date = new Date
+        if (dayjs(date).format('YYYY-MM-DD') == dayjs(value).format('YYYY-MM-DD')) {
+            return setSelectedDate('')
+        }
         setSelectedDate(dayjs(value).format('YYYY-MM-DD'))
     };
 
@@ -176,6 +179,9 @@ const Academy = (): React.JSX.Element => {
                     <div className='w-full  md:overflow-y-scroll md:max-h-[700px] video-collection'>
                         <div className=' md:flex flex-col gap-3'>
                             {
+                                ( SingleProgramData?.series && SingleProgramData?.series?.length <=0) && <p className='text-red-500'>No data found </p>
+                            }
+                            {
                                 SingleProgramData?.series?.map((item, index) => <div key={index} className='cursor-pointer p-3 bg-[#F2F2F2]'>
                                     <div onClick={() => toggleAccordion(index)} className=' relative'>
                                         <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Series No {index + 1} : {item?.title}</p>
@@ -235,7 +241,7 @@ const Academy = (): React.JSX.Element => {
                 </Link>
             </div>
             <div className='md:grid flex flex-col md:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-8 justify-start md:items-center items-start py-8'>
-            {AllProgram?.map(item => <div className='w-full h-full' key={item?._id}>
+                {AllProgram?.map(item => <div className='w-full h-full' key={item?._id}>
                     <div className='w-full h-60'>
                         <img className='w-full h-full object-cover' src={`${ServerUrl}/${item?.image}`} alt="" />
                     </div>

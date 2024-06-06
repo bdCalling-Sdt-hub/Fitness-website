@@ -4,7 +4,26 @@ import Heading from '../components/common/Heading'
 import Video from "../assets/video.mp4"
 import { FaPlay } from 'react-icons/fa'
 import { RiCheckboxCircleFill } from 'react-icons/ri'
+import { useAppSelector } from '../Store/hook'
+import Payment from '../components/Payment'
+import Modal from '../components/common/Modal'
+interface Plans {
+    _id: string,
+    title: string,
+    items: [{ title: string, _id: string, id: string, }],
+    price: number,
+    status: true,
+    duration: number,
+    plan_type: string,
+    createdAt: string,
+    updatedAt: string,
+    __v: number,
+    id: string,
+} 
 const FreeClass = (): React.JSX.Element => {
+    const [open, setOpen] = useState(false)
+    const [openPayment, setOpenPayment] = useState(false)
+    const { plan } = useAppSelector(state => state.Subscription);
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const handlePlay = () => {
@@ -47,33 +66,56 @@ const FreeClass = (): React.JSX.Element => {
             </div>
             <div className='md:grid md:grid-cols-2 flex flex-col xl:grid-cols-3 gap-6 justify-start items-start md:items-center my-14 mb-8'>
                 {
-                    [...Array(3)].map((item, index) => {
+                    plan.map((item :Plans, index) => {
                         return (
-                            <div key={index} className='py-10 border w-full'>
-                                <div className='w-[296px] mx-auto'>
-                                    <h1 className='font-light text-2xl leading-8 text-center text-secondary'>Standard Membership</h1>
-                                    <p className='text-[#B47000] text-left my-8 text-[36px] leading-[49px] '>48 CND <sub className='text-[#B47000] text-[18px] leading-6 font-semibold'>6 month</sub></p>
-                                    <div className='grid grid-cols-1 gap-6 '>
-                                        {
-                                            [...Array(7)].map((_item, index) => {
-                                                return (
-                                                    <div key={index} className='flex items-center text-secondary text-[16px] leading-5 font-normal gap-[14px] '>
-                                                        <RiCheckboxCircleFill size={24} color='#555555' />
-                                                        3 New Classes Every Week
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                    <button className='w-full block mx-auto  py-3 rounded-md mt-6 bg-[#3C3C3C] text-[#FBFBFB]'>Buy Now</button>
-                                </div>
+                            <div className='p-10'>
+                            <h1 className='font-light lg:text-2xl text-lg leading-8 text-center text-secondary'>{item?.title}</h1>
+                            <p className='text-[#B47000] text-center my-8 lg:text-[36px] text-xl leading-[49px] '>${item?.price}<sub className='text-[#B47000] text-[18px] leading-6 font-semibold ml-2'>{item?.duration} month</sub></p>
+                            <div className='grid grid-cols-1 gap-6 '>
+                                {
+                                    item?.items?.map((_item: any) => {
+                                        return (
+                                            <div key={_item?._id} className='flex items-center text-secondary text-[16px] leading-5 font-normal gap-[14px]'>
+                                                <h1></h1>
+                                                <RiCheckboxCircleFill size={24} color='#555555' />
+                                                {_item?.title}
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
+                
+                            <button onClick={() => {
+                                setOpen(false)
+                                setOpenPayment(true)
+                            }}
+                                style={{
+                                    width: "100%",
+                                    border: "none",
+                                    outline: "none",
+                                    borderRadius: 4,
+                                    height: 56,
+                                    margin: "56px auto 0 auto"
+                                }}
+                                className='
+                                    bg-[#3C3C3C]
+                                    text-[#F2F2F2] font-normal text-[16px] leading-5
+                                '
+                            >
+                                Buy Now
+                            </button>
+                        </div>
                         )
                     })
                 }
 
             </div>
             <p className='text-sm md:text-[16px] lg:text-[19px] text-[#555555] leading-9 pb-11'><strong>Note:</strong>  stablished fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy</p>
+            <Modal
+                open={openPayment}
+                setOpen={setOpenPayment}
+                body={<Payment />}
+            />
         </div>
     )
 }
