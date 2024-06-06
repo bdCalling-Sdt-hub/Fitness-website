@@ -18,13 +18,14 @@ import { MdOutlineFeedback } from 'react-icons/md';
 import { CiLogout, CiTimer } from 'react-icons/ci';
 import { ServerUrl } from '../../AxiosConfig/Config';
 import { ShopItems } from '../../States/Shop/ShopSlice';
-import { AddAllFeedback } from '../../States/FeedBack/AddAllFeedbackSlice';
+import { putFeedBack } from '../../States/FeedBack/putFeedbackSlice';
+import Swal from 'sweetalert2';
 interface IRoutes {
     name: string;
     path: string
 }
 interface Inputs {
-    feedback: string | undefined |null,
+    feedback: string | undefined | null,
 }
 const Navbar = (): React.JSX.Element => {
     const [openSearchModal, setOpenSearchModal] = useState(false)
@@ -49,11 +50,23 @@ const Navbar = (): React.JSX.Element => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors }, reset
     } = useForm<Inputs>()
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        dispatch(AddAllFeedback({ feedback: data.feedback })).then((res)=>console.log(res))
-        // console.log(data)
+        dispatch(putFeedBack({ text: data.feedback })).then((res) => {
+            if (res.type == 'putFeedBack/fulfilled') {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your Feedback has been sent",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(()=>{
+                    reset()
+                    setopenFeedbackModal(false)
+                });
+            }
+        });
     }
 
     const items = [

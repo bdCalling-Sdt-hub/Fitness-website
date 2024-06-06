@@ -6,28 +6,7 @@ interface initialState {
     success: boolean;
     loading: boolean;
     isSuccess: boolean;
-    Feedback: {
-        _id: string,
-        productId: {
-            _id: string,
-            productName: string,
-            gender: string,
-            date: string,
-            price: string,
-            images: string[],
-            description: string,
-            createdAt: string,
-            updatedAt: string,
-            __v: number,
-            id: string,
-        },
-        user: string,
-        quantity: number,
-        createdAt: string,
-        updatedAt: string,
-        __v: number,
-        id: string,
-    }[]
+    Feedback: {}[]
 }
 const initialState: initialState = {
     error: false,
@@ -37,19 +16,19 @@ const initialState: initialState = {
     Feedback: []
 };
 interface Parameter {
-    feedback: string | undefined | null
+    text: string | undefined | null
 }
-export const AddAllFeedback = createAsyncThunk(
-    'AddAllFeedback',
+export const putFeedBack = createAsyncThunk(
+    'putFeedBack',
     async (value: Parameter, thunkApi) => {
-        try {
-            const response = await baseURL.post(`/feedback/all`, { text: value?.feedback }, {
+        try { 
+            const response = await baseURL.post(`/feedback/send`, { ...value },{
                 headers: {
                     "Content-Type": "application/json",
-                    authorization: `Bearer ${localStorage.AddItem('token')}`,
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            return response?.data.data;
+            return response.data;
         } catch (error) {
             const axiosError = error as AxiosError;
             const message = axiosError?.response?.data;
@@ -57,23 +36,24 @@ export const AddAllFeedback = createAsyncThunk(
         }
     }
 )
-export const AddAllFeedbackSlice = createSlice({
-    name: 'AddAllFeedback',
+
+export const putFeedBackSlice = createSlice({
+    name: 'putFeedBack',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(AddAllFeedback.pending, (state) => {
+        builder.addCase(putFeedBack.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(AddAllFeedback.fulfilled, (state, action) => {
+            builder.addCase(putFeedBack.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
                 state.Feedback = action.payload;
             }),
-            builder.addCase(AddAllFeedback.rejected, (state) => {
+            builder.addCase(putFeedBack.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
@@ -81,4 +61,4 @@ export const AddAllFeedbackSlice = createSlice({
             })
     }
 })
-export default AddAllFeedbackSlice.reducer
+export default putFeedBackSlice.reducer

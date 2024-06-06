@@ -19,7 +19,7 @@ import GetAllBlogSlice from '../States/Blog/GetAllBlogSlice';
 import GetSingleBlogSlice from '../States/Blog/GetSingleBlogSlice';
 import GetAllOrderSlice from '../States/Order/GetAllOrderSlice';
 import GetAllFeedbackSlice from '../States/FeedBack/GetAllFeedbackSlice';
-import AddAllFeedbackSlice from '../States/FeedBack/AddAllFeedbackSlice';
+import putFeedbackSlice from '../States/FeedBack/putFeedbackSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -52,7 +52,7 @@ export const Store = configureStore({
         SingleBlog: GetSingleBlogSlice,
         //feedback 
         GetAllFeedback: GetAllFeedbackSlice,
-        AddAllFeedback: AddAllFeedbackSlice
+        putFeedback: putFeedbackSlice
     },
 })
 
