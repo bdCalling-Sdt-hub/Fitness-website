@@ -16,6 +16,7 @@ import GetAllSeriesSlice from '../States/Series/GetAllSeriesSlice';
 import GetAllProgramSlice from '../States/Program/GetAllProgramSlice';
 import SingleProgramSlice from '../States/Program/SingleProgramSlice';
 import GetAllBlogSlice from '../States/Blog/GetAllBlogSlice';
+import GetSingleBlogSlice from '../States/Blog/GetSingleBlogSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -40,8 +41,10 @@ export const Store = configureStore({
         GetAllSeries: GetAllSeriesSlice,
         //program
         GetAllProgram: GetAllProgramSlice,
-        SingleProgram:SingleProgramSlice,
-        GetAllBlog:GetAllBlogSlice,
+        SingleProgram: SingleProgramSlice,
+        //blog
+        GetAllBlog: GetAllBlogSlice,
+        SingleBlog: GetSingleBlogSlice,
     },
 })
 

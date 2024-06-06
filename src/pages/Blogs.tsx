@@ -9,21 +9,13 @@ import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { GetAllBlog } from '../States/Blog/GetAllBlogSlice';
 import { Pagination, PaginationProps } from 'antd';
 import { ServerUrl } from '../AxiosConfig/Config';
-
-interface IBlogProps {
-    title: string;
-    date: string;
-    topic: string;
-    image: string;
-    description: string;
-}
 const Blogs = (): React.JSX.Element => {
     const [itemPerPage, setItemPerPage] = useState(10)
     const [page, setPage] = useState(1)
     const dispatch = useAppDispatch()
     const { AllBlog, meta } = useAppSelector(state => state.GetAllBlog)
     useEffect(() => {
-        dispatch(GetAllBlog({page: page, limit: itemPerPage,})).then((res) => console.log(res))
+        dispatch(GetAllBlog({page: page, limit: itemPerPage,}))
     }, [])
     const onChange: PaginationProps['onChange'] = (pageNumber) => {
         setPage(pageNumber)
