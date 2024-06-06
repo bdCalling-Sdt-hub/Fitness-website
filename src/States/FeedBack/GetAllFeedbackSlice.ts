@@ -6,7 +6,7 @@ interface initialState {
     success: boolean;
     loading: boolean;
     isSuccess: boolean;
-    Order: {
+    Feedback: {
         _id: string,
         productId: {
             _id: string,
@@ -34,14 +34,14 @@ const initialState: initialState = {
     success: false,
     loading: false,
     isSuccess: false,
-    Order: []
+    Feedback: []
 };
 
-export const GetAllOrder = createAsyncThunk(
-    'GetAllOrder',
+export const GetAllFeedback = createAsyncThunk(
+    'GetAllFeedback',
     async (value, thunkApi) => {
         try {
-            const response = await baseURL.get(`/order/all`, {
+            const response = await baseURL.get(`/feedback/all`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -55,28 +55,28 @@ export const GetAllOrder = createAsyncThunk(
         }
     }
 )
-export const GetAllOrderSlice = createSlice({
-    name: 'GetAllOrder',
+export const GetAllFeedbackSlice = createSlice({
+    name: 'GetAllFeedback',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(GetAllOrder.pending, (state) => {
+        builder.addCase(GetAllFeedback.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(GetAllOrder.fulfilled, (state, action) => {
+            builder.addCase(GetAllFeedback.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
-                state.Order = action.payload;
+                state.Feedback = action.payload;
             }),
-            builder.addCase(GetAllOrder.rejected, (state) => {
+            builder.addCase(GetAllFeedback.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.Order = []
+                state.Feedback = []
             })
     }
 })
-export default GetAllOrderSlice.reducer
+export default GetAllFeedbackSlice.reducer

@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider, { CustomArrowProps, Settings } from "react-slick";
 import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
+import { useAppDispatch, useAppSelector } from '../Store/hook';
+import { GetAllFeedback } from '../States/FeedBack/GetAllFeedbackSlice';
 
 
 const ArrowLeft = ({ ...props } : CustomArrowProps) => (
@@ -24,7 +26,6 @@ const ArrowLeft = ({ ...props } : CustomArrowProps) => (
 
 const Feedback = () => {
     const [slideIndex, setSlideIndex] = useState(0);
-
     const settings:Settings = {
         infinite: true,
         speed: 500,
@@ -65,7 +66,12 @@ const Feedback = () => {
             }
         ]
     };
-
+const dispatch = useAppDispatch()
+const {Feedback}=useAppSelector(state=>state.GetAllFeedback)
+console.log(Feedback)
+useEffect(()=>{
+    dispatch(GetAllFeedback())
+},[])
     return (
         <div className='w-full mx-auto'>
             <div className='mb-[50px]'>

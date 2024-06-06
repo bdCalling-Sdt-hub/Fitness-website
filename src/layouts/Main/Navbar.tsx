@@ -4,7 +4,7 @@ import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
 import { BsCart2 } from "react-icons/bs";
 import { GetProp, Input, Modal } from 'antd';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { FormProps, SubmitHandler, useForm } from 'react-hook-form';
 import { IoIosSearch } from 'react-icons/io';
 import LoginPopUp from '../../pages/LoginPopUp';
 import { OTPProps } from 'antd/es/input/OTP';
@@ -18,54 +18,14 @@ import { MdOutlineFeedback } from 'react-icons/md';
 import { CiLogout, CiTimer } from 'react-icons/ci';
 import { ServerUrl } from '../../AxiosConfig/Config';
 import { ShopItems } from '../../States/Shop/ShopSlice';
+import { AddAllFeedback } from '../../States/FeedBack/AddAllFeedbackSlice';
 interface IRoutes {
     name: string;
     path: string
 }
-
 interface Inputs {
-    search: string | null,
-    email: string | null,
-    password: string,
-    savePass: string | null,
-    username: string | null,
-    contact: string | null,
-    confirmPass: string | null,
+    feedback: string | undefined |null,
 }
-const dataSource = [
-    {
-        key: '1',
-        name: 'The Dumbbell',
-        img: 'https://i.ibb.co/TcBnDLP/Rectangle-5089.png',
-        price: '150 CND',
-        time: '05/12/2024',
-        quantity: '02',
-    },
-    {
-        key: '1',
-        name: 'The Dumbbell',
-        img: 'https://i.ibb.co/TcBnDLP/Rectangle-5089.png',
-        price: '150 CND',
-        time: '05/12/2024',
-        quantity: '02',
-    },
-    {
-        key: '1',
-        name: 'The Dumbbell',
-        img: 'https://i.ibb.co/TcBnDLP/Rectangle-5089.png',
-        price: '150 CND',
-        time: '05/12/2024',
-        quantity: '02',
-    },
-    {
-        key: '1',
-        name: 'The Dumbbell',
-        img: 'https://i.ibb.co/TcBnDLP/Rectangle-5089.png',
-        price: '150 CND',
-        time: '05/12/2024',
-        quantity: '02',
-    },
-];
 const Navbar = (): React.JSX.Element => {
     const [openSearchModal, setOpenSearchModal] = useState(false)
     const { pathname } = useLocation();
@@ -75,12 +35,14 @@ const Navbar = (): React.JSX.Element => {
     const [openVerifyPass, setOpenVerifyPass] = useState(false)
     const [openNewPass, setOpenNewPass] = useState(false)
     const [openChangedPass, setOpenChangedPass] = useState(false)
+    const [openFeedbackModal, setopenFeedbackModal] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
     const { user }: any = useAppSelector(state => state.Profile)
     const [showUserOptions, setShowUserOptions] = useState(false);
     const [searchValue, setSearchValue] = useState<string>('')
     const dispatch = useAppDispatch()
     const { Products, meta } = useAppSelector(state => state.ShopItems)
+
     useEffect(() => {
         dispatch(ShopItems({ page: 1, limit: 5, sort: '', searchTerm: searchValue }))
     }, [searchValue])
@@ -90,7 +52,8 @@ const Navbar = (): React.JSX.Element => {
         formState: { errors },
     } = useForm<Inputs>()
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        //console.log(data)
+        dispatch(AddAllFeedback({ feedback: data.feedback })).then((res)=>console.log(res))
+        // console.log(data)
     }
 
     const items = [
@@ -130,9 +93,10 @@ const Navbar = (): React.JSX.Element => {
         location.reload();
     }
 
-    const handleChange = (e:any) => {
+    const handleChange = (e: any) => {
         setSearchValue(e.target.value)
     }
+
     return (
         <div className='bg-base fixed top-0 h-[80px] z-50 flex items-center justify-center  w-full'>
             <div className='container flex items-center justify-between'>
@@ -187,6 +151,8 @@ const Navbar = (): React.JSX.Element => {
                                         </Link>
                                         <Link onClick={() => {
                                             setShowUserOptions(false)
+                                            setopenFeedbackModal(true)
+
                                         }} className='flex justify-start items-center  gap-2 text-gray-500 hover:bg-[#F8F1E6] py-1 px-4 transition-all w-full' to={`#`}>
                                             <MdOutlineFeedback className='text-xl' />
                                             Feedback
@@ -341,6 +307,20 @@ const Navbar = (): React.JSX.Element => {
                     </div>
                     <Link onClick={() => setOpenSearchModal(false)} to={`/shop?search=${searchValue}`} className='text-[#B47000] w-full py-3 bg-[#F8F1E6] absolute text-center bottom-0 left-0 text-lg'>See all results</Link>
                 </div>
+            </Modal>
+            <Modal
+                centered
+                footer={false}
+                onCancel={() => setopenFeedbackModal(false)}
+                open={openFeedbackModal}
+            >
+                <form onSubmit={handleSubmit(onSubmit)} className='p-2'>
+                    <h3 className='text-2xl lg:text-4xl text-[#555555] font-bold text-center mb-10'>Write your Feedback</h3>
+                    <p className='mb-2'>Feedback</p>
+                    <textarea className='w-full border resize-none p-2 h-44 outline-none rounded-md' placeholder='Write your thinks' {...register("feedback", { required: true })} />
+                    {errors.feedback && <span className='text-red-500'>feedback is required *</span>}
+                    <input className='text-white bg-[#B47000] p-3 px-6 rounded cursor-pointer mx-auto block w-fit mt-3' value={`send`} type="submit" />
+                </form>
             </Modal>
         </div>
     )

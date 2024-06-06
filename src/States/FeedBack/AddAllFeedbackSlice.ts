@@ -6,23 +6,23 @@ interface initialState {
     success: boolean;
     loading: boolean;
     isSuccess: boolean;
-    Order: {
+    Feedback: {
         _id: string,
         productId: {
             _id: string,
             productName: string,
-            gender:string,
+            gender: string,
             date: string,
             price: string,
             images: string[],
             description: string,
             createdAt: string,
             updatedAt: string,
-            __v:number,
+            __v: number,
             id: string,
         },
         user: string,
-        quantity:number,
+        quantity: number,
         createdAt: string,
         updatedAt: string,
         __v: number,
@@ -34,17 +34,19 @@ const initialState: initialState = {
     success: false,
     loading: false,
     isSuccess: false,
-    Order: []
+    Feedback: []
 };
-
-export const GetAllOrder = createAsyncThunk(
-    'GetAllOrder',
-    async (value, thunkApi) => {
+interface Parameter {
+    feedback: string | undefined | null
+}
+export const AddAllFeedback = createAsyncThunk(
+    'AddAllFeedback',
+    async (value: Parameter, thunkApi) => {
         try {
-            const response = await baseURL.get(`/order/all`, {
+            const response = await baseURL.post(`/feedback/all`, { text: value?.feedback }, {
                 headers: {
                     "Content-Type": "application/json",
-                    authorization: `Bearer ${localStorage.getItem('token')}`,
+                    authorization: `Bearer ${localStorage.AddItem('token')}`,
                 }
             });
             return response?.data.data;
@@ -55,28 +57,28 @@ export const GetAllOrder = createAsyncThunk(
         }
     }
 )
-export const GetAllOrderSlice = createSlice({
-    name: 'GetAllOrder',
+export const AddAllFeedbackSlice = createSlice({
+    name: 'AddAllFeedback',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(GetAllOrder.pending, (state) => {
+        builder.addCase(AddAllFeedback.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(GetAllOrder.fulfilled, (state, action) => {
+            builder.addCase(AddAllFeedback.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
-                state.Order = action.payload;
+                state.Feedback = action.payload;
             }),
-            builder.addCase(GetAllOrder.rejected, (state) => {
+            builder.addCase(AddAllFeedback.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.Order = []
+                state.Feedback = []
             })
     }
 })
-export default GetAllOrderSlice.reducer
+export default AddAllFeedbackSlice.reducer

@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
 import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../Store/hook';
+import { GetAllOrder } from '../States/Order/GetAllOrderSlice';
 const dataSource = [
     {
         key: '1',
@@ -16,6 +18,12 @@ const dataSource = [
 ];
 
 const Order = (): React.JSX.Element => {
+    const dispatch = useAppDispatch()
+    const {Order}=useAppSelector(state=>state.GetAllOrder)
+    // console.log(Order)
+    useEffect(()=>{
+        dispatch(GetAllOrder())
+    },[])
     return (
         <div className='container mx-auto'>
             <Navigation name='Order' />

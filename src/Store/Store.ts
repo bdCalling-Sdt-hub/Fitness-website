@@ -17,6 +17,9 @@ import GetAllProgramSlice from '../States/Program/GetAllProgramSlice';
 import SingleProgramSlice from '../States/Program/SingleProgramSlice';
 import GetAllBlogSlice from '../States/Blog/GetAllBlogSlice';
 import GetSingleBlogSlice from '../States/Blog/GetSingleBlogSlice';
+import GetAllOrderSlice from '../States/Order/GetAllOrderSlice';
+import GetAllFeedbackSlice from '../States/FeedBack/GetAllFeedbackSlice';
+import AddAllFeedbackSlice from '../States/FeedBack/AddAllFeedbackSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -37,6 +40,8 @@ export const Store = configureStore({
         //cart 
         AddToCart: AddToCartSlice,
         GetToCart: GetToCartSlice,
+        //order
+        GetAllOrder: GetAllOrderSlice,
         //series
         GetAllSeries: GetAllSeriesSlice,
         //program
@@ -45,6 +50,9 @@ export const Store = configureStore({
         //blog
         GetAllBlog: GetAllBlogSlice,
         SingleBlog: GetSingleBlogSlice,
+        //feedback 
+        GetAllFeedback: GetAllFeedbackSlice,
+        AddAllFeedback: AddAllFeedbackSlice
     },
 })
 

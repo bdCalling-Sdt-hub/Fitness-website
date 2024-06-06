@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading';
-import photo from "../assets/photo.png";
 import MetaTag from '../components/common/MetaTag';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { useParams } from 'react-router-dom';
