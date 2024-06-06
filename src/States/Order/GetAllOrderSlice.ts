@@ -8,40 +8,45 @@ interface initialState {
     isSuccess: boolean;
     Order: {
         _id: string,
-        productId: {
+        user: string,
+        product: {
             _id: string,
             productName: string,
-            gender:string,
-            date: string,
             price: string,
             images: string[],
-            description: string,
-            createdAt: string,
-            updatedAt: string,
-            __v:number,
             id: string,
         },
-        user: string,
-        quantity:number,
+        deliveryDate: string,
+        paymentStatus: string,
+        quantity: number,
+        totalAmount: number,
+        orderStatus: string,
         createdAt: string,
         updatedAt: string,
-        __v: number,
+        location: string,
         id: string,
     }[]
+    meta: {
+        page: number,
+        limit: number,
+        total: number,
+        totalPage: number,
+    } | null
 }
 const initialState: initialState = {
     error: false,
     success: false,
     loading: false,
     isSuccess: false,
-    Order: []
+    Order: [],
+    meta: null
 };
 
 export const GetAllOrder = createAsyncThunk(
     'GetAllOrder',
     async (value, thunkApi) => {
         try {
-            const response = await baseURL.get(`/order/all`, {
+            const response = await baseURL.get(`/order/order-history`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -69,13 +74,15 @@ export const GetAllOrderSlice = createSlice({
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
-                state.Order = action.payload;
+                state.Order = action.payload.data;
+                state.meta = action.payload.meta
             }),
             builder.addCase(GetAllOrder.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
                 state.Order = []
+                state.meta = null
             })
     }
 })

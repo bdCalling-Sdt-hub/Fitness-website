@@ -69,7 +69,6 @@ const Feedback = () => {
     };
     const dispatch = useAppDispatch()
     const { Feedback } = useAppSelector(state => state.GetAllFeedback)
-    console.log(Feedback)
     useEffect(() => {
         dispatch(GetAllFeedback())
     }, [])
