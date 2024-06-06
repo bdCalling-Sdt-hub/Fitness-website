@@ -14,6 +14,13 @@ import { GrPauseFill } from "react-icons/gr";
 import Chart from '../Academy/Chart';
 import StatusLabel from '../Academy/StatusLabel';
 import { IoIosArrowDown } from 'react-icons/io';
+import { FaCheckCircle, FaRegFilePdf } from 'react-icons/fa';
+import { Link, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../Store/hook';
+import { SingleProgram } from '../States/Program/SingleProgramSlice';
+import baseURL, { ServerUrl } from '../AxiosConfig/Config';
+import { SiGoogledocs } from 'react-icons/si';
+import { RxCross1 } from 'react-icons/rx';
 interface ProgramData {
     _id: string,
     img: string,
@@ -75,15 +82,8 @@ const data: ProgramData[] = [
 
     },
 ]
-import { FaCheckCircle, FaRegFilePdf } from 'react-icons/fa';
-import { Link, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../Store/hook';
-import { SingleProgram } from '../States/Program/SingleProgramSlice';
-import baseURL, { ServerUrl } from '../AxiosConfig/Config';
-import { SiGoogledocs } from 'react-icons/si';
-import { RxCross1 } from 'react-icons/rx';
-import axios from 'axios';
 type ContentRef = HTMLDivElement | null;
+
 const Academy = (): React.JSX.Element => {
     const { id } = useParams()
     const [openCalender, setOpenCalender] = useState<boolean>(false);
@@ -99,7 +99,7 @@ const Academy = (): React.JSX.Element => {
                 "Content-Type": "application/json",
                 authorization: `Bearer ${localStorage.getItem('token')}`,
             }
-        }).then((res)=>console.log(res.data))
+        }).then((res) => console.log(res.data))
     }, [CurrentClass?._id])
 
     useEffect(() => {
@@ -108,12 +108,13 @@ const Academy = (): React.JSX.Element => {
                 "Content-Type": "application/json",
                 authorization: `Bearer ${localStorage.getItem('token')}`,
             }
+        }).then((res) => {
+            if (res.data.success) {
+                setanalayties(res.data.data)
+            }
         })
-            .then((res) => {
-                console.log(res.data)
-            })
     }, [id])
-    console.log(SingleProgramData)
+    console.log(anyties)
     useEffect(() => {
         setCurrentClass(SingleProgramData?.series[0]?.classes[0])
     }, [SingleProgramData])
@@ -222,7 +223,7 @@ const Academy = (): React.JSX.Element => {
                         style={{ boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px' }}
                     >
                         <h1 className='text-secondary text-[16px] leading-[12px] font-bold'>Your Progress</h1>
-                        <Chart />
+                        <Chart anyties={anyties} />
                         <StatusLabel />
                     </div>
 
@@ -250,7 +251,7 @@ const Academy = (): React.JSX.Element => {
                                                 return (
                                                     <div onClick={() => setCurrentClass(item)} key={index} className='flex justify-start items-start gap-3 mt-6'>
                                                         <div>
-                                                            <FaCheckCircle className='text-green-500 text-lg' />
+                                                            <FaCheckCircle className={` ${item?.isRead ? 'text-green-500' : 'text-gray-500'} text-lg`} />
                                                         </div>
                                                         <div>
                                                             <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Class No {index + 1} :{item?.title}</p>

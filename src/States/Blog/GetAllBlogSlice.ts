@@ -31,11 +31,7 @@ const initialState: initialState = {
     meta: null
 
 };
-interface Permitter {
-    page: number | null | undefined,
-    limit: number | null | undefined,
-    title: string | null | undefined
-}
+
 export const GetAllBlog = createAsyncThunk(
     'GetAllBlog',
     async (value, thunkApi) => {
@@ -46,7 +42,8 @@ export const GetAllBlog = createAsyncThunk(
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            return response?.data.data;
+            // console.log(response)
+            return response?.data;
         } catch (error) {
             const axiosError = error as AxiosError;
             const message = axiosError?.response?.data;
