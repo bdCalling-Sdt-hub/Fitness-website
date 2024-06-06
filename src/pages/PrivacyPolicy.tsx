@@ -6,7 +6,6 @@ import { PrivecyPolicy } from '../States/PrivecyPolicy/PrivecyPolicySlice'
 
 const PrivacyPolicy = (): React.JSX.Element => {
     const {PrivecyPolicyData}=useAppSelector(state=>state.PrivecyPolicy)
-    console.log(PrivecyPolicyData)
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(PrivecyPolicy())

@@ -7,7 +7,6 @@ interface initialState {
     loading: boolean;
     isSuccess: boolean;
     PrivecyPolicyData: {
-
         _id: string,
         description: string,
         createdAt: string,

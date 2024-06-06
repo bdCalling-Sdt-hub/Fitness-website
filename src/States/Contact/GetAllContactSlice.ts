@@ -6,42 +6,24 @@ interface initialState {
     success: boolean;
     loading: boolean;
     isSuccess: boolean;
-    Feedback: {
-        _id: string,
-        user: {
-            profile_image: string,
-            _id: string,
-            name: string,
-            email: string,
-            role: string,
-            id: string,
-        },
-        text: string,
-        createdAt: string,
-        updatedAt: string,
-        id: string,
+    Contact: {
+        email: string[],
+        phone: string[],
     }[]
-    meta: {
-        page: number,
-        limit: number,
-        total: number,
-        totalPage: number,
-    } | null
 }
 const initialState: initialState = {
     error: false,
     success: false,
     loading: false,
     isSuccess: false,
-    Feedback: [],
-    meta: null
+    Contact: [],
 };
 
-export const GetAllFeedback = createAsyncThunk(
-    'GetAllFeedback',
+export const GetAllContact = createAsyncThunk(
+    'GetAllContact',
     async (value, thunkApi) => {
         try {
-            const response = await baseURL.get(`/feedback/all`, {
+            const response = await baseURL.get(`/manage/get-contact-info`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -55,30 +37,28 @@ export const GetAllFeedback = createAsyncThunk(
         }
     }
 )
-export const GetAllFeedbackSlice = createSlice({
-    name: 'GetAllFeedback',
+export const GetAllContactSlice = createSlice({
+    name: 'GetAllContact',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(GetAllFeedback.pending, (state) => {
+        builder.addCase(GetAllContact.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(GetAllFeedback.fulfilled, (state, action) => {
+            builder.addCase(GetAllContact.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
-                state.Feedback = action.payload.data;
-                state.meta = action.payload.meta
+                state.Contact = action.payload
             }),
-            builder.addCase(GetAllFeedback.rejected, (state) => {
+            builder.addCase(GetAllContact.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.Feedback = []
-                state.meta = null
+                state.Contact = []
             })
     }
 })
-export default GetAllFeedbackSlice.reducer
+export default GetAllContactSlice.reducer

@@ -21,6 +21,7 @@ import GetAllOrderSlice from '../States/Order/GetAllOrderSlice';
 import GetAllFeedbackSlice from '../States/FeedBack/GetAllFeedbackSlice';
 import putFeedbackSlice from '../States/FeedBack/putFeedbackSlice';
 import PrivecyPolicySlice from '../States/PrivecyPolicy/PrivecyPolicySlice';
+import GetAllContactSlice from '../States/Contact/GetAllContactSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -56,6 +57,8 @@ export const Store = configureStore({
         putFeedback: putFeedbackSlice,
         //privecy policy 
         PrivecyPolicy : PrivecyPolicySlice,
+        // contact 
+        GetAllContact : GetAllContactSlice,
     },
 })
 
