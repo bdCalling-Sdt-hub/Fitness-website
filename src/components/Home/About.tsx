@@ -1,9 +1,10 @@
-import React from 'react';
+
 import Banner from "../../assets/about_banner.png";
 import Heading from '../common/Heading';
 import { Link } from 'react-router-dom';
 
 const About = (): React.JSX.Element => {
+
     return (
         <div className='container flex flex-col md:grid grid-cols-2 gap-10'>
             <div>
