@@ -24,6 +24,7 @@ import PrivecyPolicySlice from '../States/PrivecyPolicy/PrivecyPolicySlice';
 import GetAllContactSlice from '../States/Contact/GetAllContactSlice';
 import SentContactMessageSlice from '../States/Contact/SentContactMessageSlice';
 import GetAboutContentSlice from '../States/About/GetAboutContentSlice';
+import TermsConditionsSlice from '../States/TermsConditions/TermsConditionsSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -58,12 +59,14 @@ export const Store = configureStore({
         GetAllFeedback: GetAllFeedbackSlice,
         putFeedback: putFeedbackSlice,
         //privecy policy 
-        PrivecyPolicy : PrivecyPolicySlice,
+        PrivecyPolicy: PrivecyPolicySlice,
         // contact 
-        GetAllContact : GetAllContactSlice,
-        SentContact : SentContactMessageSlice,
+        GetAllContact: GetAllContactSlice,
+        SentContact: SentContactMessageSlice,
         //about
-        GetAboutContent:GetAboutContentSlice,
+        GetAboutContent: GetAboutContentSlice,
+        //trams and condition  
+        TermsConditions: TermsConditionsSlice,
     },
 })
 
