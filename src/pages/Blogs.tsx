@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navigation from '../components/common/Navigation';
 import Heading from '../components/common/Heading';
 import MetaTag from '../components/common/MetaTag';
 import Photo from "../assets/photo1.png";
 import { LuCalendar } from "react-icons/lu";
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../Store/hook';
+import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { GetAllBlog } from '../States/Blog/GetAllBlogSlice';
+import { Pagination, PaginationProps } from 'antd';
+import { ServerUrl } from '../AxiosConfig/Config';
 
 interface IBlogProps {
     title: string;
@@ -15,12 +17,20 @@ interface IBlogProps {
     image: string;
     description: string;
 }
-
 const Blogs = (): React.JSX.Element => {
+    const [itemPerPage, setItemPerPage] = useState(10)
+    const [page, setPage] = useState(1)
     const dispatch = useAppDispatch()
+    const { AllBlog, meta } = useAppSelector(state => state.GetAllBlog)
     useEffect(() => {
-        dispatch(GetAllBlog()).then((res)=>console.log(res))
+        dispatch(GetAllBlog({page: page, limit: itemPerPage,})).then((res) => console.log(res))
     }, [])
+    const onChange: PaginationProps['onChange'] = (pageNumber) => {
+        setPage(pageNumber)
+    };
+    const onShowSizeChange = (current: any, size: any) => {
+        setItemPerPage(size);
+    }
     return (
         <div className='container pb-20'>
             <Navigation name='Blogs' />
@@ -28,24 +38,22 @@ const Blogs = (): React.JSX.Element => {
             <MetaTag title='Blogs' />
             <div className='md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 flex flex-col justify-start items-start md:items-center mt-10'>
                 {
-                    [...Array(6)].map((_item: IBlogProps, index) => {
+                    AllBlog.map((_item) => {
                         return (
-                            <div key={index} className='group'>
+                            <div key={_item?._id} className='group'>
                                 <div className='overflow-hidden w-full h-full'>
-                                    <img
-                                        src={Photo} className='group-hover:scale-125 transition-all duration-300' style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="" />
+                                    <img src={`${ServerUrl}/${_item?.images[0]}`} className='group-hover:scale-125 transition-all duration-300' style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="" />
                                 </div>
                                 <div className='flex items-center gap-4 my-2'>
                                     <LuCalendar size={24} color='#555555' />
-                                    <p className='text-secondary font-normal text-[16px] leading-[22px]'>03 Sep 2024</p>
-                                    <p className='text-secondary font-normal text-[16px] leading-[22px]'>Topic : Yoga</p>
+                                    <p className='text-secondary font-normal text-[16px] leading-[22px]'>{_item?.createdAt.split('T')[0]}</p>
+                                    <p className='text-secondary font-normal text-[16px] leading-[22px]'>Topic : {_item?.topic}</p>
                                 </div>
-                                <p className='text-secondary font-medium text-[24px] leading-[34px] mb-2'>Gym Chronicles: Journey to Strength and Stamina</p>
+                                <p className='text-secondary font-medium text-[24px] leading-[34px] mb-2'>{_item?.title}</p>
                                 <p className='text-secondary font-light text-[16px] leading-[29px] mb-6'>
-                                    Lorem Ipsum is not simply random text. It has roots in a piece of classical
-                                    Latin literature from 45 BC, making it over 2000 years old. Richard.
+                                   {_item?.title}
                                 </p>
-                                <Link to={`/blog-details/2`}>
+                                <Link to={`/blog-details/${_item?._id}`}>
                                     <button
                                         style={{
                                             width: "100%",
@@ -66,6 +74,9 @@ const Blogs = (): React.JSX.Element => {
                         )
                     })
                 }
+            </div>
+            <div className='text-center mt-8'>
+                <Pagination defaultCurrent={page} total={meta?.total} pageSize={itemPerPage} onShowSizeChange={onShowSizeChange} onChange={onChange} />
             </div>
         </div>
     )

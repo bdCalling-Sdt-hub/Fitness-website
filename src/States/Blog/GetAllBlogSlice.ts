@@ -8,11 +8,13 @@ interface initialState {
     isSuccess: boolean;
     AllBlog: {
         _id: string,
+        created_by: string,
+        topic: string,
         title: string,
-        image: string,
+        description: string,
+        images: string[],
         createdAt: string,
         updatedAt: string,
-        __v: number,
         id: string,
     }[]
     meta: {
@@ -31,18 +33,21 @@ const initialState: initialState = {
     meta: null
 
 };
-
+interface Permitter {
+    page: number | null | undefined,
+    limit: number | null | undefined,
+}
 export const GetAllBlog = createAsyncThunk(
     'GetAllBlog',
-    async (value, thunkApi) => {
+    async (value :Permitter, thunkApi) => {
         try {
-            const response = await baseURL.get(`/blog/get-all`, {
+            const response = await baseURL.get(`/blog/get-all?page=${value?.page}&limit=${value?.limit}`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            // console.log(response)
+            console.log(response)
             return response?.data;
         } catch (error) {
             const axiosError = error as AxiosError;
