@@ -25,6 +25,7 @@ interface initialState {
             createdAt: string,
             updatedAt: string,
             __v: 0,
+            totalVideoDuration:number,
             classes: {
                 _id: string,
                 program: string,
@@ -61,12 +62,14 @@ const initialState: initialState = {
 };
 interface Permitter {
     id: string | null | undefined,
+    date: any
 }
 export const SingleProgram = createAsyncThunk(
     'SingleProgram',
     async (value: Permitter, thunkApi) => {
         try {
-            const response = await baseURL.get(`/program/${value.id}`, {
+            console.log(value.date)
+            const response = await baseURL.get(`/program/${value.id}${value.date && `?date=${value.date}`}`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -75,25 +75,48 @@ const data: ProgramData[] = [
 
     },
 ]
-import { FaCheckCircle } from 'react-icons/fa';
+import { FaCheckCircle, FaRegFilePdf } from 'react-icons/fa';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { SingleProgram } from '../States/Program/SingleProgramSlice';
-import { ServerUrl } from '../AxiosConfig/Config';
+import baseURL, { ServerUrl } from '../AxiosConfig/Config';
+import { SiGoogledocs } from 'react-icons/si';
+import { RxCross1 } from 'react-icons/rx';
+import axios from 'axios';
 type ContentRef = HTMLDivElement | null;
 const Academy = (): React.JSX.Element => {
+    const { id } = useParams()
     const [openCalender, setOpenCalender] = useState<boolean>(false);
-    const [selectedDate, setSelectedDate] = useState<string | null>("");
+    const [selectedDate, setSelectedDate] = useState<any>('');
     const [keyword, setKeyword] = useState<string | undefined>("");
     const [playing, setPlaying] = useState(false);
     const { SingleProgramData } = useAppSelector(state => state.SingleProgram)
     const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
+    const [anyties, setanalayties] = useState()
+    useEffect(() => {
+        baseURL.get(`/class/single/${CurrentClass?._id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
+        }).then((res)=>console.log(res.data))
+    }, [CurrentClass?._id])
+
+    useEffect(() => {
+        baseURL.get(`/program/analytics/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
+        })
+            .then((res) => {
+                console.log(res.data)
+            })
+    }, [id])
     console.log(SingleProgramData)
-    // console.log(CurrentClass)
     useEffect(() => {
         setCurrentClass(SingleProgramData?.series[0]?.classes[0])
     }, [SingleProgramData])
-    const { id } = useParams()
     const dispatch = useAppDispatch()
     const onChange = (value: Dayjs) => {
         setSelectedDate(dayjs(value).format('YYYY-MM-DD'))
@@ -122,8 +145,8 @@ const Academy = (): React.JSX.Element => {
         });
     }, [openIndex]);
     useEffect(() => {
-        dispatch(SingleProgram({ id }))
-    }, [id])
+        dispatch(SingleProgram({ id, date: selectedDate }))
+    }, [id, selectedDate])
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
@@ -148,6 +171,11 @@ const Academy = (): React.JSX.Element => {
                     <CiCalendarDate color='#905A00' size={35} />
                 </div>
             </div>
+            {
+                selectedDate && <div className='mt-3 flex justify-start items-center gap-3'>
+                    <p>filtered by date : <span className='font-bold'>{selectedDate}</span></p> <button onClick={() => setSelectedDate('')} className='p-1 text-xl bg-red-600 text-white rounded-full hover:scale-105 active:scale-95 transition-all'><RxCross1 /></button>
+                </div>
+            }
             <div className='md:grid flex flex-col grid-cols-12 gap-10 mt-8 group'>
                 <div className='col-span-8 '>
                     <div className='video_player flex items-center justify-center'>
@@ -177,15 +205,20 @@ const Academy = (): React.JSX.Element => {
                     <div className='flex items-center gap-4 my-4'>
                         <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>Topic : {CurrentClass?.topic}</p>
                         <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>{CurrentClass?.date.split('T')[0]}</p>
+                        <a className='flex justify-start items-center gap-1 hover:text-blue-500' href={`${ServerUrl}/${CurrentClass?.pdfFile}`} target="_blank" rel="noopener noreferrer">
+                            <FaRegFilePdf /> PDF File
+                        </a>
+                        <a className='flex justify-start items-center gap-1 hover:text-blue-500' href={`${ServerUrl}/${CurrentClass?.docFile}`} target="_blank" rel="noopener noreferrer">
+                            <SiGoogledocs /> Doc File
+                        </a>
                     </div>
                     <p className='text-[#242424] font-semibold text-[24px] leading-[18px] mb-6'>{CurrentClass?.title}</p>
                     <p className='text-secondary font-normal text-[14px] leading-7'>
                         {CurrentClass?.description}
                     </p>
                 </div>
-
                 <div className='col-span-4 w-full'>
-                    <div className='w-full rounded h-[280px] p-4 mb-6'
+                    <div className='w-full rounded h-[280px] p-4 mb-6 select-none pointer-events-none'
                         style={{ boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px' }}
                     >
                         <h1 className='text-secondary text-[16px] leading-[12px] font-bold'>Your Progress</h1>
@@ -196,12 +229,12 @@ const Academy = (): React.JSX.Element => {
                     <div className='w-full  md:overflow-y-scroll md:max-h-[700px] video-collection'>
                         <div className=' md:flex flex-col gap-3'>
                             {
-                                SingleProgramData?.series?.map((item,index) => <div key={index} className='cursor-pointer p-3 bg-[#F2F2F2]'>
+                                SingleProgramData?.series?.map((item, index) => <div key={index} className='cursor-pointer p-3 bg-[#F2F2F2]'>
                                     <div onClick={() => toggleAccordion(index)} className=' relative'>
                                         <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Series No {index + 1} : {item?.title}</p>
                                         <div className='flex justify-start items-center gap-3 mt-3'>
-                                            <p className='text-[#919191] text-xs'>Total video : {item?.classes?.length}</p> 
-                                            {/* <p className='text-[#919191] text-xs'>3 h 40 m</p> */}
+                                            <p className='text-[#919191] text-xs'>Total video : {item?.classes?.length}</p>
+                                            <p className='text-[#919191] text-xs font-semibold'>Duration {item?.totalVideoDuration} H</p>
                                         </div>
                                         <IoIosArrowDown className='text-2xl absolute right-1 top-1' />
                                     </div>
@@ -213,16 +246,16 @@ const Academy = (): React.JSX.Element => {
                                         }}
                                     >
                                         {
-                                           item?.classes?.map((item, index) => {
+                                            item?.classes?.map((item, index) => {
                                                 return (
-                                                    <div onClick={()=>setCurrentClass(item)} key={index} className='flex justify-start items-start gap-3 mt-6'>
+                                                    <div onClick={() => setCurrentClass(item)} key={index} className='flex justify-start items-start gap-3 mt-6'>
                                                         <div>
                                                             <FaCheckCircle className='text-green-500 text-lg' />
                                                         </div>
                                                         <div>
                                                             <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Class No {index + 1} :{item?.title}</p>
                                                             <div className='flex justify-start items-center gap-3 mt-2'>
-                                                                <p className='text-[#919191] text-sm'>{item?.description.slice(0,150)}..</p>
+                                                                <p className='text-[#919191] text-sm'>{item?.description.slice(0, 150)}..</p>
                                                             </div>
                                                         </div>
                                                     </div>
