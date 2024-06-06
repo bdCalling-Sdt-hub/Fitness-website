@@ -21,69 +21,8 @@ import { SingleProgram } from '../States/Program/SingleProgramSlice';
 import baseURL, { ServerUrl } from '../AxiosConfig/Config';
 import { SiGoogledocs } from 'react-icons/si';
 import { RxCross1 } from 'react-icons/rx';
-interface ProgramData {
-    _id: string,
-    img: string,
-    title: String
-}
-const data: ProgramData[] = [
-    {
-        _id: '1',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '2',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '3',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '4',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '5',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '6',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '7',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '8',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '9',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-]
+import { GetAllProgram } from '../States/Program/GetAllProgramSlice';
 type ContentRef = HTMLDivElement | null;
-
 const Academy = (): React.JSX.Element => {
     const { id } = useParams()
     const [openCalender, setOpenCalender] = useState<boolean>(false);
@@ -93,6 +32,7 @@ const Academy = (): React.JSX.Element => {
     const { SingleProgramData } = useAppSelector(state => state.SingleProgram)
     const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
     const [anyties, setanalayties] = useState()
+
     useEffect(() => {
         baseURL.get(`/class/single/${CurrentClass?._id}`, {
             headers: {
@@ -114,10 +54,11 @@ const Academy = (): React.JSX.Element => {
             }
         })
     }, [id])
-    console.log(anyties)
+
     useEffect(() => {
         setCurrentClass(SingleProgramData?.series[0]?.classes[0])
     }, [SingleProgramData])
+
     const dispatch = useAppDispatch()
     const onChange = (value: Dayjs) => {
         setSelectedDate(dayjs(value).format('YYYY-MM-DD'))
@@ -138,16 +79,21 @@ const Academy = (): React.JSX.Element => {
         if (openIndex !== null && contentRefs.current[openIndex]) {
             contentRefs.current[openIndex]!.style.maxHeight = `${contentRefs.current[openIndex]!.scrollHeight}px`;
         }
-
         contentRefs.current.forEach((ref, index) => {
             if (ref && index !== openIndex) {
                 ref.style.maxHeight = '0px';
             }
         });
     }, [openIndex]);
+
     useEffect(() => {
         dispatch(SingleProgram({ id, date: selectedDate }))
-    }, [id, selectedDate])
+    }, [id, selectedDate, CurrentClass?._id])
+
+    const { AllProgram } = useAppSelector(state => state.GetAllProgram)
+    useEffect(() => {
+        dispatch(GetAllProgram({ page: 1, limit: 4, title: '' }))
+    }, [keyword])
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
@@ -264,8 +210,6 @@ const Academy = (): React.JSX.Element => {
                                             }
                                             )}
                                     </div>
-
-
                                 </div>)
                             }
                         </div>
@@ -284,16 +228,16 @@ const Academy = (): React.JSX.Element => {
                     />
                 }
             />
-            <div className='flex justify-between items-center gap-4 flex-wrap mt-10'>
+            <div className='flex justify-between items-center gap-4 flex-wrap mt-20 '>
                 <h4 className='text-2xl lg:text-3xl font-medium'>More Class Like This</h4>
                 <Link className='text-[#B47000] underline' to={`/academy`}>
                     View all
                 </Link>
             </div>
             <div className='md:grid flex flex-col md:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-8 justify-start md:items-center items-start py-8'>
-                {data?.slice(0, 3).map(item => <div className='w-full h-full' key={item?._id}>
+            {AllProgram?.map(item => <div className='w-full h-full' key={item?._id}>
                     <div className='w-full h-60'>
-                        <img className='w-full h-full object-cover' src={item?.img} alt="" />
+                        <img className='w-full h-full object-cover' src={`${ServerUrl}/${item?.image}`} alt="" />
                     </div>
                     <div className='flex justify-between items-center gap-2 flex-wrap mt-4'>
                         <h3 className='text-[#2F2F2F] text-lg md:text-2xl'>{item?.title}</h3>
