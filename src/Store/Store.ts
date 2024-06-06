@@ -22,6 +22,7 @@ import GetAllFeedbackSlice from '../States/FeedBack/GetAllFeedbackSlice';
 import putFeedbackSlice from '../States/FeedBack/putFeedbackSlice';
 import PrivecyPolicySlice from '../States/PrivecyPolicy/PrivecyPolicySlice';
 import GetAllContactSlice from '../States/Contact/GetAllContactSlice';
+import SentContactMessageSlice from '../States/Contact/SentContactMessageSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -59,6 +60,7 @@ export const Store = configureStore({
         PrivecyPolicy : PrivecyPolicySlice,
         // contact 
         GetAllContact : GetAllContactSlice,
+        SentContact : SentContactMessageSlice,
     },
 })
 
