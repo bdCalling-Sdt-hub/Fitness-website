@@ -14,12 +14,14 @@ import { ServerUrl } from '../AxiosConfig/Config';
 import { AddToCart } from '../States/Cart/AddToCartSlice';
 import Swal from 'sweetalert2';
 const ProductDetails = (): React.JSX.Element => {
-    const [openPaymentModal, setOpenPaymentModal] = useState(false)
+    const [showPaymentOptions, setshowPaymentOptions] = useState(false)
     const [banerImageIndex, setbanerImageIndex] = useState(0)
     const { id } = useParams()
     const dispatch = useAppDispatch()
     const [quantity, setQuantity] = useState(0)
     const { Product } = useAppSelector(state => state.SingleProduct)
+    // paymentStatus, setPaymentStatus, data
+    const [paymentStatus, setPaymentStatus,] = useState<string>('')
     useEffect(() => {
         if (id) {
             dispatch(SingleProduct({ id: id }))
@@ -54,7 +56,7 @@ const ProductDetails = (): React.JSX.Element => {
             <MetaTag title='Product Details' />
             <Heading title='Product Details' style='mb-6' />
 
-            <div className='md:grid md:grid-cols-2 flex flex-col gap-10'>
+            <div className='md:grid md:grid-cols-2 flex flex-col gap-10 items-start md:items-center'>
                 <div>
                     <div className='w-full  border p-10'>
                         <img src={`${ServerUrl}/${Product?.images[banerImageIndex]}`} style={{ width: "100%", height: "100%", objectFit: "contain" }} alt="" />
@@ -72,37 +74,37 @@ const ProductDetails = (): React.JSX.Element => {
 
                     </div>
                 </div>
+                {
+                    showPaymentOptions ? <>
+                        <Payment setPaymentStatus={setPaymentStatus} paymentStatus={paymentStatus} data={Product} />
+                    </> : <>
+                        <div className=''>
+                            <h1 className='text-xl md:text-2xl lg:text-3xl xl:text-[40px] leading-[54px] text-secondary font-normal mb-2'>{Product?.productName}</h1>
+                            <p className='lg:text-[20px] text-[16px] leading-[27px] text-secondary font-normal mb-6'>${Product?.price}</p>
 
-                <div className=''>
-                    <h1 className='text-xl md:text-2xl lg:text-3xl xl:text-[40px] leading-[54px] text-secondary font-normal mb-2'>{Product?.productName}</h1>
-                    <p className='lg:text-[20px] text-[16px] leading-[27px] text-secondary font-normal mb-6'>${Product?.price}</p>
+                            <p className='text-[16px] leading-[21px] text-secondary font-normal mb-4'>Quantity</p>
+                            <div className='border w-[160px] h-[48px] flex items-center justify-between px-4 mb-10'>
+                                <button disabled={quantity === 0} onClick={() => setQuantity(quantity - 1)}>
+                                    <HiOutlineMinusSm className='text-secondary' size={24} />
+                                </button>
+                                <p className='text-[16px] leading-[21px] text-secondary font-normal'>{quantity}</p>
+                                <button onClick={() => setQuantity(quantity + 1)}>
+                                    <HiOutlinePlusSm className='text-secondary' size={24} />
+                                </button>
+                            </div>
 
-                    <p className='text-[16px] leading-[21px] text-secondary font-normal mb-4'>Quantity</p>
-                    <div className='border w-[160px] h-[48px] flex items-center justify-between px-4 mb-10'>
-                        <button disabled={quantity === 0} onClick={() => setQuantity(quantity - 1)}>
-                            <HiOutlineMinusSm className='text-secondary' size={24} />
-                        </button>
-                        <p className='text-[16px] leading-[21px] text-secondary font-normal'>{quantity}</p>
-                        <button onClick={() => setQuantity(quantity + 1)}>
-                            <HiOutlinePlusSm className='text-secondary' size={24} />
-                        </button>
-                    </div>
+                            <button onClick={handelAddToCart} className='border border-secondary text-secondary w-full mb-6 py-3' >
+                                Add to Cart
+                            </button>
+                            <Button onSubmit={() => setshowPaymentOptions(true)} label='Buy Now' style='bg-secondary text-[#FBFBFB] w-full mb-10' />
 
-                    <button onClick={handelAddToCart} className='border border-secondary text-secondary w-full mb-6 py-3' >
-                        Add to Cart
-                    </button>
-                    <Button onSubmit={() => setOpenPaymentModal(true)} label='Buy Now' style='bg-secondary text-[#FBFBFB] w-full mb-10' />
+                            <p className='text-[16px] leading-[40px] text-secondary font-normal mb-4'>
+                                {Product?.description}
+                            </p>
+                        </div>
+                    </>
+                }
 
-                    <p className='text-[16px] leading-[40px] text-secondary font-normal mb-4'>
-                        {Product?.description}
-                    </p>
-
-                    {/* <p className='text-lg lg:text-[24px] leading-[15px] text-[#242424] font-normal'>INCLUDES:</p>
-                    <ul className='list-disc pl-4 mt-6'>
-                        <li className='text-[18px] leading-[11px] text-[#242424] font-light mb-3'>1 x The Ball</li>
-                        <li className='text-[18px] leading-[11px] text-[#242424] font-light'>1 x The Ball</li>
-                    </ul> */}
-                </div>
 
             </div>
 
@@ -115,7 +117,7 @@ const ProductDetails = (): React.JSX.Element => {
                 </Link>
             </div>
             <RelatedProduct id={id} gender={Product?.gender} />
-            <Modal
+            {/* <Modal
                 open={openPaymentModal}
                 onCancel={() => setOpenPaymentModal(false)}
                 centered
@@ -123,7 +125,7 @@ const ProductDetails = (): React.JSX.Element => {
                 width={800}
             >
                 <Payment />
-            </Modal>
+            </Modal> */}
         </div>
     )
 }
