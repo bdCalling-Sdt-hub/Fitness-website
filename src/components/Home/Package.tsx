@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../Store/hook';
 import { Subscription } from '../../States/Subscription/SubscriptionSlice';
 import { Empty } from 'antd';
 import { Stripe } from '@stripe/stripe-js';
+import { BuyPlan } from '../../States/Subscription/BuyPlanSlice';
 
 interface Plans {
     _id: string,
@@ -30,6 +31,9 @@ const Package = (): React.JSX.Element => {
     const [paymentStatus, setPaymentStatus] = useState<any>(null);
     useEffect(() => {
         setOpenPayment(false)
+        if (paymentStatus?.status === 'paid') {
+            dispatch(BuyPlan({planId:paymentStatus?.productId,amount:paymentStatus?.amount}))
+        }
     }, [paymentStatus])
     useEffect(() => {
         dispatch(Subscription())

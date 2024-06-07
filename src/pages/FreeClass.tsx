@@ -4,9 +4,10 @@ import Heading from '../components/common/Heading'
 import Video from "../assets/video.mp4"
 import { FaPlay } from 'react-icons/fa'
 import { RiCheckboxCircleFill } from 'react-icons/ri'
-import { useAppSelector } from '../Store/hook'
+import { useAppDispatch, useAppSelector } from '../Store/hook'
 import Payment from '../components/Payment'
 import Modal from '../components/common/Modal'
+import { BuyPlan } from '../States/Subscription/BuyPlanSlice'
 interface Plans {
     _id: string,
     title: string,
@@ -28,8 +29,12 @@ const FreeClass = (): React.JSX.Element => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [ModalData, setModalData] = useState<Plans>()
     const [paymentStatus, setPaymentStatus] = useState<any>(null);
+    const dispatch = useAppDispatch()
     useEffect(() => {
         setOpenPayment(false)
+        if (paymentStatus?.status === 'paid') {
+            dispatch(BuyPlan({planId:paymentStatus?.productId,amount:paymentStatus?.amount}))
+        }
     }, [paymentStatus])
     const handlePlay = () => {
         if (videoRef.current) {
