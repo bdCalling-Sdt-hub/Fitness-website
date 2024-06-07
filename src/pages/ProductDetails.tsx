@@ -15,7 +15,7 @@ import { AddToCart } from '../States/Cart/AddToCartSlice';
 import Swal from 'sweetalert2';
 const ProductDetails = (): React.JSX.Element => {
     const [showPaymentOptions, setshowPaymentOptions] = useState(false)
-    const [banerImageIndex, setbanerImageIndex] = useState(0)
+    const [banerImageIndex, setbanerImageIndex] = useState(1)
     const { id } = useParams()
     const dispatch = useAppDispatch()
     const [quantity, setQuantity] = useState(0)
@@ -77,9 +77,9 @@ const ProductDetails = (): React.JSX.Element => {
                 </div>
                 {
                     showPaymentOptions ? <div>
-                        <Payment setPaymentStatus={setPaymentStatus} data={Product} />
-                        <button onClick={()=>setshowPaymentOptions(false)} className='w-[81.5%] mx-auto block text-white bg-red-600 mt-6 py-3 '>
-                           Cancel
+                        <Payment setPaymentStatus={setPaymentStatus} data={{ ...Product, price: Number(quantity) * Number(Product?.price), quantity }} />
+                        <button onClick={() => setshowPaymentOptions(false)} className='w-[81.5%] mx-auto block text-white bg-red-600 mt-6 py-3 '>
+                            Cancel
                         </button>
                     </div> : <>
                         <div className=''>

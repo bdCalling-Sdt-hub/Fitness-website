@@ -216,6 +216,9 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                     </div>
                 </div>
             </div>
+            <div className='border-b-2  p-2 pt-4 flex justify-between items-center'>
+                <p>Total</p> <p>${data?.price}</p>
+            </div>
             {errorMessage && <ErrorResult><p className='text-red-500'>{errorMessage}</p></ErrorResult>}
             {paymentMethod && (
                 <Result>Got PaymentMethod: {paymentMethod.id}</Result>
