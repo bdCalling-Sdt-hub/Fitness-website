@@ -124,6 +124,28 @@ video {
     animation: showMenu .5s;
 }
 
+/* common.css */
+.result {
+    margin-top: 20px;
+    color: green;
+}
+
+.error-result {
+    margin-top: 20px;
+    color: red;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+}
+
+
+
 @keyframes showMenu {
     from {
         right: -100%;
@@ -133,6 +155,7 @@ video {
         right: 0;
     }
 }
+
 .showClose {
     animation: showClose 1s;
 }

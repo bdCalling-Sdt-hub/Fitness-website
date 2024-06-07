@@ -20,7 +20,8 @@ const Modal: React.FC<IProps> = ( { open, setOpen, body, title }):React.JSX.Elem
                 centered
                 open={open} 
                 onCancel={handleClose}
-                footer={false}          
+                footer={false}       
+                width={600}
             >
                 <div>
                     {body}

@@ -25,6 +25,9 @@ import GetAllContactSlice from '../States/Contact/GetAllContactSlice';
 import SentContactMessageSlice from '../States/Contact/SentContactMessageSlice';
 import GetAboutContentSlice from '../States/About/GetAboutContentSlice';
 import TermsConditionsSlice from '../States/TermsConditions/TermsConditionsSlice';
+import PaymentIntantSlice from '../States/Payment/PaymentIntantSlice';
+import PlaceOrderSlice from '../States/Order/PlaceOrderSlice';
+import BuyPlanSlice from '../States/Subscription/BuyPlanSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -39,6 +42,7 @@ export const Store = configureStore({
         EditProfile: EditProfileSlice,
         //subscription
         Subscription: SubscriptionSlice,
+        BuyPlan:BuyPlanSlice,
         // shop
         ShopItems: ShopSlice,
         SingleProduct: ProductDetailsSlice,
@@ -47,6 +51,7 @@ export const Store = configureStore({
         GetToCart: GetToCartSlice,
         //order
         GetAllOrder: GetAllOrderSlice,
+        PlaceOrder : PlaceOrderSlice,
         //series
         GetAllSeries: GetAllSeriesSlice,
         //program
@@ -67,6 +72,9 @@ export const Store = configureStore({
         GetAboutContent: GetAboutContentSlice,
         //trams and condition  
         TermsConditions: TermsConditionsSlice,
+        // payment intant 
+        PaymentIntant: PaymentIntantSlice,
+        
     },
 })
 

@@ -4,9 +4,10 @@ import Heading from '../components/common/Heading'
 import Video from "../assets/video.mp4"
 import { FaPlay } from 'react-icons/fa'
 import { RiCheckboxCircleFill } from 'react-icons/ri'
-import { useAppSelector } from '../Store/hook'
+import { useAppDispatch, useAppSelector } from '../Store/hook'
 import Payment from '../components/Payment'
 import Modal from '../components/common/Modal'
+import { BuyPlan } from '../States/Subscription/BuyPlanSlice'
 interface Plans {
     _id: string,
     title: string,
@@ -19,13 +20,22 @@ interface Plans {
     updatedAt: string,
     __v: number,
     id: string,
-} 
+}
 const FreeClass = (): React.JSX.Element => {
     const [open, setOpen] = useState(false)
     const [openPayment, setOpenPayment] = useState(false)
     const { plan } = useAppSelector(state => state.Subscription);
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [ModalData, setModalData] = useState<Plans>()
+    const [paymentStatus, setPaymentStatus] = useState<any>(null);
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        setOpenPayment(false)
+        if (paymentStatus?.status === 'paid') {
+            dispatch(BuyPlan({planId:paymentStatus?.productId,amount:paymentStatus?.amount}))
+        }
+    }, [paymentStatus])
     const handlePlay = () => {
         if (videoRef.current) {
             videoRef.current.play();
@@ -66,45 +76,46 @@ const FreeClass = (): React.JSX.Element => {
             </div>
             <div className='md:grid md:grid-cols-2 flex flex-col xl:grid-cols-3 gap-6 justify-start items-start md:items-center my-14 mb-8'>
                 {
-                    plan.map((item :Plans, index) => {
+                    plan.map((item: Plans, index) => {
                         return (
                             <div className='p-10'>
-                            <h1 className='font-light lg:text-2xl text-lg leading-8 text-center text-secondary'>{item?.title}</h1>
-                            <p className='text-[#B47000] text-center my-8 lg:text-[36px] text-xl leading-[49px] '>${item?.price}<sub className='text-[#B47000] text-[18px] leading-6 font-semibold ml-2'>{item?.duration} month</sub></p>
-                            <div className='grid grid-cols-1 gap-6 '>
-                                {
-                                    item?.items?.map((_item: any) => {
-                                        return (
-                                            <div key={_item?._id} className='flex items-center text-secondary text-[16px] leading-5 font-normal gap-[14px]'>
-                                                <h1></h1>
-                                                <RiCheckboxCircleFill size={24} color='#555555' />
-                                                {_item?.title}
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                
-                            <button onClick={() => {
-                                setOpen(false)
-                                setOpenPayment(true)
-                            }}
-                                style={{
-                                    width: "100%",
-                                    border: "none",
-                                    outline: "none",
-                                    borderRadius: 4,
-                                    height: 56,
-                                    margin: "56px auto 0 auto"
+                                <h1 className='font-light lg:text-2xl text-lg leading-8 text-center text-secondary'>{item?.title}</h1>
+                                <p className='text-[#B47000] text-center my-8 lg:text-[36px] text-xl leading-[49px] '>${item?.price}<sub className='text-[#B47000] text-[18px] leading-6 font-semibold ml-2'>{item?.duration} month</sub></p>
+                                <div className='grid grid-cols-1 gap-6 '>
+                                    {
+                                        item?.items?.map((_item: any) => {
+                                            return (
+                                                <div key={_item?._id} className='flex items-center text-secondary text-[16px] leading-5 font-normal gap-[14px]'>
+                                                    <h1></h1>
+                                                    <RiCheckboxCircleFill size={24} color='#555555' />
+                                                    {_item?.title}
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+
+                                <button onClick={() => {
+                                    setModalData(item)
+                                    setOpen(false)
+                                    setOpenPayment(true)
                                 }}
-                                className='
+                                    style={{
+                                        width: "100%",
+                                        border: "none",
+                                        outline: "none",
+                                        borderRadius: 4,
+                                        height: 56,
+                                        margin: "56px auto 0 auto"
+                                    }}
+                                    className='
                                     bg-[#3C3C3C]
                                     text-[#F2F2F2] font-normal text-[16px] leading-5
                                 '
-                            >
-                                Buy Now
-                            </button>
-                        </div>
+                                >
+                                    Buy Now
+                                </button>
+                            </div>
                         )
                     })
                 }
@@ -114,7 +125,7 @@ const FreeClass = (): React.JSX.Element => {
             <Modal
                 open={openPayment}
                 setOpen={setOpenPayment}
-                body={<Payment />}
+                body={<Payment data={ModalData} setPaymentStatus={setPaymentStatus} />}
             />
         </div>
     )

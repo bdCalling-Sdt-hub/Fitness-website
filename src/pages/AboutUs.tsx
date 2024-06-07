@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '../Store/hook';
 const AboutUs = ():React.JSX.Element => {
     const dispatch = useAppDispatch()
     const {About}=useAppSelector(state=>state.GetAboutContent)
-    console.log(About)
     useEffect(() => {
         dispatch(GetAboutContent())
     }, [])
