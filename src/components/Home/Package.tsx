@@ -6,6 +6,7 @@ import Payment from '../Payment';
 import { useAppDispatch, useAppSelector } from '../../Store/hook';
 import { Subscription } from '../../States/Subscription/SubscriptionSlice';
 import { Empty } from 'antd';
+import { Stripe } from '@stripe/stripe-js';
 
 interface Plans {
     _id: string,
@@ -26,6 +27,8 @@ const Package = (): React.JSX.Element => {
     const [openPayment, setOpenPayment] = useState(false)
     const { plan } = useAppSelector(state => state.Subscription);
     const [ModalData, setModalData] = useState<Plans>()
+       // @ts-ignore
+    const [paymentStatus, setPaymentStatus] = useState<string | null | undefined>(null);
     useEffect(() => {
         dispatch(Subscription())
 
@@ -116,7 +119,7 @@ const Package = (): React.JSX.Element => {
             <Modal
                 open={openPayment}
                 setOpen={setOpenPayment}
-                body={<Payment />}
+                body={<Payment paymentStatus={paymentStatus} setPaymentStatus={setPaymentStatus} data={ModalData} />}
             />
         </div>
     )

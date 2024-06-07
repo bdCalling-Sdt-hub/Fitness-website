@@ -16,6 +16,7 @@ import FreeClass from "../pages/FreeClass";
 import Cart from "../pages/Cart";
 import Order from "../pages/Order";
 import Studio from "../pages/Studio";
+import Payment from "../pages/Payment";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
             {
                 path: "profile",
                 element: <Profile />,
+            },
+            {
+                path: "payment",
+                element: <Payment />,
             },
             {
                 path: "terms-conditions",

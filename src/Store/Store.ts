@@ -25,6 +25,7 @@ import GetAllContactSlice from '../States/Contact/GetAllContactSlice';
 import SentContactMessageSlice from '../States/Contact/SentContactMessageSlice';
 import GetAboutContentSlice from '../States/About/GetAboutContentSlice';
 import TermsConditionsSlice from '../States/TermsConditions/TermsConditionsSlice';
+import PaymentIntantSlice from '../States/Payment/PaymentIntantSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -67,6 +68,8 @@ export const Store = configureStore({
         GetAboutContent: GetAboutContentSlice,
         //trams and condition  
         TermsConditions: TermsConditionsSlice,
+        // payment intant 
+        PaymentIntant: PaymentIntantSlice,
     },
 })
 

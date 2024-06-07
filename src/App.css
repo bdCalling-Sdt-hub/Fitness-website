@@ -124,6 +124,38 @@ video {
     animation: showMenu .5s;
 }
 
+/* common.css */
+.result {
+    margin-top: 20px;
+    color: green;
+}
+
+.error-result {
+    margin-top: 20px;
+    color: red;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+}
+
+input {
+    padding: 10px;
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 18px;
+}
+
 @keyframes showMenu {
     from {
         right: -100%;
@@ -133,6 +165,7 @@ video {
         right: 0;
     }
 }
+
 .showClose {
     animation: showClose 1s;
 }
