@@ -20,18 +20,19 @@ interface Plans {
     updatedAt: string,
     __v: number,
     id: string,
-} 
+}
 const Package = (): React.JSX.Element => {
     const dispatch = useAppDispatch()
     const [open, setOpen] = useState(false)
     const [openPayment, setOpenPayment] = useState(false)
     const { plan } = useAppSelector(state => state.Subscription);
     const [ModalData, setModalData] = useState<Plans>()
-       // @ts-ignore
-    const [paymentStatus, setPaymentStatus] = useState<string | null | undefined>(null);
+    const [paymentStatus, setPaymentStatus] = useState<any>(null);
+    useEffect(() => {
+        setOpenPayment(false)
+    }, [paymentStatus])
     useEffect(() => {
         dispatch(Subscription())
-
     }, [])
     const body = (
         <div className='p-10'>
@@ -78,7 +79,7 @@ const Package = (): React.JSX.Element => {
 
             <div className='mt-10 lg:mt-16 xl:mt-24 md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 flex flex-col justify-start items-start md:items-center'>
                 {
-                  (plan && plan.length) <= 0 &&  [...Array(3).keys()].map((item) => <Empty key={item} />)
+                    (plan && plan.length) <= 0 && [...Array(3).keys()].map((item) => <Empty key={item} />)
                 }
                 {
                     plan?.map((item: Plans) => {
@@ -119,7 +120,7 @@ const Package = (): React.JSX.Element => {
             <Modal
                 open={openPayment}
                 setOpen={setOpenPayment}
-                body={<Payment paymentStatus={paymentStatus} setPaymentStatus={setPaymentStatus} data={ModalData} />}
+                body={<Payment setPaymentStatus={setPaymentStatus} data={ModalData} />}
             />
         </div>
     )

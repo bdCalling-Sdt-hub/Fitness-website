@@ -9,8 +9,7 @@ import {
 import { logEvent, Result, ErrorResult } from '../utils';
 import { useAppDispatch, useAppSelector } from '../../Store/hook';
 import { PaymentIntant } from '../../States/Payment/PaymentIntantSlice';
-import { BuyPlan } from '../../States/Subscription/BuyPlanSlice';
-// import { PlaceOrder } from '../../States/Order/PlaceOrderSlice';
+import Swal from 'sweetalert2';
 const ELEMENT_OPTIONS = {
     style: {
         base: {
@@ -27,25 +26,22 @@ const ELEMENT_OPTIONS = {
     },
 };
 interface ChildProps {
-    paymentStatus: string | null | undefined;
     setPaymentStatus: (arg0: any) => void
     data: any
 }
-const CheckoutForm = ({ paymentStatus, setPaymentStatus, data }: ChildProps): React.JSX.Element => {
+const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element => {
     // console.log(data.price)
     const [postal, setPostal] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     // @ts-ignore
     const [paymentMethod, setPaymentMethod] = useState<Stripe.PaymentMethod | null>(null);
     const { clientSecret } = useAppSelector(state => state.PaymentIntant)
-    console.log(clientSecret)
     const stripe = useStripe();
     const elements = useElements();
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (!data.price || !data._id) return
-        console.log(data.price)
-        dispatch(PaymentIntant({ _id: data._id, price: data.price }))
+        dispatch(PaymentIntant({ _id: data._id, price: Number(data.price) }))
     }, [data.price, data._id]);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -80,12 +76,32 @@ const CheckoutForm = ({ paymentStatus, setPaymentStatus, data }: ChildProps): Re
             setErrorMessage(payload.error.message || null);
             setPaymentMethod(null);
         } else {
-            // @ts-ignore
-            // target.reset()
-            console.log('[PaymentMethod]', payload);
+            // console.log('[PaymentMethod]', payload)
+            const orderData: any = {
+                transactionID: payload?.paymentIntent?.id,
+                // @ts-ignore
+                address: target.address.value,
+                // @ts-ignore
+                email: target.email.value,
+                // @ts-ignore
+                phone: target.number.value,
+                // @ts-ignore
+                name: target.name.value,
+                amount: data.price,
+                productId: data.id,
+                status: 'paid'
+            }
             setErrorMessage(null);
-            setPaymentStatus('succeeded')
-            dispatch(BuyPlan({ planId: data?._id })).then((res)=>console.log(res))
+            setPaymentStatus(orderData)
+            // @ts-ignore
+            target.reset()
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "payment successful",
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
 
@@ -190,7 +206,7 @@ const CheckoutForm = ({ paymentStatus, setPaymentStatus, data }: ChildProps): Re
                     <div className='w-[49%]'>
                         <label htmlFor="postal">Postal Code</label>
                         <input
-                            className='outline-none p-0 border-b-2 border-[#9494943D] w-full'
+                            className='outline-none p-[1px] border-b-2 border-[#9494943D] w-full text-lg'
                             id="postal"
                             required
                             placeholder="12345"

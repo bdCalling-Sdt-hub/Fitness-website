@@ -21,7 +21,8 @@ const ProductDetails = (): React.JSX.Element => {
     const [quantity, setQuantity] = useState(0)
     const { Product } = useAppSelector(state => state.SingleProduct)
     // paymentStatus, setPaymentStatus, data
-    const [paymentStatus, setPaymentStatus,] = useState<string>('')
+    const [paymentStatus, setPaymentStatus,] = useState<any>('')
+    // console.log(paymentStatus)
     useEffect(() => {
         if (id) {
             dispatch(SingleProduct({ id: id }))
@@ -75,9 +76,12 @@ const ProductDetails = (): React.JSX.Element => {
                     </div>
                 </div>
                 {
-                    showPaymentOptions ? <>
-                        <Payment setPaymentStatus={setPaymentStatus} paymentStatus={paymentStatus} data={Product} />
-                    </> : <>
+                    showPaymentOptions ? <div>
+                        <Payment setPaymentStatus={setPaymentStatus} data={Product} />
+                        <button onClick={()=>setshowPaymentOptions(false)} className='w-[81.5%] mx-auto block text-white bg-red-600 mt-6 py-3 '>
+                           Cancel
+                        </button>
+                    </div> : <>
                         <div className=''>
                             <h1 className='text-xl md:text-2xl lg:text-3xl xl:text-[40px] leading-[54px] text-secondary font-normal mb-2'>{Product?.productName}</h1>
                             <p className='lg:text-[20px] text-[16px] leading-[27px] text-secondary font-normal mb-6'>${Product?.price}</p>
