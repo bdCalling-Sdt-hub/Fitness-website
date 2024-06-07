@@ -13,86 +13,57 @@ import { IoPlaySharp } from "react-icons/io5";
 import { GrPauseFill } from "react-icons/gr";
 import Chart from '../Academy/Chart';
 import StatusLabel from '../Academy/StatusLabel';
-import {
-    Accordion,
-    AccordionItem,
-    AccordionItemHeading,
-    AccordionItemButton,
-    AccordionItemPanel,
-} from 'react-accessible-accordion';
 import { IoIosArrowDown } from 'react-icons/io';
-interface ProgramData {
-    _id: string,
-    img: string,
-    title: String
-}
-const data: ProgramData[] = [
-    {
-        _id: '1',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '2',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '3',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '4',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '5',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '6',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '7',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '8',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-    {
-        _id: '9',
-        img: 'https://i.ibb.co/wKjvbPB/Rectangle-5101.png',
-        title: 'Sweat and Stretch'
-
-    },
-]
-import { FaCheckCircle } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import { MdKeyboardArrowRight } from 'react-icons/md';
+import { FaCheckCircle, FaRegFilePdf } from 'react-icons/fa';
+import { Link, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../Store/hook';
+import { SingleProgram } from '../States/Program/SingleProgramSlice';
+import baseURL, { ServerUrl } from '../AxiosConfig/Config';
+import { SiGoogledocs } from 'react-icons/si';
+import { RxCross1 } from 'react-icons/rx';
+import { GetAllProgram } from '../States/Program/GetAllProgramSlice';
 type ContentRef = HTMLDivElement | null;
 const Academy = (): React.JSX.Element => {
+    const { id } = useParams()
     const [openCalender, setOpenCalender] = useState<boolean>(false);
-    const [selectedDate, setSelectedDate] = useState<string | null>("");
+    const [selectedDate, setSelectedDate] = useState<any>('');
     const [keyword, setKeyword] = useState<string | undefined>("");
     const [playing, setPlaying] = useState(false);
+    const { SingleProgramData } = useAppSelector(state => state.SingleProgram)
+    const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
+    const [anyties, setanalayties] = useState()
+    useEffect(() => {
+        baseURL.get(`/class/single/${CurrentClass?._id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
+        }).then((res) => console.log(res.data))
+    }, [CurrentClass?._id])
 
+    useEffect(() => {
+        baseURL.get(`/program/analytics/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
+        }).then((res) => {
+            if (res.data.success) {
+                setanalayties(res.data.data)
+            }
+        })
+    }, [id])
+
+    useEffect(() => {
+        setCurrentClass(SingleProgramData?.series[0]?.classes[0])
+    }, [SingleProgramData])
+
+    const dispatch = useAppDispatch()
     const onChange = (value: Dayjs) => {
+        const date = new Date
+        if (dayjs(date).format('YYYY-MM-DD') == dayjs(value).format('YYYY-MM-DD')) {
+            return setSelectedDate('')
+        }
         setSelectedDate(dayjs(value).format('YYYY-MM-DD'))
     };
 
@@ -111,7 +82,6 @@ const Academy = (): React.JSX.Element => {
         if (openIndex !== null && contentRefs.current[openIndex]) {
             contentRefs.current[openIndex]!.style.maxHeight = `${contentRefs.current[openIndex]!.scrollHeight}px`;
         }
-
         contentRefs.current.forEach((ref, index) => {
             if (ref && index !== openIndex) {
                 ref.style.maxHeight = '0px';
@@ -119,7 +89,14 @@ const Academy = (): React.JSX.Element => {
         });
     }, [openIndex]);
 
-    //accordion 
+    useEffect(() => {
+        dispatch(SingleProgram({ id, date: selectedDate }))
+    }, [id, selectedDate, CurrentClass?._id])
+
+    const { AllProgram } = useAppSelector(state => state.GetAllProgram)
+    useEffect(() => {
+        dispatch(GetAllProgram({ page: 1, limit: 4, title: '' }))
+    }, [keyword])
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
@@ -144,6 +121,11 @@ const Academy = (): React.JSX.Element => {
                     <CiCalendarDate color='#905A00' size={35} />
                 </div>
             </div>
+            {
+                selectedDate && <div className='mt-3 flex justify-start items-center gap-3'>
+                    <p>filtered by date : <span className='font-bold'>{selectedDate}</span></p> <button onClick={() => setSelectedDate('')} className='p-1 text-xl bg-red-600 text-white rounded-full hover:scale-105 active:scale-95 transition-all'><RxCross1 /></button>
+                </div>
+            }
             <div className='md:grid flex flex-col grid-cols-12 gap-10 mt-8 group'>
                 <div className='col-span-8 '>
                     <div className='video_player flex items-center justify-center'>
@@ -152,11 +134,12 @@ const Academy = (): React.JSX.Element => {
                             height='100%'
                             controls
                             playing={playing}
-                            url='https://res.cloudinary.com/ddqovbzxy/video/upload/v1716027602/mzimld8b9vgqhargfrmt.mp4'
-
+                            onPlay={() => setPlaying(true)}
+                            onPause={() => setPlaying(false)}
+                            url={`${ServerUrl}/${CurrentClass?.video}`}
                         />
                         <div className='play-pause-button' onClick={() => setPlaying(!playing)} >
-                            <div className='w-20 h-20  rounded-full bg-primary bg-opacity-50 flex items-center justify-center'>
+                            <div className={`w-20 h-20 ${playing ? 'hover:flex hidden' : 'flex'} rounded-full bg-primary bg-opacity-50  items-center justify-center`}>
                                 {
                                     playing
                                         ?
@@ -170,83 +153,70 @@ const Academy = (): React.JSX.Element => {
 
                     {/* video description */}
                     <div className='flex items-center gap-4 my-4'>
-                        <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>Topic : Yoga</p>
-                        <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>03 Sep 2024</p>
+                        <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>Topic : {CurrentClass?.topic}</p>
+                        <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>{CurrentClass?.date.split('T')[0]}</p>
+                        <a className='flex justify-start items-center gap-1 hover:text-blue-500' href={`${ServerUrl}/${CurrentClass?.pdfFile}`} target="_blank" rel="noopener noreferrer">
+                            <FaRegFilePdf /> PDF File
+                        </a>
+                        <a className='flex justify-start items-center gap-1 hover:text-blue-500' href={`${ServerUrl}/${CurrentClass?.docFile}`} target="_blank" rel="noopener noreferrer">
+                            <SiGoogledocs /> Doc File
+                        </a>
                     </div>
-                    <p className='text-[#242424] font-semibold text-[24px] leading-[18px] mb-6'>45-min advance vinyasa yoga</p>
-
-
+                    <p className='text-[#242424] font-semibold text-[24px] leading-[18px] mb-6'>{CurrentClass?.title}</p>
                     <p className='text-secondary font-normal text-[14px] leading-7'>
-                        dignissim, Vestibulum nec Nunc Nullam amet, quis quis convallis.
-                        dui placerat. vitae eget dignissim, Praesent est. sed sit sit vitae tincidunt Nunc nec
-                        Vestibulum ultrices Sed ac lacus vel malesuada Ut nulla, varius lacus sapien luctus maximus
-                        vitae nec dolor ex. efficitur. Nullam amet, elementum amet, eget amet, eu orci sodales. sodales.
-                        odio vitae at Nam orci leo. nec malesuada Lorem Nunc ac placerat Lorem Ut in Quisque amet, Nam non.
-                        est. venenatis lacus varius sapien orci nulla, tincidunt
-
-                        <br />
-                        <br />
-
-                        dignissim, Vestibulum nec Nunc Nullam amet, quis quis convallis.
-                        dui placerat. vitae eget dignissim, Praesent est. sed sit sit vitae tincidunt Nunc nec
-                        Vestibulum ultrices Sed ac lacus vel malesuada Ut nulla, varius lacus sapien luctus maximus
-                        vitae nec dolor ex. efficitur. Nullam amet, elementum amet, eget amet, eu orci sodales. sodales.
-                        odio vitae at Nam orci leo. nec malesuada Lorem Nunc ac placerat Lorem Ut in Quisque amet, Nam non.
-                        est. venenatis lacus varius sapien orci nulla, tincidunt
+                        {CurrentClass?.description}
                     </p>
                 </div>
-
                 <div className='col-span-4 w-full'>
-                    <div className='w-full rounded h-[280px] p-4 mb-6'
+                    <div className='w-full rounded h-[280px] p-4 mb-6 select-none pointer-events-none'
                         style={{ boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px' }}
                     >
                         <h1 className='text-secondary text-[16px] leading-[12px] font-bold'>Your Progress</h1>
-                        <Chart />
+                        <Chart anyties={anyties} />
                         <StatusLabel />
                     </div>
 
                     <div className='w-full  md:overflow-y-scroll md:max-h-[700px] video-collection'>
                         <div className=' md:flex flex-col gap-3'>
-
                             {
-                                [...Array(10)].map((_, index) => (
-                                    <div key={index} className='cursor-pointer p-3 bg-[#F2F2F2]'>
-                                        <div onClick={() => toggleAccordion(index)} className=' relative'>
-                                            <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Series No {index + 1} : advance vinyasa yoga</p>
-                                            <div className='flex justify-start items-center gap-3 mt-3'>
-                                                <p className='text-[#919191] text-xs'>Total video : 04</p> <p className='text-[#919191] text-xs'>3 h 40 m</p>
-                                            </div>
-                                            <IoIosArrowDown className='text-2xl absolute right-1 top-1' />
+                                ( SingleProgramData?.series && SingleProgramData?.series?.length <=0) && <p className='text-red-500'>No data found </p>
+                            }
+                            {
+                                SingleProgramData?.series?.map((item, index) => <div key={index} className='cursor-pointer p-3 bg-[#F2F2F2]'>
+                                    <div onClick={() => toggleAccordion(index)} className=' relative'>
+                                        <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Series No {index + 1} : {item?.title}</p>
+                                        <div className='flex justify-start items-center gap-3 mt-3'>
+                                            <p className='text-[#919191] text-xs'>Total video : {item?.classes?.length}</p>
+                                            <p className='text-[#919191] text-xs font-semibold'>Duration {item?.totalVideoDuration} H</p>
                                         </div>
-                                        <div
-                                            ref={(el) => (contentRefs.current[index] = el)}
-                                            className='accordion-content overflow-hidden transition-max-height duration-300 ease-in-out'
-                                            style={{
-                                                maxHeight: openIndex === index ? `${contentRefs.current[index]?.scrollHeight}px` : '0px'
-                                            }}
-                                        >
-                                            {
-                                                [...Array(5)].map((item: unknown, index) => {
-                                                    return (
-                                                        <div key={index} className='flex justify-start items-start gap-3 mt-6'>
-                                                            <div>
-                                                                <FaCheckCircle className='text-green-500 text-lg' />
-                                                            </div>
-                                                            <div>
-                                                                <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Class No {index + 1} : advance vinyasa yoga</p>
-                                                                <div className='flex justify-start items-center gap-3 mt-2'>
-                                                                    <p className='text-[#919191] text-sm'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quam earum consequuntur,</p>
-                                                                </div>
+                                        <IoIosArrowDown className='text-2xl absolute right-1 top-1' />
+                                    </div>
+                                    <div
+                                        ref={(el) => (contentRefs.current[index] = el)}
+                                        className='accordion-content overflow-hidden transition-max-height duration-300 ease-in-out'
+                                        style={{
+                                            maxHeight: openIndex === index ? `${contentRefs.current[index]?.scrollHeight}px` : '0px'
+                                        }}
+                                    >
+                                        {
+                                            item?.classes?.map((item, index) => {
+                                                return (
+                                                    <div onClick={() => setCurrentClass(item)} key={index} className='flex justify-start items-start gap-3 mt-6'>
+                                                        <div>
+                                                            <FaCheckCircle className={` ${item?.isRead ? 'text-green-500' : 'text-gray-500'} text-lg`} />
+                                                        </div>
+                                                        <div>
+                                                            <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Class No {index + 1} :{item?.title}</p>
+                                                            <div className='flex justify-start items-center gap-3 mt-2'>
+                                                                <p className='text-[#919191] text-sm'>{item?.description.slice(0, 150)}..</p>
                                                             </div>
                                                         </div>
-                                                    )
-                                                }
-                                                )}
-                                        </div>
-
-
+                                                    </div>
+                                                )
+                                            }
+                                            )}
                                     </div>
-                                ))
+                                </div>)
                             }
                         </div>
                     </div>
@@ -264,16 +234,16 @@ const Academy = (): React.JSX.Element => {
                     />
                 }
             />
-            <div className='flex justify-between items-center gap-4 flex-wrap mt-10'>
+            <div className='flex justify-between items-center gap-4 flex-wrap mt-20 '>
                 <h4 className='text-2xl lg:text-3xl font-medium'>More Class Like This</h4>
                 <Link className='text-[#B47000] underline' to={`/academy`}>
                     View all
                 </Link>
             </div>
             <div className='md:grid flex flex-col md:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-8 justify-start md:items-center items-start py-8'>
-                {data?.slice(0, 3).map(item => <div className='w-full h-full' key={item?._id}>
+                {AllProgram?.map(item => <div className='w-full h-full' key={item?._id}>
                     <div className='w-full h-60'>
-                        <img className='w-full h-full object-cover' src={item?.img} alt="" />
+                        <img className='w-full h-full object-cover' src={`${ServerUrl}/${item?.image}`} alt="" />
                     </div>
                     <div className='flex justify-between items-center gap-2 flex-wrap mt-4'>
                         <h3 className='text-[#2F2F2F] text-lg md:text-2xl'>{item?.title}</h3>

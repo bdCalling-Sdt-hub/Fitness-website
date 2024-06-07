@@ -1,20 +1,29 @@
 import React from 'react';
-import { PieChart, Pie, ResponsiveContainer, Cell, PieLabelRenderProps  } from 'recharts';
+import { PieChart, Pie, ResponsiveContainer, Cell, PieLabelRenderProps } from 'recharts';
+interface ChildProp {
+    anyties: {
+        totalClasses: number,
+        readCount: number,
+        unreadCount: number,
+        readPercentage: string,
+        unreadPercentage: string,
+    } | undefined
 
-const Chart = ():React.JSX.Element => {
+}
+const Chart = ({ anyties }: ChildProp): React.JSX.Element => {
     const data = [
-        { name: 'Complete', value: 400 },
-        { name: 'Incomplete', value: 200 }
+        { name: 'Complete', value: anyties?.readCount },
+        { name: 'Incomplete', value: anyties?.unreadCount }
     ];
-      
+
     const COLORS = ['#905A00', '#ffffff'];
-      
+
     const RADIAN = Math.PI / 180;
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: PieLabelRenderProps) => {
-        const radius = (innerRadius as number )+ ((outerRadius as number ) - (innerRadius as number)) * 0.5;
+        const radius = (innerRadius as number) + ((outerRadius as number) - (innerRadius as number)) * 0.5;
         const x = (cx as number) + radius * Math.cos(-midAngle * RADIAN);
         const y = (cy as number) + radius * Math.sin(-midAngle * RADIAN);
-      
+
         return (
             <text x={x} y={y} fill="white" textAnchor={x > (cx as number) ? 'start' : 'end'} dominantBaseline="central">
                 {`${((percent as number) * 100).toFixed(0)}%`}

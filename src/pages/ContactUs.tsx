@@ -1,16 +1,50 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { GoMail } from 'react-icons/go'
 import { IoCallOutline } from 'react-icons/io5'
 import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
-import { Button, Form, Input } from 'antd'
-
-const ContactUs = ():React.JSX.Element => {
+import { Button, Form, FormProps, Input } from 'antd'
+import { useAppDispatch, useAppSelector } from '../Store/hook'
+import { GetAllContact } from '../States/Contact/GetAllContactSlice'
+import { SentContact } from '../States/Contact/SentContactMessageSlice'
+import Swal from 'sweetalert2'
+type FieldType = {
+    subject?: string;
+    options?: string;
+};
+const ContactUs = (): React.JSX.Element => {
+    const [form] = Form.useForm()
+    const dispatch = useAppDispatch()
+    const { Contact } = useAppSelector(state => state.GetAllContact)
+    useEffect(() => {
+        dispatch(GetAllContact())
+    }, [])
+    const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+        form.setFieldsValue(values)
+        dispatch(SentContact(values)).then((res) => {
+            if (res.type == 'SentContact/fulfilled') {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your Message has been sent",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                form.resetFields()
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!",
+                });
+            }
+        })
+    };
     return (
         <div className='container pb-20'>
             <Navigation name='Contact Us' />
-            <Heading title='Contact Us'  style='mb-6' />
+            <Heading title='Contact Us' style='mb-6' />
             <MetaTag title='Contact Us' />
 
             <div className='flex items-center flex-wrap justify-between max-w-[572px] mx-auto'>
@@ -20,19 +54,21 @@ const ContactUs = ():React.JSX.Element => {
                         <h2 className='text-secondary text-[16px] leading-[30px] font-normal'>Email : </h2>
                     </div>
                     <div>
-                        <p className='text-secondary text-[16px] leading-[30px] font-normal'>xxxxxxx@gmail.com</p>
-                        <p className='text-secondary text-[16px] leading-[30px] font-normal'>xxxxxxx@gmail.com</p>
+                        {
+                            Contact[0]?.email?.map((item) => <p key={item} className='text-secondary text-[16px] leading-[30px] font-normal'>{item}</p>)
+                        }
                     </div>
                 </div>
-                
+
                 <div className='flex gap-3'>
                     <div className='flex items-center gap-4 h-fit'>
                         <IoCallOutline size={20} color='#575757' />
                         <h2 className='text-secondary text-[16px] leading-[30px] font-normal'>Phone : </h2>
                     </div>
                     <div>
-                        <p className='text-secondary text-[16px] leading-[30px] font-normal'>+9999999997</p>
-                        <p className='text-secondary text-[16px] leading-[30px] font-normal'>+9999999997</p>
+                        {
+                            Contact[0]?.phone?.map((item) => <p key={item} className='text-secondary text-[16px] leading-[30px] font-normal'>{item}</p>)
+                        }
                     </div>
                 </div>
             </div>
@@ -40,12 +76,15 @@ const ContactUs = ():React.JSX.Element => {
             <h1 className='text-xl md:text-2xl lg:text-[40px] leading-8 text-secondary text-center mt-16 font-normal'>Get in Touch</h1>
             <p className='my-10 text-[18px] leading-[14px] text-secondary text-center font-normal'>Contact with us</p>
 
-            <Form layout='vertical' className='mx-w-[572px] mx-auto'>
-                <Form.Item 
-                    name="email"
-                    label={<p className="text-[#919191] text-[16px] leading-5 font-normal">Email</p>}
+            <Form layout='vertical' className='mx-w-[572px] mx-auto' onFinish={onFinish} form={form}>
+                <Form.Item
+                    name="subject"
+                    label={<p className="text-[#919191] text-[16px] leading-5 font-normal">Subject</p>}
+                    rules={[
+                        { required: true, message: 'Subject are required' },
+                    ]}
                 >
-                    <Input 
+                    <Input
                         style={{
                             width: "100%",
                             height: 48,
@@ -59,11 +98,15 @@ const ContactUs = ():React.JSX.Element => {
                     />
                 </Form.Item>
 
-                <Form.Item 
-                    name="message"
-                    label={<p className="text-[#919191] text-[16px] leading-5 font-normal">Message</p>}
+                <Form.Item
+                    name="options"
+                    label={<p className="text-[#919191] text-[16px] leading-5 font-normal">Options</p>}
+                    rules={[
+                        { required: true, message: 'options are required' },
+                    ]}
                 >
-                    <Input.TextArea 
+                    <Input.TextArea
+
                         style={{
                             width: "100%",
                             height: 213,
@@ -78,21 +121,19 @@ const ContactUs = ():React.JSX.Element => {
                     />
                 </Form.Item>
 
-                <Form.Item 
-                    style={{marginBottom: 0}}
+                <Form.Item
+                    style={{ marginBottom: 0 }}
                 >
-                    <Button
-                        block
-                        htmlType="submit"
+                    <button
                         style={{
-                            width : "100%",
+                            width: "100%",
                             height: 48,
                             color: "#FCFCFC"
                         }}
-                        className='font-normal text-[16px] leading-6 bg-primary'
+                        className='font-normal text-[16px] leading-6 bg-primary hover:bg-orange-400 transition-all rounded-md'
                     >
                         Send
-                    </Button>
+                    </button>
                 </Form.Item>
             </Form>
 

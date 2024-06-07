@@ -6,47 +6,24 @@ interface initialState {
     success: boolean;
     loading: boolean;
     isSuccess: boolean;
-    Order: {
-        _id: string,
-        user: string,
-        product: {
-            _id: string,
-            productName: string,
-            price: string,
-            images: string[],
-            id: string,
-        },
-        deliveryDate: string,
-        paymentStatus: string,
-        quantity: number,
-        totalAmount: number,
-        orderStatus: string,
-        createdAt: string,
-        updatedAt: string,
-        location: string,
-        id: string,
+    Contact: {
+        email: string[],
+        phone: string[],
     }[]
-    meta: {
-        page: number,
-        limit: number,
-        total: number,
-        totalPage: number,
-    } | null
 }
 const initialState: initialState = {
     error: false,
     success: false,
     loading: false,
     isSuccess: false,
-    Order: [],
-    meta: null
+    Contact: [],
 };
 
-export const GetAllOrder = createAsyncThunk(
-    'GetAllOrder',
+export const GetAllContact = createAsyncThunk(
+    'GetAllContact',
     async (value, thunkApi) => {
         try {
-            const response = await baseURL.get(`/order/order-history`, {
+            const response = await baseURL.get(`/manage/get-contact-info`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -60,30 +37,28 @@ export const GetAllOrder = createAsyncThunk(
         }
     }
 )
-export const GetAllOrderSlice = createSlice({
-    name: 'GetAllOrder',
+export const GetAllContactSlice = createSlice({
+    name: 'GetAllContact',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(GetAllOrder.pending, (state) => {
+        builder.addCase(GetAllContact.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(GetAllOrder.fulfilled, (state, action) => {
+            builder.addCase(GetAllContact.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
-                state.Order = action.payload.data;
-                state.meta = action.payload.meta
+                state.Contact = action.payload
             }),
-            builder.addCase(GetAllOrder.rejected, (state) => {
+            builder.addCase(GetAllContact.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.Order = []
-                state.meta = null
+                state.Contact = []
             })
     }
 })
-export default GetAllOrderSlice.reducer
+export default GetAllContactSlice.reducer

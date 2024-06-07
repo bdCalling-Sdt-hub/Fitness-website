@@ -6,47 +6,27 @@ interface initialState {
     success: boolean;
     loading: boolean;
     isSuccess: boolean;
-    Order: {
-        _id: string,
-        user: string,
-        product: {
-            _id: string,
-            productName: string,
-            price: string,
-            images: string[],
-            id: string,
-        },
-        deliveryDate: string,
-        paymentStatus: string,
-        quantity: number,
-        totalAmount: number,
-        orderStatus: string,
-        createdAt: string,
-        updatedAt: string,
-        location: string,
-        id: string,
+    ContactMessage: {
+        email: string[],
+        phone: string[],
     }[]
-    meta: {
-        page: number,
-        limit: number,
-        total: number,
-        totalPage: number,
-    } | null
 }
 const initialState: initialState = {
     error: false,
     success: false,
     loading: false,
     isSuccess: false,
-    Order: [],
-    meta: null
+    ContactMessage: [],
 };
-
-export const GetAllOrder = createAsyncThunk(
-    'GetAllOrder',
-    async (value, thunkApi) => {
+interface Parameter {
+    subject?: string,
+    Opinions?: string,
+}
+export const SentContact = createAsyncThunk(
+    'SentContact',
+    async (value: Parameter, thunkApi) => {
         try {
-            const response = await baseURL.get(`/order/order-history`, {
+            const response = await baseURL.post(`/manage/add-contact-us`, { ...value }, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -60,30 +40,28 @@ export const GetAllOrder = createAsyncThunk(
         }
     }
 )
-export const GetAllOrderSlice = createSlice({
-    name: 'GetAllOrder',
+export const SentContactSlice = createSlice({
+    name: 'SentContact',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(GetAllOrder.pending, (state) => {
+        builder.addCase(SentContact.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(GetAllOrder.fulfilled, (state, action) => {
+            builder.addCase(SentContact.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
-                state.Order = action.payload.data;
-                state.meta = action.payload.meta
+                state.ContactMessage = action.payload
             }),
-            builder.addCase(GetAllOrder.rejected, (state) => {
+            builder.addCase(SentContact.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.Order = []
-                state.meta = null
+                state.ContactMessage = []
             })
     }
 })
-export default GetAllOrderSlice.reducer
+export default SentContactSlice.reducer

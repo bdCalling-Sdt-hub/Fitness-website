@@ -4,7 +4,6 @@ import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
 import { Input, Pagination, PaginationProps } from 'antd';
 import { CgSearch } from "react-icons/cg";
-import dayjs, { Dayjs } from 'dayjs';
 import { IoClose } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';

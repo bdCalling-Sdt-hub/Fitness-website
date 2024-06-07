@@ -6,53 +6,41 @@ interface initialState {
     success: boolean;
     loading: boolean;
     isSuccess: boolean;
-    Order: {
+    SingleBlog: {
         _id: string,
-        user: string,
-        product: {
-            _id: string,
-            productName: string,
-            price: string,
-            images: string[],
-            id: string,
-        },
-        deliveryDate: string,
-        paymentStatus: string,
-        quantity: number,
-        totalAmount: number,
-        orderStatus: string,
+        created_by: string,
+        topic: string,
+        title: string,
+        description: string,
+        images:string[],
         createdAt: string,
         updatedAt: string,
-        location: string,
+        __v: 0,
         id: string,
-    }[]
-    meta: {
-        page: number,
-        limit: number,
-        total: number,
-        totalPage: number,
-    } | null
+    } | null | undefined
 }
 const initialState: initialState = {
     error: false,
     success: false,
     loading: false,
     isSuccess: false,
-    Order: [],
-    meta: null
+    SingleBlog: null,
 };
-
-export const GetAllOrder = createAsyncThunk(
-    'GetAllOrder',
-    async (value, thunkApi) => {
+interface Permitter {
+    id: string | null | undefined,
+}
+export const GetSingleBlog = createAsyncThunk(
+    'GetSingleBlog',
+    async (value :Permitter, thunkApi) => {
         try {
-            const response = await baseURL.get(`/order/order-history`, {
+            const response = await baseURL.get(`/blog/single/${value.id}`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            return response?.data.data;
+            console.log(response)
+            return response?.data;
         } catch (error) {
             const axiosError = error as AxiosError;
             const message = axiosError?.response?.data;
@@ -60,30 +48,28 @@ export const GetAllOrder = createAsyncThunk(
         }
     }
 )
-export const GetAllOrderSlice = createSlice({
-    name: 'GetAllOrder',
+export const GetSingleBlogSlice = createSlice({
+    name: 'GetSingleBlog',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(GetAllOrder.pending, (state) => {
+        builder.addCase(GetSingleBlog.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(GetAllOrder.fulfilled, (state, action) => {
+            builder.addCase(GetSingleBlog.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
-                state.Order = action.payload.data;
-                state.meta = action.payload.meta
+                state.SingleBlog = action.payload.data;
             }),
-            builder.addCase(GetAllOrder.rejected, (state) => {
+            builder.addCase(GetSingleBlog.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.Order = []
-                state.meta = null
+                state.SingleBlog = null
             })
     }
 })
-export default GetAllOrderSlice.reducer
+export default GetSingleBlogSlice.reducer

@@ -6,47 +6,28 @@ interface initialState {
     success: boolean;
     loading: boolean;
     isSuccess: boolean;
-    Order: {
+    About: {
         _id: string,
-        user: string,
-        product: {
-            _id: string,
-            productName: string,
-            price: string,
-            images: string[],
-            id: string,
-        },
-        deliveryDate: string,
-        paymentStatus: string,
-        quantity: number,
-        totalAmount: number,
-        orderStatus: string,
+        description: string,
         createdAt: string,
         updatedAt: string,
-        location: string,
+        __v: 0,
         id: string,
     }[]
-    meta: {
-        page: number,
-        limit: number,
-        total: number,
-        totalPage: number,
-    } | null
 }
 const initialState: initialState = {
     error: false,
     success: false,
     loading: false,
     isSuccess: false,
-    Order: [],
-    meta: null
+    About: [],
 };
 
-export const GetAllOrder = createAsyncThunk(
-    'GetAllOrder',
+export const GetAboutContent = createAsyncThunk(
+    'GetAboutContent',
     async (value, thunkApi) => {
         try {
-            const response = await baseURL.get(`/order/order-history`, {
+            const response = await baseURL.get(`/manage/get-about-us`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -60,30 +41,28 @@ export const GetAllOrder = createAsyncThunk(
         }
     }
 )
-export const GetAllOrderSlice = createSlice({
-    name: 'GetAllOrder',
+export const GetAboutContentSlice = createSlice({
+    name: 'GetAboutContent',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(GetAllOrder.pending, (state) => {
+        builder.addCase(GetAboutContent.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(GetAllOrder.fulfilled, (state, action) => {
+            builder.addCase(GetAboutContent.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
-                state.Order = action.payload.data;
-                state.meta = action.payload.meta
+                state.About = action.payload
             }),
-            builder.addCase(GetAllOrder.rejected, (state) => {
+            builder.addCase(GetAboutContent.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.Order = []
-                state.meta = null
+                state.About = []
             })
     }
 })
-export default GetAllOrderSlice.reducer
+export default GetAboutContentSlice.reducer

@@ -14,6 +14,17 @@ import AddToCartSlice from '../States/Cart/AddToCartSlice';
 import GetToCartSlice from '../States/Cart/GetToCartSlice';
 import GetAllSeriesSlice from '../States/Series/GetAllSeriesSlice';
 import GetAllProgramSlice from '../States/Program/GetAllProgramSlice';
+import SingleProgramSlice from '../States/Program/SingleProgramSlice';
+import GetAllBlogSlice from '../States/Blog/GetAllBlogSlice';
+import GetSingleBlogSlice from '../States/Blog/GetSingleBlogSlice';
+import GetAllOrderSlice from '../States/Order/GetAllOrderSlice';
+import GetAllFeedbackSlice from '../States/FeedBack/GetAllFeedbackSlice';
+import putFeedbackSlice from '../States/FeedBack/putFeedbackSlice';
+import PrivecyPolicySlice from '../States/PrivecyPolicy/PrivecyPolicySlice';
+import GetAllContactSlice from '../States/Contact/GetAllContactSlice';
+import SentContactMessageSlice from '../States/Contact/SentContactMessageSlice';
+import GetAboutContentSlice from '../States/About/GetAboutContentSlice';
+import TermsConditionsSlice from '../States/TermsConditions/TermsConditionsSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -34,10 +45,28 @@ export const Store = configureStore({
         //cart 
         AddToCart: AddToCartSlice,
         GetToCart: GetToCartSlice,
+        //order
+        GetAllOrder: GetAllOrderSlice,
         //series
         GetAllSeries: GetAllSeriesSlice,
         //program
         GetAllProgram: GetAllProgramSlice,
+        SingleProgram: SingleProgramSlice,
+        //blog
+        GetAllBlog: GetAllBlogSlice,
+        SingleBlog: GetSingleBlogSlice,
+        //feedback 
+        GetAllFeedback: GetAllFeedbackSlice,
+        putFeedback: putFeedbackSlice,
+        //privecy policy 
+        PrivecyPolicy: PrivecyPolicySlice,
+        // contact 
+        GetAllContact: GetAllContactSlice,
+        SentContact: SentContactMessageSlice,
+        //about
+        GetAboutContent: GetAboutContentSlice,
+        //trams and condition  
+        TermsConditions: TermsConditionsSlice,
     },
 })
 
