@@ -31,6 +31,7 @@ interface ChildProps {
 }
 const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element => {
     // console.log(data.price)
+    const [loading, setloading] = useState<boolean>(false)
     const [postal, setPostal] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     // @ts-ignore
@@ -46,15 +47,16 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setloading(true)
         const target = event.target;
         if (!stripe || !elements || !clientSecret) {
-            return;
+            return setloading(false);
         }
 
         const cardElement = elements.getElement(CardNumberElement);
         console.log(cardElement)
         if (!cardElement) {
-            return;
+            return setloading(false);
         }
 
         const payload = await stripe.confirmCardPayment(clientSecret, {
@@ -75,6 +77,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
             console.log('[error]', payload.error);
             setErrorMessage(payload.error.message || null);
             setPaymentMethod(null);
+            setloading(false);
         } else {
             // console.log('[PaymentMethod]', payload)
             const orderData: any = {
@@ -89,7 +92,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                 name: target.name.value,
                 amount: data.price,
                 productId: data.id,
-                quantity : data.quantity,
+                quantity: data.quantity,
                 status: 'paid'
             }
             setErrorMessage(null);
@@ -104,6 +107,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                 timer: 1500
             });
         }
+        setloading(false);
     };
 
     return (
@@ -224,8 +228,8 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
             {paymentMethod && (
                 <Result>Got PaymentMethod: {paymentMethod.id}</Result>
             )}
-            <button className='w-full block text-white bg-[#3C3C3C] mt-6 py-3' type="submit" disabled={!stripe}>
-                Confirm Pay
+            <button className='w-full block text-white bg-[#3C3C3C] mt-6 py-3 disabled:bg-gray-400 disabled:pointer-events-none' type="submit" disabled={!stripe || loading}>
+                {loading ? 'please wait....' : ' Confirm Pay'}
             </button>
         </form>
     );
