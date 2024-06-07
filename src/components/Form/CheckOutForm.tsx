@@ -9,6 +9,8 @@ import {
 import { logEvent, Result, ErrorResult } from '../utils';
 import { useAppDispatch, useAppSelector } from '../../Store/hook';
 import { PaymentIntant } from '../../States/Payment/PaymentIntantSlice';
+import { BuyPlan } from '../../States/Subscription/BuyPlanSlice';
+// import { PlaceOrder } from '../../States/Order/PlaceOrderSlice';
 const ELEMENT_OPTIONS = {
     style: {
         base: {
@@ -83,6 +85,7 @@ const CheckoutForm = ({ paymentStatus, setPaymentStatus, data }: ChildProps): Re
             console.log('[PaymentMethod]', payload);
             setErrorMessage(null);
             setPaymentStatus('succeeded')
+            dispatch(BuyPlan({ planId: data?._id })).then((res)=>console.log(res))
         }
     };
 
@@ -90,7 +93,7 @@ const CheckoutForm = ({ paymentStatus, setPaymentStatus, data }: ChildProps): Re
         <form onSubmit={handleSubmit} className='w-full'>
             <div className='md:grid md:grid-cols-2 gap-2 flex flex-col items-start justify-start md:items-center'>
                 <div className='w-full'>
-                    <label className='-mb-2 block' htmlFor="name">Full Name</label>
+                    <label className=' block' htmlFor="name">Full Name</label>
                     <input
                         className='outline-none p-1'
                         style={{
@@ -104,7 +107,7 @@ const CheckoutForm = ({ paymentStatus, setPaymentStatus, data }: ChildProps): Re
                     />
                 </div>
                 <div className='w-full'>
-                    <label className='-mb-2 block' htmlFor="Email">Email </label>
+                    <label className=' block' htmlFor="Email">Email </label>
                     <input
                         type='email'
                         className='outline-none p-1'
@@ -121,7 +124,7 @@ const CheckoutForm = ({ paymentStatus, setPaymentStatus, data }: ChildProps): Re
             </div>
             <div className='md:grid md:grid-cols-2 gap-2 flex flex-col items-start justify-start md:items-center mt-3'>
                 <div className='w-full'>
-                    <label className='-mb-2 block' htmlFor="Country">Country</label>
+                    <label className=' block' htmlFor="Country">Address</label>
                     <input
                         className='outline-none p-1'
                         style={{
@@ -129,12 +132,12 @@ const CheckoutForm = ({ paymentStatus, setPaymentStatus, data }: ChildProps): Re
                             borderBottom: "2px solid #9494943D",
                         }}
                         required
-                        placeholder="Bangladesh"
-                        name='country'
+                        placeholder="dhaka bangladesh"
+                        name='address'
                     />
                 </div>
                 <div className='w-full'>
-                    <label className='-mb-2 block' htmlFor="Number">Phone Number</label>
+                    <label className=' block' htmlFor="Number">Phone Number</label>
                     <input
                         type='number'
                         className='outline-none p-1'
@@ -201,7 +204,7 @@ const CheckoutForm = ({ paymentStatus, setPaymentStatus, data }: ChildProps): Re
             {paymentMethod && (
                 <Result>Got PaymentMethod: {paymentMethod.id}</Result>
             )}
-            <button className='w-full block text-white bg-[#3C3C3C] mt-6' type="submit" disabled={!stripe}>
+            <button className='w-full block text-white bg-[#3C3C3C] mt-6 py-3' type="submit" disabled={!stripe}>
                 Confirm Pay
             </button>
         </form>

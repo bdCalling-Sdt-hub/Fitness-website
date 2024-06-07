@@ -1,33 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import baseURL from "../../AxiosConfig/Config";
 import { AxiosError } from "axios";
-interface initialState {
-    error: boolean;
-    success: boolean;
-    loading: boolean;
-    isSuccess: boolean;
-}
-const initialState: initialState = {
+
+const initialState = {
     error: false,
     success: false,
     loading: false,
     isSuccess: false,
 };
 interface Permitter {
-    address: string,
-    contactNumber: string,
-    deliveryDate: string,
-    paymentMethod: string,
-    product: string,
-    paymentStatus: string,
-    quantity: number,
-    totalAmount: number,
+    planId : string,
 }
-export const PlaceOrder = createAsyncThunk(
-    'PlaceOrder',
+export const BuyPlan = createAsyncThunk(
+    'BuyPlan',
     async (value:Permitter, thunkApi) => {
         try {
-            const response = await baseURL.post(`/order/place-order`,{...value} ,{
+            const response = await baseURL.post(`/subscriptions/upgrade-plan`,{planId:value.planId},{
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -41,26 +29,27 @@ export const PlaceOrder = createAsyncThunk(
         }
     }
 )
-export const PlaceOrderSlice = createSlice({
-    name: 'PlaceOrder',
+export const BuyPlanSlice = createSlice({
+    name: 'BuyPlan',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(PlaceOrder.pending, (state) => {
+        builder.addCase(BuyPlan.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(PlaceOrder.fulfilled, (state, action) => {
+            builder.addCase(BuyPlan.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
             }),
-            builder.addCase(PlaceOrder.rejected, (state) => {
+            builder.addCase(BuyPlan.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
+                state.isSuccess = false;
             })
     }
 })
-export default PlaceOrderSlice.reducer
+export default BuyPlanSlice.reducer
