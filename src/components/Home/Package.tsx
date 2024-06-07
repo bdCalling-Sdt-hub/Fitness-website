@@ -5,6 +5,7 @@ import { RiCheckboxCircleFill } from "react-icons/ri";
 import Payment from '../Payment';
 import { useAppDispatch, useAppSelector } from '../../Store/hook';
 import { Subscription } from '../../States/Subscription/SubscriptionSlice';
+import { Empty } from 'antd';
 
 interface Plans {
     _id: string,
@@ -73,6 +74,9 @@ const Package = (): React.JSX.Element => {
             <Heading title='Membership Options' style='text-center' />
 
             <div className='mt-10 lg:mt-16 xl:mt-24 md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 flex flex-col justify-start items-start md:items-center'>
+                {
+                  (plan && plan.length) <= 0 &&  [...Array(3).keys()].map((item) => <Empty key={item} />)
+                }
                 {
                     plan?.map((item: Plans) => {
                         return (

@@ -4,6 +4,7 @@ import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { GetAllFeedback } from '../States/FeedBack/GetAllFeedbackSlice';
 import { ServerUrl } from '../AxiosConfig/Config';
+import { Empty } from 'antd';
 
 
 const ArrowLeft = ({ ...props }: CustomArrowProps) => (
@@ -68,6 +69,7 @@ const Feedback = () => {
         ]
     };
     const dispatch = useAppDispatch()
+    
     const { Feedback } = useAppSelector(state => state.GetAllFeedback)
     useEffect(() => {
         dispatch(GetAllFeedback())
@@ -79,6 +81,9 @@ const Feedback = () => {
             </div>
             <div className="slider">
                 <Slider {...settings}>
+                    {
+                        (Feedback && Feedback.length) <= 0 && [...Array(3).keys()].map((item) => <Empty key={item} />)
+                    }
                     {
                         Feedback.slice(0, 10).map((item, index) => (
                             <div

@@ -5,6 +5,7 @@ import Heading from '../common/Heading';
 import { useAppDispatch, useAppSelector } from '../../Store/hook';
 import { ShopItems } from '../../States/Shop/ShopSlice';
 import { ServerUrl } from '../../AxiosConfig/Config';
+import { Empty } from 'antd';
 interface IItemProps {
     _id: string,
     productName: string,
@@ -35,6 +36,9 @@ const ShopProductList = (): React.JSX.Element => {
             </div>
 
             <div className='flex items-start md:items-center justify-start md:grid md:grid-cols-2 flex-col lg:grid-cols-3 xl:grid-cols-4 gap-3 mt-10'>
+                {
+                    (Products && Products.length) <= 0 && [...Array(4).keys()].map((item) => <Empty key={item} />)
+                }
                 {
                     Products?.slice(0, 4)?.map((item: IItemProps) => {
                         return (
