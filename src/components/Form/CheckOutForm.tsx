@@ -89,6 +89,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                 name: target.name.value,
                 amount: data.price,
                 productId: data.id,
+                quantity : data.quantity,
                 status: 'paid'
             }
             setErrorMessage(null);

@@ -4,7 +4,7 @@ import MetaTag from '../components/common/MetaTag';
 import Heading from '../components/common/Heading';
 import { HiOutlinePlusSm, HiOutlineMinusSm } from "react-icons/hi";
 import Button from '../components/common/Button';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import RelatedProduct from '../components/RelatedProduct';
 import { Modal } from 'antd';
 import Payment from '../components/Payment';
@@ -13,16 +13,37 @@ import { SingleProduct } from '../States/Shop/ProductDetailsSlice';
 import { ServerUrl } from '../AxiosConfig/Config';
 import { AddToCart } from '../States/Cart/AddToCartSlice';
 import Swal from 'sweetalert2';
+import { PlaceOrder } from '../States/Order/PlaceOrderSlice';
 const ProductDetails = (): React.JSX.Element => {
     const [showPaymentOptions, setshowPaymentOptions] = useState(false)
-    const [banerImageIndex, setbanerImageIndex] = useState(1)
+    const [banerImageIndex, setbanerImageIndex] = useState(0)
     const { id } = useParams()
     const dispatch = useAppDispatch()
-    const [quantity, setQuantity] = useState(0)
+    const [quantity, setQuantity] = useState(1)
     const { Product } = useAppSelector(state => state.SingleProduct)
-    // paymentStatus, setPaymentStatus, data
     const [paymentStatus, setPaymentStatus,] = useState<any>('')
-    // console.log(paymentStatus)
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (paymentStatus?.status === 'paid') {
+            let date = new Date();
+            date.setDate(date.getDate() + 7);
+            console.log('order')
+            dispatch(PlaceOrder({
+                location: paymentStatus?.address,
+                contactNumber: paymentStatus?.phone,
+                deliveryDate: date.toISOString().split('T')[0],
+                paymentMethod: paymentStatus?.transactionID,
+                product: paymentStatus?.productId,
+                paymentStatus: paymentStatus?.status,
+                quantity: paymentStatus?.quantity,
+                totalAmount: paymentStatus?.amount,
+            })).then((res) => {
+                if (res.type == 'PlaceOrder/fulfilled') {
+                    navigate('/order')
+                }
+            })
+        }
+    }, [paymentStatus])
     useEffect(() => {
         if (id) {
             dispatch(SingleProduct({ id: id }))
