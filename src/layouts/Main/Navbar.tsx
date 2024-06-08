@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
 import { BsCart2 } from "react-icons/bs";
 import { GetProp, Input, Modal } from 'antd';
-import { FormProps, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { IoIosSearch } from 'react-icons/io';
 import LoginPopUp from '../../pages/LoginPopUp';
 import { OTPProps } from 'antd/es/input/OTP';
@@ -20,6 +20,7 @@ import { ServerUrl } from '../../AxiosConfig/Config';
 import { ShopItems } from '../../States/Shop/ShopSlice';
 import { putFeedBack } from '../../States/FeedBack/putFeedbackSlice';
 import Swal from 'sweetalert2';
+import { UserContext } from '../../Provider/UserProvider';
 interface IRoutes {
     name: string;
     path: string
@@ -30,7 +31,7 @@ interface Inputs {
 const Navbar = (): React.JSX.Element => {
     const [openSearchModal, setOpenSearchModal] = useState(false)
     const { pathname } = useLocation();
-    const [openPopUp, setOpenPopUp] = useState(false)
+    const { openPopUp, setOpenPopUp } = useContext<any>(UserContext)
     const [signIn, toggle] = useState(true);
     const [openForgetPass, setOpenForgetPass] = useState(false)
     const [openVerifyPass, setOpenVerifyPass] = useState(false)
@@ -38,12 +39,11 @@ const Navbar = (): React.JSX.Element => {
     const [openChangedPass, setOpenChangedPass] = useState(false)
     const [openFeedbackModal, setopenFeedbackModal] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
-    const { user }: any = useAppSelector(state => state.Profile)
+    const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
     const [showUserOptions, setShowUserOptions] = useState(false);
     const [searchValue, setSearchValue] = useState<string>('')
     const dispatch = useAppDispatch()
     const { Products, meta } = useAppSelector(state => state.ShopItems)
-
     useEffect(() => {
         dispatch(ShopItems({ page: 1, limit: 5, sort: '', searchTerm: searchValue }))
     }, [searchValue])
@@ -61,7 +61,7 @@ const Navbar = (): React.JSX.Element => {
                     title: "Your Feedback has been sent",
                     showConfirmButton: false,
                     timer: 1500
-                }).then(()=>{
+                }).then(() => {
                     reset()
                     setopenFeedbackModal(false)
                 });
@@ -128,6 +128,9 @@ const Navbar = (): React.JSX.Element => {
                     <ul className='flex items-center lg:flex-row flex-col gap-6'>
                         {
                             items?.map((item: IRoutes, index) => {
+                                if (item?.path === '/academy' && !user?.email) {
+                                    return false
+                                }
                                 return (
                                     <Link key={index} to={`${item.path}`}>
                                         <li className={`${item.path === pathname ? "text-primary" : "text-secondary"} font-light text-[16px] leading-[21px]`}>{item.name}</li>
@@ -139,12 +142,16 @@ const Navbar = (): React.JSX.Element => {
 
                     {/* others routes and user menu section */}
                     <div className='flex items-center lg:flex-row flex-col gap-6'>
-                        <Link to={"/cart"}>
-                            <BsCart2 size={24} color='#555555' />
-                        </Link>
+                        {
+                            user?.email && <Link to={"/cart"}>
+                                <BsCart2 size={24} color='#555555' />
+                            </Link>
+                        }
+
                         <button onClick={() => setOpenSearchModal(true)}>
                             <IoSearch size={24} color='#555555' />
                         </button>
+
                         {
                             user?.email ? <>
                                 <img onClick={() => setShowUserOptions(!showUserOptions)} className='h-10 w-10 rounded-full cursor-pointer' src={user.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${user.profile_image}`} alt="" />

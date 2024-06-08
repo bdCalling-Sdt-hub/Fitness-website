@@ -1,7 +1,7 @@
 import React from 'react';
 import Heading from '../common/Heading';
 import Banner from "../../assets/class_banner.png";
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 const Class = (): React.JSX.Element => {
     const navigate = useNavigate()
@@ -10,7 +10,7 @@ const Class = (): React.JSX.Element => {
             <div className=' h-fit my-auto'>
                 <Heading title='Free Class ' style='my-6' />
                 <p className='text-secondary text-justify font-normal mb-6 text-[16px] leading-5'>This class is a demo class, you get all the exercises, guidelines and tips related to fitness in our fitness course. So don't delay and join our community now.</p>
-                <button
+                <Link to={`/free-class`}
                     style={{
                         width: 226,
                         border: "none",
@@ -20,11 +20,11 @@ const Class = (): React.JSX.Element => {
                     }}
                     className='
                         bg-primary
-                        text-[#F2F2F2] font-normal text-[16px] leading-5
+                        text-[#F2F2F2] font-normal text-[16px] leading-5 p-3 px-6
                     '
                 >
                     Join Our Community
-                </button>
+                </Link>
             </div>
 
             <div onClick={() => {

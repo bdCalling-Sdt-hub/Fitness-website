@@ -11,11 +11,10 @@ import { ServerUrl } from '../AxiosConfig/Config';
 const { Option } = Select;
 const Shop = (): React.JSX.Element => {
     const [searchTerm, setsearchTerm] = useState('');
-    const [itemPerPage, setItemPerPage] = useState(10)
+    const [itemPerPage, setItemPerPage] = useState(20)
     const [page, setPage] = useState(1)
     const navigate = useNavigate()
     const [sortOrder, setSortOrder] = useState('')
-    // const [category, setCategory] = useState<string[]>([])
     const dispatch = useAppDispatch()
     const location = useLocation()
     const { Products, meta } = useAppSelector(state => state.ShopItems)
@@ -102,7 +101,7 @@ const Shop = (): React.JSX.Element => {
 
             <div className='flex flex-col items-start justify-start md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:items-center  gap-6 mt-10'>
                 {
-                    Products?.slice(0, 4)?.map((item) => {
+                    Products?.map((item) => {
                         return (
                             <div onClick={(): void => {
                                 navigate(`/product-details/${item?._id}`)
