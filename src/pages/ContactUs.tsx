@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { GoMail } from 'react-icons/go'
 import { IoCallOutline } from 'react-icons/io5'
 import Navigation from '../components/common/Navigation'
@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../Store/hook'
 import { GetAllContact } from '../States/Contact/GetAllContactSlice'
 import { SentContact } from '../States/Contact/SentContactMessageSlice'
 import Swal from 'sweetalert2'
+import { UserContext } from '../Provider/UserProvider'
 type FieldType = {
     subject?: string;
     options?: string;
@@ -20,7 +21,12 @@ const ContactUs = (): React.JSX.Element => {
     useEffect(() => {
         dispatch(GetAllContact())
     }, [])
+    const { openPopUp, setOpenPopUp } = useContext<any>(UserContext)
+    const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+        if (!user?.email) {
+            return setOpenPopUp(true)
+        }
         form.setFieldsValue(values)
         dispatch(SentContact(values)).then((res) => {
             if (res.type == 'SentContact/fulfilled') {

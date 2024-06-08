@@ -11,6 +11,7 @@ interface ChildProp {
 
 }
 const Chart = ({ anyties }: ChildProp): React.JSX.Element => {
+    console.log(anyties)
     const data = [
         { name: 'Complete', value: anyties?.readCount },
         { name: 'Incomplete', value: anyties?.unreadCount }
@@ -31,26 +32,33 @@ const Chart = ({ anyties }: ChildProp): React.JSX.Element => {
         );
     };
     return (
-        <ResponsiveContainer width="100%" height="100%">
-            <PieChart width={150} height={150}>
-                <Pie
-                    data={data}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={renderCustomizedLabel}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                >
-                    {
-                        data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))
-                    }
-                </Pie>
-            </PieChart>
-        </ResponsiveContainer>
+        <div className='relative w-full h-[80%]'>
+            {
+                anyties?.readPercentage.startsWith('100') ? <div className='absolute top-[50%] left-[50%] translate-x-[-50%] text-white translate-y-[-50%] p-[70px] py-[80px] text-center rounded-full bg-[#905A00]'>
+                    100%
+                </div> : <ResponsiveContainer width="100%" height="100%">
+                    <PieChart width={150} height={150}>
+                        <Pie
+                            data={data}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={renderCustomizedLabel}
+                            outerRadius={80}
+                            fill="#8884d8"
+                            dataKey="value"
+                        >
+                            {
+                                data.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))
+                            }
+                        </Pie>
+                    </PieChart>
+                </ResponsiveContainer>
+            }
+        </div>
+
     )
 }
 

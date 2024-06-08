@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import MetaTag from '../components/common/MetaTag'
 import Heading from '../components/common/Heading'
 import Video from "../assets/video.mp4"
@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../Store/hook'
 import Payment from '../components/Payment'
 import Modal from '../components/common/Modal'
 import { BuyPlan } from '../States/Subscription/BuyPlanSlice'
+import { UserContext } from '../Provider/UserProvider'
 interface Plans {
     _id: string,
     title: string,
@@ -22,6 +23,8 @@ interface Plans {
     id: string,
 }
 const FreeClass = (): React.JSX.Element => {
+    const { openPopUp, setOpenPopUp } = useContext<any>(UserContext)
+    const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
     const [open, setOpen] = useState(false)
     const [openPayment, setOpenPayment] = useState(false)
     const { plan } = useAppSelector(state => state.Subscription);
@@ -33,10 +36,13 @@ const FreeClass = (): React.JSX.Element => {
     useEffect(() => {
         setOpenPayment(false)
         if (paymentStatus?.status === 'paid') {
-            dispatch(BuyPlan({planId:paymentStatus?.productId,amount:paymentStatus?.amount}))
+            dispatch(BuyPlan({ planId: paymentStatus?.productId, amount: paymentStatus?.amount }))
         }
     }, [paymentStatus])
     const handlePlay = () => {
+        if (!user?.email) {
+            return
+        }
         if (videoRef.current) {
             videoRef.current.play();
         }
@@ -64,7 +70,7 @@ const FreeClass = (): React.JSX.Element => {
             <Heading title='Free Class' style='mb-6' />
             <MetaTag title='Free Class' />
             <div className='container mx-auto overflow-hidden w-full py-6 max-h-[658px] min-h-96 sm:min-h-[470px] lg:min-h-[530px] xl:min-h-[658px] rounded-lg relative bg-red-400'>
-                <video ref={videoRef} controls style={{
+                <video ref={videoRef} controls={user?.email} style={{
                 }} className='rounded-lg w-full object-cover'>
                     <source src={Video} type="video/mp4" />
                 </video>
@@ -96,6 +102,9 @@ const FreeClass = (): React.JSX.Element => {
                                 </div>
 
                                 <button onClick={() => {
+                                    if (!user?.email) {
+                                        return setOpenPopUp(true)
+                                    }
                                     setModalData(item)
                                     setOpen(false)
                                     setOpenPayment(true)

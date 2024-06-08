@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
-import { Calendar, Input } from 'antd';
+import { Calendar, Empty, Input } from 'antd';
 import { CgSearch } from "react-icons/cg";
 import { CiCalendarDate } from "react-icons/ci";
 import Modal from '../components/common/Modal';
@@ -90,13 +90,13 @@ const Academy = (): React.JSX.Element => {
     }, [openIndex]);
 
     useEffect(() => {
-        dispatch(SingleProgram({ id, date: selectedDate }))
-    }, [id, selectedDate, CurrentClass?._id])
+        dispatch(SingleProgram({ id, date: selectedDate, searchTerm: keyword }))
+    }, [id, selectedDate, CurrentClass?._id, keyword])
 
-    const { AllProgram } = useAppSelector(state => state.GetAllProgram)
-    useEffect(() => {
-        dispatch(GetAllProgram({ page: 1, limit: 4, title: '' }))
-    }, [keyword])
+    // const { AllProgram } = useAppSelector(state => state.GetAllProgram)
+    // useEffect(() => {
+    //     dispatch(GetAllProgram({ page: 1, limit: 4, title: '' }))
+    // }, [keyword])
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
@@ -127,46 +127,49 @@ const Academy = (): React.JSX.Element => {
                 </div>
             }
             <div className='md:grid flex flex-col grid-cols-12 gap-10 mt-8 group'>
-                <div className='col-span-8 '>
-                    <div className='video_player flex items-center justify-center'>
-                        <ReactPlayer
-                            width='100%'
-                            height='100%'
-                            controls
-                            playing={playing}
-                            onPlay={() => setPlaying(true)}
-                            onPause={() => setPlaying(false)}
-                            url={`${ServerUrl}/${CurrentClass?.video}`}
-                        />
-                        <div className='play-pause-button' onClick={() => setPlaying(!playing)} >
-                            <div className={`w-20 h-20 ${playing ? 'hover:flex hidden' : 'flex'} rounded-full bg-primary bg-opacity-50  items-center justify-center`}>
-                                {
-                                    playing
-                                        ?
-                                        <IoPlaySharp size={40} color='#FEFEFE' />
-                                        :
-                                        <GrPauseFill size={40} color='#FEFEFE' />
-                                }
+                {
+                    CurrentClass ? <div className='col-span-8 '>
+                        <div className='video_player flex items-center justify-center'>
+                            <ReactPlayer
+                                width='100%'
+                                height='100%'
+                                controls
+                                playing={playing}
+                                onPlay={() => setPlaying(true)}
+                                onPause={() => setPlaying(false)}
+                                url={`${ServerUrl}/${CurrentClass?.video}`}
+                            />
+                            <div className='play-pause-button' onClick={() => setPlaying(!playing)} >
+                                <div className={`w-20 h-20 ${playing ? 'hover:flex hidden' : 'flex'} rounded-full bg-primary bg-opacity-50  items-center justify-center`}>
+                                    {
+                                        playing
+                                            ?
+                                            <IoPlaySharp size={40} color='#FEFEFE' />
+                                            :
+                                            <GrPauseFill size={40} color='#FEFEFE' />
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* video description */}
-                    <div className='flex items-center gap-4 my-4'>
-                        <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>Topic : {CurrentClass?.topic}</p>
-                        <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>{CurrentClass?.date.split('T')[0]}</p>
-                        <a className='flex justify-start items-center gap-1 hover:text-blue-500' href={`${ServerUrl}/${CurrentClass?.pdfFile}`} target="_blank" rel="noopener noreferrer">
-                            <FaRegFilePdf /> PDF File
-                        </a>
-                        <a className='flex justify-start items-center gap-1 hover:text-blue-500' href={`${ServerUrl}/${CurrentClass?.docFile}`} target="_blank" rel="noopener noreferrer">
-                            <SiGoogledocs /> Doc File
-                        </a>
-                    </div>
-                    <p className='text-[#242424] font-semibold text-[24px] leading-[18px] mb-6'>{CurrentClass?.title}</p>
-                    <p className='text-secondary font-normal text-[14px] leading-7'>
-                        {CurrentClass?.description}
-                    </p>
-                </div>
+                        {/* video description */}
+                        <div className='flex items-center gap-4 my-4'>
+                            <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>Topic : {CurrentClass?.topic}</p>
+                            <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>{CurrentClass?.date.split('T')[0]}</p>
+                            <a className='flex justify-start items-center gap-1 hover:text-blue-500' href={`${ServerUrl}/${CurrentClass?.pdfFile}`} target="_blank" rel="noopener noreferrer">
+                                <FaRegFilePdf /> PDF File
+                            </a>
+                            <a className='flex justify-start items-center gap-1 hover:text-blue-500' href={`${ServerUrl}/${CurrentClass?.docFile}`} target="_blank" rel="noopener noreferrer">
+                                <SiGoogledocs /> Doc File
+                            </a>
+                        </div>
+                        <p className='text-[#242424] font-semibold text-[24px] leading-[18px] mb-6'>{CurrentClass?.title}</p>
+                        <p className='text-secondary font-normal text-[14px] leading-7'>
+                            {CurrentClass?.description}
+                        </p>
+                    </div> : <Empty className='col-span-8 ' />
+                }
+
                 <div className='col-span-4 w-full'>
                     <div className='w-full rounded h-[280px] p-4 mb-6 select-none pointer-events-none'
                         style={{ boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px' }}
@@ -179,7 +182,7 @@ const Academy = (): React.JSX.Element => {
                     <div className='w-full  md:overflow-y-scroll md:max-h-[700px] video-collection'>
                         <div className=' md:flex flex-col gap-3'>
                             {
-                                ( SingleProgramData?.series && SingleProgramData?.series?.length <=0) && <p className='text-red-500'>No data found </p>
+                                (SingleProgramData?.series && SingleProgramData?.series?.length <= 0) && <p className='text-red-500'>No data found </p>
                             }
                             {
                                 SingleProgramData?.series?.map((item, index) => <div key={index} className='cursor-pointer p-3 bg-[#F2F2F2]'>
@@ -234,7 +237,7 @@ const Academy = (): React.JSX.Element => {
                     />
                 }
             />
-            <div className='flex justify-between items-center gap-4 flex-wrap mt-20 '>
+            {/* <div className='flex justify-between items-center gap-4 flex-wrap mt-20 '>
                 <h4 className='text-2xl lg:text-3xl font-medium'>More Class Like This</h4>
                 <Link className='text-[#B47000] underline' to={`/academy`}>
                     View all
@@ -252,7 +255,7 @@ const Academy = (): React.JSX.Element => {
                         </Link>
                     </div>
                 </div>)}
-            </div>
+            </div> */}
         </div>
     )
 }

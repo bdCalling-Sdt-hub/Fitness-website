@@ -1,19 +1,17 @@
 import { createContext, useEffect, useState } from "react";
-import { useAppDispatch } from "../Store/hook";
+import { useAppDispatch, useAppSelector } from "../Store/hook";
 import { Profile } from "../States/Authentication/ProfileSlice";
 
-const UserContext = createContext({});
+export const UserContext = createContext(null || {});
 const UserProvider = ({ children }: { children: React.ReactNode }): React.JSX.Element => {
-    const [useData, setUserData] = useState({})
     const dispatch = useAppDispatch()
+    const [openPopUp, setOpenPopUp] = useState(false)
+    const {user:useData,loading:userloading}=useAppSelector(state=>state.Profile)
     useEffect(() => {
         dispatch(Profile())
-            .then((res) => {
-                setUserData(res.payload)
-            })
     }, [])
     const userData = {
-        useData
+        useData,userloading,openPopUp, setOpenPopUp
     }
     return (
         <UserContext.Provider value={userData}>

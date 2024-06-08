@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Navigation from '../components/common/Navigation';
 import MetaTag from '../components/common/MetaTag';
 import Heading from '../components/common/Heading';
 import { HiOutlinePlusSm, HiOutlineMinusSm } from "react-icons/hi";
-import Button from '../components/common/Button';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import RelatedProduct from '../components/RelatedProduct';
-import { Modal } from 'antd';
 import Payment from '../components/Payment';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { SingleProduct } from '../States/Shop/ProductDetailsSlice';
@@ -14,7 +12,10 @@ import { ServerUrl } from '../AxiosConfig/Config';
 import { AddToCart } from '../States/Cart/AddToCartSlice';
 import Swal from 'sweetalert2';
 import { PlaceOrder } from '../States/Order/PlaceOrderSlice';
+import { UserContext } from '../Provider/UserProvider';
 const ProductDetails = (): React.JSX.Element => {
+    const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
+    const { openPopUp, setOpenPopUp } = useContext<any>(UserContext)
     const [showPaymentOptions, setshowPaymentOptions] = useState(false)
     const [banerImageIndex, setbanerImageIndex] = useState(0)
     const { id } = useParams()
@@ -118,11 +119,22 @@ const ProductDetails = (): React.JSX.Element => {
                                 </button>
                             </div>
 
-                            <button onClick={handelAddToCart} className='border border-secondary text-secondary w-full mb-6 py-3' >
+                            <button onClick={() => {
+                                if (!user?.email) {
+                                    return setOpenPopUp(true)
+                                }
+                                handelAddToCart()
+                            }} className='border border-secondary text-secondary w-full mb-6 py-3' >
                                 Add to Cart
                             </button>
-                            <Button onSubmit={() => setshowPaymentOptions(true)} label='Buy Now' style='bg-secondary text-[#FBFBFB] w-full mb-10' />
-
+                            <button onClick={() => {
+                                if (!user?.email) {
+                                    return setOpenPopUp(true)
+                                }
+                                setshowPaymentOptions(true)
+                            }} className='border border-secondary bg-secondary text-[#FBFBFB] w-full mb-6 py-3' >
+                                Buy Now
+                            </button>
                             <p className='text-[16px] leading-[40px] text-secondary font-normal mb-4'>
                                 {Product?.description}
                             </p>

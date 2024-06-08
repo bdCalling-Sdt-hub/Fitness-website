@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Heading from '../common/Heading'
-import Modal from '../common/Modal';
+// import Modal from '../common/Modal';
 import { RiCheckboxCircleFill } from "react-icons/ri";
 import Payment from '../Payment';
 import { useAppDispatch, useAppSelector } from '../../Store/hook';
 import { Subscription } from '../../States/Subscription/SubscriptionSlice';
-import { Empty } from 'antd';
-import { Stripe } from '@stripe/stripe-js';
+import { Empty, Modal } from 'antd';
 import { BuyPlan } from '../../States/Subscription/BuyPlanSlice';
+import { Toaster } from 'react-hot-toast';
+import { UserContext } from '../../Provider/UserProvider';
 
 interface Plans {
     _id: string,
@@ -23,6 +24,8 @@ interface Plans {
     id: string,
 }
 const Package = (): React.JSX.Element => {
+    const { openPopUp, setOpenPopUp } = useContext<any>(UserContext)
+    const { user ,loading: userloading}: any = useAppSelector(state => state.Profile)
     const dispatch = useAppDispatch()
     const [open, setOpen] = useState(false)
     const [openPayment, setOpenPayment] = useState(false)
@@ -32,7 +35,7 @@ const Package = (): React.JSX.Element => {
     useEffect(() => {
         setOpenPayment(false)
         if (paymentStatus?.status === 'paid') {
-            dispatch(BuyPlan({planId:paymentStatus?.productId,amount:paymentStatus?.amount}))
+            dispatch(BuyPlan({ planId: paymentStatus?.productId, amount: paymentStatus?.amount }))
         }
     }, [paymentStatus])
     useEffect(() => {
@@ -57,6 +60,11 @@ const Package = (): React.JSX.Element => {
             </div>
 
             <button onClick={() => {
+                if (!user?.email) {
+                    setOpenPopUp(true)
+                    setOpen(false)
+                    return 
+                }
                 setOpen(false)
                 setOpenPayment(true)
             }}
@@ -120,11 +128,24 @@ const Package = (): React.JSX.Element => {
                 }
             </div>
 
-            <Modal open={open} setOpen={setOpen} body={body} />
+            <Modal
+                open={open}
+                onCancel={() => setOpen(false)}
+                centered
+                footer={false}>
+                {body}
+            </Modal>
             <Modal
                 open={openPayment}
-                setOpen={setOpenPayment}
-                body={<Payment setPaymentStatus={setPaymentStatus} data={ModalData} />}
+                onCancel={() => setOpenPayment(false)}
+                centered
+                footer={false}
+            >
+                <Payment setPaymentStatus={setPaymentStatus} data={ModalData} />
+            </Modal>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
             />
         </div>
     )

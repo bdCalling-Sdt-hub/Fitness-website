@@ -17,6 +17,7 @@ import Cart from "../pages/Cart";
 import Order from "../pages/Order";
 import Studio from "../pages/Studio";
 import Payment from "../pages/Payment";
+import PrivetPage from "../pages/PrivetPage";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -68,7 +69,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "academy",
-                element: <Studio />,
+                element: <PrivetPage><Studio /></PrivetPage>,
             },
             {
                 path: "academy/:id",
@@ -80,11 +81,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "/cart",
-                element: <Cart />,
+                element: <PrivetPage><Cart /></PrivetPage>,
             },
             {
                 path: "/order",
-                element: <Order />,
+                element: <PrivetPage> <Order /></PrivetPage>,
             },
 
         ]
