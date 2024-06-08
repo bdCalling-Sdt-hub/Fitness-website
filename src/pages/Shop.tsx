@@ -4,23 +4,27 @@ import Heading from '../components/common/Heading'
 import MetaTag from '../components/common/MetaTag'
 import { Pagination, PaginationProps, Select } from 'antd';
 import { BsCart2 } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { ShopItems } from '../States/Shop/ShopSlice';
 import { ServerUrl } from '../AxiosConfig/Config';
 const { Option } = Select;
 const Shop = (): React.JSX.Element => {
-    const [searchTerm, setsearchTerm] = useState(new URLSearchParams(window.location.search).get('search') || "");
+    const [searchTerm, setsearchTerm] = useState('');
     const [itemPerPage, setItemPerPage] = useState(10)
     const [page, setPage] = useState(1)
     const navigate = useNavigate()
     const [sortOrder, setSortOrder] = useState('')
     // const [category, setCategory] = useState<string[]>([])
     const dispatch = useAppDispatch()
+    const location = useLocation()
     const { Products, meta } = useAppSelector(state => state.ShopItems)
     useEffect(() => {
+        setsearchTerm(new URLSearchParams(window.location.search).get('search') || "")
+    }, [location])
+    useEffect(() => {
         dispatch(ShopItems({ page: page, limit: itemPerPage, sort: sortOrder, searchTerm: searchTerm }))
-    }, [itemPerPage, page, sortOrder])
+    }, [itemPerPage, page, sortOrder, searchTerm])
     // console.log(meta)
     const onChange: PaginationProps['onChange'] = (pageNumber) => {
         setPage(pageNumber)
