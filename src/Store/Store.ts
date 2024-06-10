@@ -29,6 +29,7 @@ import PaymentIntantSlice from '../States/Payment/PaymentIntantSlice';
 import PlaceOrderSlice from '../States/Order/PlaceOrderSlice';
 import BuyPlanSlice from '../States/Subscription/BuyPlanSlice';
 import GetMySubscriptionSlice from '../States/Subscription/GetMySubscriptionSlice';
+import BannerDataSlice from '../States/Banner/BannerDataSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -76,6 +77,8 @@ export const Store = configureStore({
         TermsConditions: TermsConditionsSlice,
         // payment intant 
         PaymentIntant: PaymentIntantSlice,
+        //baner
+        GetBannerData : BannerDataSlice,
         
     },
 })

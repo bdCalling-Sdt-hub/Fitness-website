@@ -15,7 +15,7 @@ import Chart from '../Academy/Chart';
 import StatusLabel from '../Academy/StatusLabel';
 import { IoIosArrowDown } from 'react-icons/io';
 import { FaCheckCircle, FaRegFilePdf } from 'react-icons/fa';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { SingleProgram } from '../States/Program/SingleProgramSlice';
 import baseURL, { ServerUrl } from '../AxiosConfig/Config';
@@ -29,7 +29,6 @@ type Inputs = {
 };
 const Academy = (): React.JSX.Element => {
     const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
-    console.log(user)
     const { id } = useParams()
     const [openCalender, setOpenCalender] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<any>('');
@@ -38,6 +37,11 @@ const Academy = (): React.JSX.Element => {
     const { SingleProgramData } = useAppSelector(state => state.SingleProgram)
     const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
     const [anyties, setanalayties] = useState()
+    const { myPlan ,loading } = useAppSelector(state => state.GetMySubscription)
+    const navigate =useNavigate()
+    if (!loading && !myPlan?.amount) {
+        navigate('/')
+    }
     const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
     useEffect(() => {
         baseURL.get(`/class/single/${CurrentClass?._id}`, {

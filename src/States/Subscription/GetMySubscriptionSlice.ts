@@ -24,7 +24,7 @@ interface InitialState {
 const initialState:InitialState = {
     error: false,
     success: false,
-    loading: false,
+    loading: true,
     isSuccess: false,
     myPlan: null,
 };
@@ -32,7 +32,6 @@ export const GetMySubscription = createAsyncThunk(
     'GetMySubscription',
     async (value, thunkApi) => {
         try {
-            console.log('api')
             const response = await baseURL.get(`/subscriptions/my-plan`, {
                 headers: {
                     "Content-Type": "application/json",

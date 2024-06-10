@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MdOutlineArrowOutward } from "react-icons/md";
-import Video from "../../assets/video.mp4"
+import { useAppDispatch, useAppSelector } from '../../Store/hook';
+import { GetBannerData } from '../../States/Banner/BannerDataSlice';
+import { ServerUrl } from '../../AxiosConfig/Config';
+import { Link } from 'react-router-dom';
 const Hero = (): React.JSX.Element => {
-
-
+    const dispatch = useAppDispatch()
+    const { BannerData } = useAppSelector(state => state.GetBannerData)
+    useEffect(() => {
+        dispatch(GetBannerData())
+    }, [])
     return (
         <>
             <div className='relative w-full' style={{ height: "calc(100vh - 0px)" }}>
                 <video autoPlay muted loop>
-                    <source src={Video} />
+                    <source src={`${ServerUrl}/${BannerData?.video}`} />
                 </video>
 
                 <div className='absolute top-0 left-0 flex items-center justify-center w-[100%] h-[100%]' style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} >
                     <div className=''>
-                        <h1 className='text-[#F2F2F2] text-2xl md:text-4xl xl:text-[64px] leading-8  xl:leading-[87px] font-light text-center'>aligning mindfulness and movement</h1>
-                        <button 
+                        <h1 className='text-[#F2F2F2] text-2xl md:text-4xl xl:text-[64px] leading-8  xl:leading-[87px] font-light text-center'>{BannerData?.title}</h1>
+                        <Link to={`/free-class`}
                             style={{
                                 width: 226,
                                 border: "none",
@@ -31,11 +37,11 @@ const Hero = (): React.JSX.Element => {
                         >
                             <MdOutlineArrowOutward color='#F2F2F2' size={24} />
                             Join our Class
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
-           
+
 
         </>
     )

@@ -5,7 +5,7 @@ import MetaTag from '../components/common/MetaTag'
 import { Input, Pagination, PaginationProps } from 'antd';
 import { CgSearch } from "react-icons/cg";
 import { IoClose } from "react-icons/io5";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { ServerUrl } from '../AxiosConfig/Config';
 import { GetAllProgram } from '../States/Program/GetAllProgramSlice';
@@ -16,6 +16,11 @@ const Studio = (): React.JSX.Element => {
     const [page, setPage] = useState(1)
     const dispatch = useAppDispatch()
     const { AllProgram, meta } = useAppSelector(state => state.GetAllProgram)
+    const { myPlan ,loading } = useAppSelector(state => state.GetMySubscription)
+    const navigate =useNavigate()
+    if (!loading && !myPlan?.amount) {
+        navigate('/')
+    }
     useEffect(() => {
         dispatch(GetAllProgram({ page: page, limit: itemPerPage, title: keyword }))
     }, [keyword])
@@ -50,7 +55,7 @@ const Studio = (): React.JSX.Element => {
             <div className='md:grid flex flex-col md:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-8 justify-start md:items-center items-start py-8'>
                 {AllProgram?.map(item => <div className='w-full h-full' key={item?._id}>
                     <div className='w-full h-60'>
-                        <img className='w-full h-full object-cover' src={`${ServerUrl}/${item?.image}`} alt="" />
+                        <img className='w-full h-full object-cover' src={`${ServerUrl}${item?.image}`} alt="" />
                     </div>
                     <div className='flex justify-between items-center gap-2 flex-wrap mt-4'>
                         <h3 className='text-[#2F2F2F] text-lg md:text-2xl'>{item?.title}</h3>
