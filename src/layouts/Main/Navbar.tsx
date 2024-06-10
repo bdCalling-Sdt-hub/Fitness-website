@@ -21,6 +21,7 @@ import { ShopItems } from '../../States/Shop/ShopSlice';
 import { putFeedBack } from '../../States/FeedBack/putFeedbackSlice';
 import Swal from 'sweetalert2';
 import { UserContext } from '../../Provider/UserProvider';
+import { GetMySubscription } from '../../States/Subscription/GetMySubscriptionSlice';
 interface IRoutes {
     name: string;
     path: string
@@ -43,7 +44,15 @@ const Navbar = (): React.JSX.Element => {
     const [showUserOptions, setShowUserOptions] = useState(false);
     const [searchValue, setSearchValue] = useState<string>('')
     const dispatch = useAppDispatch()
-    const { Products, meta } = useAppSelector(state => state.ShopItems)
+    const { Products } = useAppSelector(state => state.ShopItems)
+    const { myPlan } = useAppSelector(state => state.GetMySubscription)
+
+    // my plan
+    useEffect(() => {
+        dispatch(GetMySubscription())
+    }, [])
+
+    // search shop items 
     useEffect(() => {
         dispatch(ShopItems({ page: 1, limit: 5, sort: '', searchTerm: searchValue }))
     }, [searchValue])
@@ -128,7 +137,7 @@ const Navbar = (): React.JSX.Element => {
                     <ul className='flex items-center lg:flex-row flex-col gap-6'>
                         {
                             items?.map((item: IRoutes, index) => {
-                                if (item?.path === '/academy' && !user?.email) {
+                                if (item?.path === '/academy' && (!user?.email || !myPlan?.amount)) {
                                     return false
                                 }
                                 return (

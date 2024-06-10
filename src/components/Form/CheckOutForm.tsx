@@ -31,7 +31,6 @@ interface ChildProps {
 }
 const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element => {
     const { user ,loading: userloading}: any = useAppSelector(state => state.Profile)
-    // console.log(data.price)
     const [loading, setloading] = useState<boolean>(false)
     const [postal, setPostal] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -170,7 +169,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                             width: "100%",
                             borderBottom: "2px solid #9494943D",
                         }}
-                        defaultValue={user?.phone}
+                        defaultValue={Number(user?.phone_number)}
                         required
                         placeholder="01566026301"
                         name='number'

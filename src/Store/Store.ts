@@ -28,6 +28,7 @@ import TermsConditionsSlice from '../States/TermsConditions/TermsConditionsSlice
 import PaymentIntantSlice from '../States/Payment/PaymentIntantSlice';
 import PlaceOrderSlice from '../States/Order/PlaceOrderSlice';
 import BuyPlanSlice from '../States/Subscription/BuyPlanSlice';
+import GetMySubscriptionSlice from '../States/Subscription/GetMySubscriptionSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -43,6 +44,7 @@ export const Store = configureStore({
         //subscription
         Subscription: SubscriptionSlice,
         BuyPlan:BuyPlanSlice,
+        GetMySubscription:GetMySubscriptionSlice,
         // shop
         ShopItems: ShopSlice,
         SingleProduct: ProductDetailsSlice,

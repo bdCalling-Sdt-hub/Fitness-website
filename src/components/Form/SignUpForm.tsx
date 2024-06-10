@@ -13,13 +13,14 @@ type Inputs = {
 }
 interface ChildPops {
     setOpenPopUp: (arg0: boolean) => void
+    toggle: (arg0: boolean) => void
 }
-const SignUpForm = ({ setOpenPopUp }: ChildPops) => {
+const SignUpForm = ({ setOpenPopUp, toggle }: ChildPops) => {
     const dispatch = useAppDispatch();
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors }, reset
     } = useForm<Inputs>()
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         dispatch(signUp({ username: data.username, email: data.email, contact: data.contact, password: data.password }))
@@ -32,7 +33,10 @@ const SignUpForm = ({ setOpenPopUp }: ChildPops) => {
                         showConfirmButton: false,
                         timer: 1500,
                     }).then(() => {
-                        location.reload();
+                        reset()
+                        // location.reload();
+                        setOpenPopUp(true)
+                        toggle(false)
                     });
                 } else {
                     Swal.fire({

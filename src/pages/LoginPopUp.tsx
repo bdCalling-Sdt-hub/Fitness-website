@@ -22,7 +22,7 @@ const LoginPopUp = ({ signIn, toggle, setOpenForgetPass, setOpenPopUp }: ChildPo
             </LoginStyle.SignUpContainer>
             <LoginStyle.SignInContainer signinIn={signIn}>
                 <LoginStyle.Form>
-                    <SignUpForm setOpenPopUp={setOpenPopUp} />
+                    <SignUpForm toggle={toggle} setOpenPopUp={setOpenPopUp} />
                 </LoginStyle.Form>
             </LoginStyle.SignInContainer>
             <LoginStyle.OverlayContainer signinIn={signIn}>
