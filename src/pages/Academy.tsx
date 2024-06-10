@@ -23,6 +23,8 @@ import { SiGoogledocs } from 'react-icons/si';
 import { RxCross1 } from 'react-icons/rx';
 import { GetAllProgram } from '../States/Program/GetAllProgramSlice';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { AddComment } from '../States/Comments/AddCommentSlice';
+import Swal from 'sweetalert2';
 type ContentRef = HTMLDivElement | null;
 type Inputs = {
     comment: string,
@@ -37,12 +39,12 @@ const Academy = (): React.JSX.Element => {
     const { SingleProgramData } = useAppSelector(state => state.SingleProgram)
     const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
     const [anyties, setanalayties] = useState()
-    const { myPlan ,loading } = useAppSelector(state => state.GetMySubscription)
-    const navigate =useNavigate()
+    const { myPlan, loading } = useAppSelector(state => state.GetMySubscription)
+    const navigate = useNavigate()
     if (!loading && !myPlan?.amount) {
         navigate('/')
     }
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
+    const { register, handleSubmit, watch, formState: { errors },reset } = useForm<Inputs>();
     useEffect(() => {
         baseURL.get(`/class/single/${CurrentClass?._id}`, {
             headers: {
@@ -108,7 +110,21 @@ const Academy = (): React.JSX.Element => {
     // useEffect(() => {
     //     dispatch(GetAllProgram({ page: 1, limit: 4, title: '' }))
     // }, [keyword])
-    const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
+    // AddComment
+    const onSubmit: SubmitHandler<Inputs> = data => {
+        dispatch(AddComment({ comment: data.comment, classId: CurrentClass?._id })).then((res) => {
+            if (res.type == 'AddComment/fulfilled') {
+                reset()
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your comment has been sent",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        })
+    };
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
