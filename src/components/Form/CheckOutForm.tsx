@@ -30,6 +30,7 @@ interface ChildProps {
     data: any
 }
 const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element => {
+    const { user ,loading: userloading}: any = useAppSelector(state => state.Profile)
     // console.log(data.price)
     const [loading, setloading] = useState<boolean>(false)
     const [postal, setPostal] = useState<string>('');
@@ -122,6 +123,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
 
                             borderBottom: "2px solid #9494943D",
                         }}
+                        defaultValue={user?.name}
                         required
                         placeholder="Jenny Rosen"
                         name='name'
@@ -137,6 +139,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
 
                             borderBottom: "2px solid #9494943D",
                         }}
+                        defaultValue={user?.email}
                         required
                         placeholder="JennyRosen@gmail.com"
                         name='email'
@@ -152,6 +155,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                             width: "100%",
                             borderBottom: "2px solid #9494943D",
                         }}
+                        defaultValue={user?.address}
                         required
                         placeholder="dhaka bangladesh"
                         name='address'
@@ -166,8 +170,9 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                             width: "100%",
                             borderBottom: "2px solid #9494943D",
                         }}
+                        defaultValue={user?.phone}
                         required
-                        placeholder="JennyRosen@gmail.com"
+                        placeholder="01566026301"
                         name='number'
                     />
                 </div>
