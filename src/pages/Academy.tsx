@@ -22,8 +22,14 @@ import baseURL, { ServerUrl } from '../AxiosConfig/Config';
 import { SiGoogledocs } from 'react-icons/si';
 import { RxCross1 } from 'react-icons/rx';
 import { GetAllProgram } from '../States/Program/GetAllProgramSlice';
+import { SubmitHandler, useForm } from 'react-hook-form';
 type ContentRef = HTMLDivElement | null;
+type Inputs = {
+    comment: string,
+};
 const Academy = (): React.JSX.Element => {
+    const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
+    console.log(user)
     const { id } = useParams()
     const [openCalender, setOpenCalender] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<any>('');
@@ -32,6 +38,7 @@ const Academy = (): React.JSX.Element => {
     const { SingleProgramData } = useAppSelector(state => state.SingleProgram)
     const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
     const [anyties, setanalayties] = useState()
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
     useEffect(() => {
         baseURL.get(`/class/single/${CurrentClass?._id}`, {
             headers: {
@@ -97,6 +104,7 @@ const Academy = (): React.JSX.Element => {
     // useEffect(() => {
     //     dispatch(GetAllProgram({ page: 1, limit: 4, title: '' }))
     // }, [keyword])
+    const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
@@ -167,6 +175,26 @@ const Academy = (): React.JSX.Element => {
                         <p className='text-secondary font-normal text-[14px] leading-7'>
                             {CurrentClass?.description}
                         </p>
+                        <div className='flex justify-start items-start gap-3 mt-4'>
+                            <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${user?.profile_image}`} alt="" />
+                            <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
+                                <div className='w-full text-end'>
+                                    <p className='text-start mb-1'>{user?.email}</p>
+                                    <textarea className='w-full h-32 border resize-none outline-none p-2' {...register("comment", { required: true })}>
+                                    </textarea>
+                                    {errors.comment && <p className='text-red-500 text-start'>This field is required*</p>}
+                                    <button className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Add a comment </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div className='flex justify-start items-start gap-3 mt-4'>
+                            <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${user?.profile_image}`} alt="" />
+                            <div className='w-full text-end'>
+                                <p className=' mb-3 text-start'>{user?.email}</p>
+                                <p className='text-start opacity-65'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatem tempore quidem vero voluptatibus, sit quisquam sequi ut maxime, rerum facilis voluptas aspernatur quae! Error voluptas similique pariatur laboriosam maxime.</p>
+                                <button className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Replay </button>
+                            </div>
+                        </div>
                     </div> : <Empty className='col-span-8 ' />
                 }
 
