@@ -25,6 +25,8 @@ import { GetAllProgram } from '../States/Program/GetAllProgramSlice';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AddComment } from '../States/Comments/AddCommentSlice';
 import Swal from 'sweetalert2';
+import { GetAllComment } from '../States/Comments/GetAllCommentSlice';
+import ReplayCommentForm from '../components/Form/ReplayCommentForm';
 type ContentRef = HTMLDivElement | null;
 type Inputs = {
     comment: string,
@@ -40,11 +42,13 @@ const Academy = (): React.JSX.Element => {
     const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
     const [anyties, setanalayties] = useState()
     const { myPlan, loading } = useAppSelector(state => state.GetMySubscription)
+    const { commentData } = useAppSelector(state => state.GetAllComment)
+    const [replay, setreplay] = useState({ id: '', open: true })
     const navigate = useNavigate()
     if (!loading && !myPlan?.amount) {
         navigate('/')
     }
-    const { register, handleSubmit, watch, formState: { errors },reset } = useForm<Inputs>();
+    const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<Inputs>();
     useEffect(() => {
         baseURL.get(`/class/single/${CurrentClass?._id}`, {
             headers: {
@@ -105,7 +109,9 @@ const Academy = (): React.JSX.Element => {
     useEffect(() => {
         dispatch(SingleProgram({ id, date: selectedDate, searchTerm: keyword }))
     }, [id, selectedDate, CurrentClass?._id, keyword])
-
+    useEffect(() => {
+        dispatch(GetAllComment({ classId: CurrentClass?._id }))
+    }, [CurrentClass?._id])
     // const { AllProgram } = useAppSelector(state => state.GetAllProgram)
     // useEffect(() => {
     //     dispatch(GetAllProgram({ page: 1, limit: 4, title: '' }))
@@ -125,6 +131,7 @@ const Academy = (): React.JSX.Element => {
             }
         })
     };
+    // console.log(user)
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
@@ -207,14 +214,32 @@ const Academy = (): React.JSX.Element => {
                                 </div>
                             </form>
                         </div>
-                        <div className='flex justify-start items-start gap-3 mt-4'>
-                            <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${user?.profile_image}`} alt="" />
-                            <div className='w-full text-end'>
-                                <p className=' mb-3 text-start'>{user?.email}</p>
-                                <p className='text-start opacity-65'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatem tempore quidem vero voluptatibus, sit quisquam sequi ut maxime, rerum facilis voluptas aspernatur quae! Error voluptas similique pariatur laboriosam maxime.</p>
-                                <button className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Replay </button>
-                            </div>
-                        </div>
+                        {
+                            commentData?.map((item) => <div key={item?._id} className='flex justify-start items-start gap-3 mt-4 my-8'>
+                                <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${item?.userId?.profile_image}`} alt="" />
+                                <div className='w-full text-end'>
+                                    <p className=' mb-3 text-start'>{item?.userId?.email}</p>
+                                    <p className='text-start opacity-65'>{item?.comment}</p>
+                                    {
+                                        item?.reply?.length <= 0 && user?.role == 'USER' && <button onClick={() => {
+                                            setreplay({ id: item?._id, open: true })
+                                        }} className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Replay </button>
+                                    }
+                                    {
+                                        (replay?.id == item?._id && replay.open) && <ReplayCommentForm user={user} />
+                                    }
+                                    {
+                                        item?.reply?.map((replays) => <div key={replays?._id} className='flex justify-start items-start gap-3 mt-4'>
+                                            <img className='w-10 h-10 rounded-full' src={`https://i.ibb.co/H2TQY14/2304226.png`} alt="" />
+                                            <div className='w-full text-end'>
+                                                <p className=' mb-3 text-start'>{user?.email}</p>
+                                                <p className='text-start opacity-65'>{replays?.reply}</p>
+                                            </div>
+                                        </div>)
+                                    }
+                                </div>
+                            </div>)
+                        }
                     </div> : <Empty className='col-span-8 ' />
                 }
 
