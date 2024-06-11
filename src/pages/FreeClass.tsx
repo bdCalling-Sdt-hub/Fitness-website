@@ -9,6 +9,7 @@ import Payment from '../components/Payment'
 import Modal from '../components/common/Modal'
 import { BuyPlan } from '../States/Subscription/BuyPlanSlice'
 import { UserContext } from '../Provider/UserProvider'
+import { GetMySubscription } from '../States/Subscription/GetMySubscriptionSlice'
 interface Plans {
     _id: string,
     title: string,
@@ -37,6 +38,7 @@ const FreeClass = (): React.JSX.Element => {
         setOpenPayment(false)
         if (paymentStatus?.status === 'paid') {
             dispatch(BuyPlan({ planId: paymentStatus?.productId, amount: paymentStatus?.amount }))
+            dispatch(GetMySubscription())
         }
     }, [paymentStatus])
     const handlePlay = () => {

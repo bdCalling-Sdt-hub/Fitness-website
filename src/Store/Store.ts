@@ -28,6 +28,11 @@ import TermsConditionsSlice from '../States/TermsConditions/TermsConditionsSlice
 import PaymentIntantSlice from '../States/Payment/PaymentIntantSlice';
 import PlaceOrderSlice from '../States/Order/PlaceOrderSlice';
 import BuyPlanSlice from '../States/Subscription/BuyPlanSlice';
+import GetMySubscriptionSlice from '../States/Subscription/GetMySubscriptionSlice';
+import BannerDataSlice from '../States/Banner/BannerDataSlice';
+import AddCommentSlice from '../States/Comments/AddCommentSlice';
+import GetAllCommentSlice from '../States/Comments/GetAllCommentSlice';
+import AddReplaySlice from '../States/Comments/AddReplaySlice';
 
 export const Store = configureStore({
     reducer: {
@@ -42,7 +47,8 @@ export const Store = configureStore({
         EditProfile: EditProfileSlice,
         //subscription
         Subscription: SubscriptionSlice,
-        BuyPlan:BuyPlanSlice,
+        BuyPlan: BuyPlanSlice,
+        GetMySubscription: GetMySubscriptionSlice,
         // shop
         ShopItems: ShopSlice,
         SingleProduct: ProductDetailsSlice,
@@ -51,7 +57,7 @@ export const Store = configureStore({
         GetToCart: GetToCartSlice,
         //order
         GetAllOrder: GetAllOrderSlice,
-        PlaceOrder : PlaceOrderSlice,
+        PlaceOrder: PlaceOrderSlice,
         //series
         GetAllSeries: GetAllSeriesSlice,
         //program
@@ -74,7 +80,13 @@ export const Store = configureStore({
         TermsConditions: TermsConditionsSlice,
         // payment intant 
         PaymentIntant: PaymentIntantSlice,
-        
+        //baner
+        GetBannerData: BannerDataSlice,
+        //comment
+        AddComment: AddCommentSlice,
+        GetAllComment: GetAllCommentSlice,
+        AddReplay: AddReplaySlice,
+
     },
 })
 

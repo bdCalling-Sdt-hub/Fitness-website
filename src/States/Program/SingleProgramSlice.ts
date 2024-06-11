@@ -63,14 +63,13 @@ const initialState: initialState = {
 interface Permitter {
     id: string | null | undefined,
     date: any,
-    searchTerm:string | undefined,
+    searchTerm: string | undefined,
 }
 export const SingleProgram = createAsyncThunk(
     'SingleProgram',
     async (value: Permitter, thunkApi) => {
         try {
-            console.log(value.date)
-            const response = await baseURL.get(`/program/${value.id}${value.date && `?date=${value.date}`}&searchTerm=${value?.searchTerm}`, {
+            const response = await baseURL.get(`/program/${value.id}${value.date && `?date=${value.date}`}${value?.searchTerm && `${value.date?'&':'?'}searchTerm=${value?.searchTerm}`}`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,

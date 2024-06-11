@@ -30,7 +30,7 @@ interface ChildProps {
     data: any
 }
 const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element => {
-    // console.log(data.price)
+    const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
     const [loading, setloading] = useState<boolean>(false)
     const [postal, setPostal] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -42,7 +42,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (!data.price || !data._id) return
-        dispatch(PaymentIntant({ _id: data._id, price: Number(data.price) }))
+        dispatch(PaymentIntant({ _id: data._id, price: Number(data.price) })).then((res)=>console.log(res))
     }, [data.price, data._id]);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -79,7 +79,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
             setPaymentMethod(null);
             setloading(false);
         } else {
-            // console.log('[PaymentMethod]', payload)
+            console.log('[PaymentMethod]', payload)
             const orderData: any = {
                 transactionID: payload?.paymentIntent?.id,
                 // @ts-ignore
@@ -122,6 +122,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
 
                             borderBottom: "2px solid #9494943D",
                         }}
+                        defaultValue={user?.name}
                         required
                         placeholder="Jenny Rosen"
                         name='name'
@@ -137,6 +138,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
 
                             borderBottom: "2px solid #9494943D",
                         }}
+                        defaultValue={user?.email}
                         required
                         placeholder="JennyRosen@gmail.com"
                         name='email'
@@ -152,6 +154,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                             width: "100%",
                             borderBottom: "2px solid #9494943D",
                         }}
+                        defaultValue={user?.address}
                         required
                         placeholder="dhaka bangladesh"
                         name='address'
@@ -166,8 +169,9 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                             width: "100%",
                             borderBottom: "2px solid #9494943D",
                         }}
+                        defaultValue={Number(user?.phone_number)}
                         required
-                        placeholder="JennyRosen@gmail.com"
+                        placeholder="01566026301"
                         name='number'
                     />
                 </div>

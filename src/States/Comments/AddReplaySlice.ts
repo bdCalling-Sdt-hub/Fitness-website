@@ -1,56 +1,63 @@
-import { AxiosError } from 'axios';
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import baseURL from '../../AxiosConfig/Config';
-const initialState = {
+import baseURL from "../../AxiosConfig/Config";
+import { AxiosError } from "axios";
+interface initialState {
+    error: boolean;
+    success: boolean;
+    loading: boolean;
+    isSuccess: boolean;
+}
+const initialState: initialState = {
     error: false,
     success: false,
-    loading: true,
+    loading: false,
     isSuccess: false,
-    user: {},
 };
-
-export const Profile = createAsyncThunk(
-    'Profile',
-    async (value, thunkApi) => {
+interface Permitter {
+    reply: string,
+    commentId: string | undefined,
+}
+export const AddReplay = createAsyncThunk(
+    'AddReplay',
+    async (value: Permitter, thunkApi) => {
+        console.log(value)
         try {
-            const response = await baseURL.get(`/auth/profile`, {
+            const response = await baseURL.post(`/comment/reply`, { ...value }, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            //console.log(response)
+            console.log(response)
             return response?.data.data;
         } catch (error) {
+            console.log(error)
             const axiosError = error as AxiosError;
             const message = axiosError?.response?.data;
             return thunkApi.rejectWithValue(message);
         }
     }
 )
-export const ProfileSlice = createSlice({
-    name: 'Profile',
+export const AddReplaySlice = createSlice({
+    name: 'AddReplay',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(Profile.pending, (state) => {
+        builder.addCase(AddReplay.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(Profile.fulfilled, (state, action) => {
+            builder.addCase(AddReplay.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
-                state.user = action.payload;
             }),
-            builder.addCase(Profile.rejected, (state) => {
+            builder.addCase(AddReplay.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.isSuccess = false;
-                state.user = {}
             })
     }
 })
-export default ProfileSlice.reducer
+export default AddReplaySlice.reducer

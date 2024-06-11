@@ -9,6 +9,7 @@ import { Empty, Modal } from 'antd';
 import { BuyPlan } from '../../States/Subscription/BuyPlanSlice';
 import { Toaster } from 'react-hot-toast';
 import { UserContext } from '../../Provider/UserProvider';
+import { GetMySubscription } from '../../States/Subscription/GetMySubscriptionSlice';
 
 interface Plans {
     _id: string,
@@ -25,7 +26,7 @@ interface Plans {
 }
 const Package = (): React.JSX.Element => {
     const { openPopUp, setOpenPopUp } = useContext<any>(UserContext)
-    const { user ,loading: userloading}: any = useAppSelector(state => state.Profile)
+    const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
     const dispatch = useAppDispatch()
     const [open, setOpen] = useState(false)
     const [openPayment, setOpenPayment] = useState(false)
@@ -36,6 +37,7 @@ const Package = (): React.JSX.Element => {
         setOpenPayment(false)
         if (paymentStatus?.status === 'paid') {
             dispatch(BuyPlan({ planId: paymentStatus?.productId, amount: paymentStatus?.amount }))
+            dispatch(GetMySubscription())
         }
     }, [paymentStatus])
     useEffect(() => {
@@ -63,7 +65,7 @@ const Package = (): React.JSX.Element => {
                 if (!user?.email) {
                     setOpenPopUp(true)
                     setOpen(false)
-                    return 
+                    return
                 }
                 setOpen(false)
                 setOpenPayment(true)

@@ -15,15 +15,25 @@ import Chart from '../Academy/Chart';
 import StatusLabel from '../Academy/StatusLabel';
 import { IoIosArrowDown } from 'react-icons/io';
 import { FaCheckCircle, FaRegFilePdf } from 'react-icons/fa';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { SingleProgram } from '../States/Program/SingleProgramSlice';
 import baseURL, { ServerUrl } from '../AxiosConfig/Config';
 import { SiGoogledocs } from 'react-icons/si';
 import { RxCross1 } from 'react-icons/rx';
 import { GetAllProgram } from '../States/Program/GetAllProgramSlice';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { AddComment } from '../States/Comments/AddCommentSlice';
+import Swal from 'sweetalert2';
+import { GetAllComment } from '../States/Comments/GetAllCommentSlice';
+import ReplayCommentForm from '../components/Form/ReplayCommentForm';
 type ContentRef = HTMLDivElement | null;
+type Inputs = {
+    comment: string,
+};
 const Academy = (): React.JSX.Element => {
+    const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
+    console.log(user)
     const { id } = useParams()
     const [openCalender, setOpenCalender] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<any>('');
@@ -32,6 +42,14 @@ const Academy = (): React.JSX.Element => {
     const { SingleProgramData } = useAppSelector(state => state.SingleProgram)
     const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
     const [anyties, setanalayties] = useState()
+    const { myPlan, loading } = useAppSelector(state => state.GetMySubscription)
+    const { commentData } = useAppSelector(state => state.GetAllComment)
+    const [replay, setreplay] = useState({ id: '', open: true })
+    const navigate = useNavigate()
+    if (!loading && !myPlan?.amount) {
+        navigate('/')
+    }
+    const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<Inputs>();
     useEffect(() => {
         baseURL.get(`/class/single/${CurrentClass?._id}`, {
             headers: {
@@ -92,11 +110,24 @@ const Academy = (): React.JSX.Element => {
     useEffect(() => {
         dispatch(SingleProgram({ id, date: selectedDate, searchTerm: keyword }))
     }, [id, selectedDate, CurrentClass?._id, keyword])
-
-    // const { AllProgram } = useAppSelector(state => state.GetAllProgram)
-    // useEffect(() => {
-    //     dispatch(GetAllProgram({ page: 1, limit: 4, title: '' }))
-    // }, [keyword])
+    useEffect(() => {
+        dispatch(GetAllComment({ classId: CurrentClass?._id }))
+    }, [CurrentClass?._id])
+    const onSubmit: SubmitHandler<Inputs> = data => {
+        dispatch(AddComment({ comment: data.comment, classId: CurrentClass?._id })).then((res) => {
+            if (res.type == 'AddComment/fulfilled') {
+                reset()
+                dispatch(GetAllComment({ classId: CurrentClass?._id }))
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your comment has been sent",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        })
+    };
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
@@ -167,6 +198,44 @@ const Academy = (): React.JSX.Element => {
                         <p className='text-secondary font-normal text-[14px] leading-7'>
                             {CurrentClass?.description}
                         </p>
+                        <div className='flex justify-start items-start gap-3 mt-4'>
+                            <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${user?.profile_image}`} alt="" />
+                            <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
+                                <div className='w-full text-end'>
+                                    <p className='text-start mb-1'>{user?.email}</p>
+                                    <textarea className='w-full h-32 border resize-none outline-none p-2' {...register("comment", { required: true })}>
+                                    </textarea>
+                                    {errors.comment && <p className='text-red-500 text-start'>This field is required*</p>}
+                                    <button className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Add a comment </button>
+                                </div>
+                            </form>
+                        </div>
+                        {
+                            commentData?.map((item) => <div key={item?._id} className='flex justify-start items-start gap-3 mt-4 my-8'>
+                                <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${item?.userId?.profile_image}`} alt="" />
+                                <div className='w-full text-end'>
+                                    <p className=' mb-3 text-start'>{item?.userId?.email}</p>
+                                    <p className='text-start opacity-65'>{item?.comment}</p>
+                                    {
+                                        item?.reply?.length <= 0 && user?.role == 'ADMIN' && !(replay?.id == item?._id && replay.open) && <button onClick={() => {
+                                            setreplay({ id: item?._id, open: true })
+                                        }} className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Replay </button>
+                                    }
+                                    {
+                                        (replay?.id == item?._id && replay.open) && <ReplayCommentForm classId={CurrentClass?._id} id={item?._id} replay={replay} setreplay={setreplay} user={user} />
+                                    }
+                                    {
+                                        item?.reply?.map((replays) => <div key={replays?._id} className='flex justify-start items-start gap-3 mt-4'>
+                                            <img className='w-10 h-10 rounded-full' src={`https://i.ibb.co/H2TQY14/2304226.png`} alt="" />
+                                            <div className='w-full text-end'>
+                                                <p className=' mb-3 text-start'>{user?.email}</p>
+                                                <p className='text-start opacity-65'>{replays?.reply}</p>
+                                            </div>
+                                        </div>)
+                                    }
+                                </div>
+                            </div>)
+                        }
                     </div> : <Empty className='col-span-8 ' />
                 }
 
