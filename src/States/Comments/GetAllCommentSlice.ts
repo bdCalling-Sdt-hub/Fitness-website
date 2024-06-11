@@ -7,43 +7,46 @@ interface initialState {
     loading: boolean;
     isSuccess: boolean;
     commentData: {
-        _id: string,
-        userId: {
-            profile_image: string,
+        totalComment:number,
+        comments: {
             _id: string,
-            email: string,
-            id: string,
-        },
-        classId: string,
-        comment: string,
-        reply: {
-            reply: string,
-            adminId: {
+            userId: {
+                profile_image: string,
                 _id: string,
                 email: string,
                 id: string,
             },
-            _id: string,
+            classId: string,
+            comment: string,
+            reply: {
+                reply: string,
+                adminId: {
+                    _id: string,
+                    email: string,
+                    id: string,
+                },
+                _id: string,
+                createdAt: string,
+                updatedAt: string,
+                id: string,
+            }[],
             createdAt: string,
             updatedAt: string,
+            __v: 1,
             id: string,
-        }[],
-        createdAt: string,
-        updatedAt: string,
-        __v: 1,
-        id: string,
-    }[],
+        }[]
+    } | undefined | null,
 }
 const initialState: initialState = {
     error: false,
     success: false,
     loading: false,
     isSuccess: false,
-    commentData: []
+    commentData: null
 };
 interface Permitter {
     classId: string | undefined,
-    limit:number ,
+    limit: number,
 }
 export const GetAllComment = createAsyncThunk(
     'GetAllComment',
@@ -85,7 +88,7 @@ export const GetAllCommentSlice = createSlice({
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.commentData = []
+                state.commentData = null
             })
     }
 })

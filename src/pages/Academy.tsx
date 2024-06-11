@@ -21,7 +21,6 @@ import { SingleProgram } from '../States/Program/SingleProgramSlice';
 import baseURL, { ServerUrl } from '../AxiosConfig/Config';
 import { SiGoogledocs } from 'react-icons/si';
 import { RxCross1 } from 'react-icons/rx';
-import { GetAllProgram } from '../States/Program/GetAllProgramSlice';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AddComment } from '../States/Comments/AddCommentSlice';
 import Swal from 'sweetalert2';
@@ -115,13 +114,13 @@ const Academy = (): React.JSX.Element => {
     }, [id, selectedDate, CurrentClass?._id, keyword])
     useEffect(() => {
         dispatch(GetAllComment({ classId: CurrentClass?._id, limit: limit }))
-    }, [CurrentClass?._id])
+    }, [CurrentClass?._id, limit])
 
     const onSubmit: SubmitHandler<Inputs> = data => {
         dispatch(AddComment({ comment: data.comment, classId: CurrentClass?._id })).then((res) => {
             if (res.type == 'AddComment/fulfilled') {
                 reset()
-                dispatch(GetAllComment({ classId: CurrentClass?._id ,limit:limit}))
+                dispatch(GetAllComment({ classId: CurrentClass?._id, limit: limit }))
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -204,7 +203,7 @@ const Academy = (): React.JSX.Element => {
                         </p>
                         {
                             user?.role == 'USER' && <div className='flex justify-start items-start gap-3 mt-4'>
-                                <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${user?.profile_image}`} alt="" />
+                                <img className='w-10 h-10 rounded-full' src={user.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${user.profile_image}`} alt="" />
                                 <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
                                     <div className='w-full text-end'>
                                         <p className='text-start mb-1'>{user?.email}</p>
@@ -218,8 +217,8 @@ const Academy = (): React.JSX.Element => {
                         }
                         <h3 className='text-3xl font-semibold py-5'>comments</h3>
                         {
-                            commentData?.map((item) => <div key={item?._id} className='flex justify-start items-start gap-3 mt-4 my-8'>
-                                <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${item?.userId?.profile_image}`} alt="" />
+                            commentData?.comments?.map((item) => <div key={item?._id} className='flex justify-start items-start gap-3 mt-4 my-8'>
+                                <img className='w-10 h-10 rounded-full' src={user.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${user.profile_image}`} alt="" />
                                 <div className='w-full text-end'>
                                     <p className=' mb-3 text-start'>{item?.userId?.email}</p>
                                     <p className='text-start opacity-65'>{item?.comment}</p>
@@ -233,7 +232,7 @@ const Academy = (): React.JSX.Element => {
                                     }
                                     {
                                         item?.reply?.map((replays) => <div key={replays?._id} className='flex justify-start items-start gap-3 mt-4'>
-                                            <img className='w-10 h-10 rounded-full' src={`https://i.ibb.co/H2TQY14/2304226.png`} alt="" />
+                                            <img className='w-10 h-10 rounded-full'  src={user.profile_image.includes('http') ? 'https://i.ibb.co/H2TQY14/2304226.png' : `${ServerUrl}/${user.profile_image}`} alt="" />
                                             <div className='w-full text-end'>
                                                 <p className=' mb-3 text-start'>{user?.email}</p>
                                                 <p className='text-start opacity-65'>{replays?.reply}</p>
@@ -250,9 +249,12 @@ const Academy = (): React.JSX.Element => {
                                 see less
                             </button>
                         }
-                        <button className='border border-[#B47000] p-1 px-4 text-[#B47000] ml-4' onClick={() => setLimit(limit + 10)}>
-                            see more
-                        </button>
+                        {
+                            (commentData?.totalComment && commentData?.totalComment > 10 && commentData?.totalComment && commentData?.totalComment > limit) && <button className='border border-[#B47000] p-1 px-4 text-[#B47000] ml-4' onClick={() => setLimit(limit + 10)}>
+                                see more
+                            </button>
+                        }
+
                     </div> : <Empty className='col-span-8 ' />
                 }
 
