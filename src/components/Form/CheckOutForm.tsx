@@ -100,12 +100,12 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
             // @ts-ignore
             target.reset()
             Swal.fire({
-                position: "top-end",
-                icon: "success",
                 title: "payment successful",
+                text: "Your Payment has been successful.",
+                icon: "success",
                 showConfirmButton: false,
-                timer: 1500
-            });
+                timer: 1500,
+              });
         }
         setloading(false);
     };

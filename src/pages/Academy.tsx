@@ -40,7 +40,7 @@ const Academy = (): React.JSX.Element => {
     const [playing, setPlaying] = useState(false);
     const { SingleProgramData } = useAppSelector(state => state.SingleProgram)
     const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
-    const [anyties, setanalayties] = useState()
+    const [anyties, setanalayties] = useState<any>()
     const { myPlan, loading } = useAppSelector(state => state.GetMySubscription)
     const { commentData } = useAppSelector(state => state.GetAllComment)
     const [replay, setreplay] = useState({ id: '', open: true })
@@ -50,12 +50,15 @@ const Academy = (): React.JSX.Element => {
     }
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<Inputs>();
     useEffect(() => {
-        baseURL.get(`/class/single/${CurrentClass?._id}`, {
-            headers: {
-                "Content-Type": "application/json",
-                authorization: `Bearer ${localStorage.getItem('token')}`,
-            }
-        }).then((res) => console.log(res.data))
+        if (CurrentClass?._id) {
+            baseURL.get(`/class/single/${CurrentClass?._id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
+                }
+            })
+        }
+
     }, [CurrentClass?._id])
 
     useEffect(() => {
@@ -69,7 +72,7 @@ const Academy = (): React.JSX.Element => {
                 setanalayties(res.data.data)
             }
         })
-    }, [id])
+    }, [id, CurrentClass?._id])
 
     useEffect(() => {
         setCurrentClass(SingleProgramData?.series[0]?.classes[0])
@@ -112,6 +115,7 @@ const Academy = (): React.JSX.Element => {
     useEffect(() => {
         dispatch(GetAllComment({ classId: CurrentClass?._id }))
     }, [CurrentClass?._id])
+
     const onSubmit: SubmitHandler<Inputs> = data => {
         dispatch(AddComment({ comment: data.comment, classId: CurrentClass?._id })).then((res) => {
             if (res.type == 'AddComment/fulfilled') {
@@ -274,7 +278,7 @@ const Academy = (): React.JSX.Element => {
                                                 return (
                                                     <div onClick={() => setCurrentClass(item)} key={index} className='flex justify-start items-start gap-3 mt-6'>
                                                         <div>
-                                                            <FaCheckCircle className={` ${item?.isRead ? 'text-green-500' : 'text-gray-500'} text-lg`} />
+                                                            <FaCheckCircle className={` ${anyties?.realClasses.includes(item?._id) ? 'text-green-500' : 'text-gray-500'} text-lg`} />
                                                         </div>
                                                         <div>
                                                             <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Class No {index + 1} :{item?.title}</p>

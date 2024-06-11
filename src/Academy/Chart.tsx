@@ -32,7 +32,7 @@ const Chart = ({ anyties }: ChildProp): React.JSX.Element => {
     };
     return (
         <div className='relative w-full h-[80%]'>
-            {/* {
+            {
                 anyties?.readPercentage.startsWith('100') ? <div className='absolute top-[50%] left-[50%] translate-x-[-50%] text-white translate-y-[-50%] p-[70px] py-[80px] text-center rounded-full bg-[#905A00]'>
                     100%
                 </div> : <ResponsiveContainer width="100%" height="100%">
@@ -55,7 +55,7 @@ const Chart = ({ anyties }: ChildProp): React.JSX.Element => {
                         </Pie>
                     </PieChart>
                 </ResponsiveContainer>
-            } */}
+            }
         </div>
 
     )

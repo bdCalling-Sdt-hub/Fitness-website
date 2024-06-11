@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Navigation from '../components/common/Navigation';
 import Heading from '../components/common/Heading';
 import MetaTag from '../components/common/MetaTag';
-import Photo from "../assets/photo1.png";
 import { LuCalendar } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
