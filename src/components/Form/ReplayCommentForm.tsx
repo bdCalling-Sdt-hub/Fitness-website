@@ -7,13 +7,13 @@ import Swal from 'sweetalert2';
 type Inputs = {
   replay: string,
 };
-const ReplayCommentForm = ({ user, setreplay, replay, id,classId }: any): React.JSX.Element => {
+const ReplayCommentForm = ({ user, setreplay, replay, id,classId ,limit }: any): React.JSX.Element => {
   const dispatch = useAppDispatch()
   const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = data => {
     dispatch(AddReplay({ reply: data.replay, commentId: id })).then((res) => {
       if (res.type =='AddReplay/fulfilled') {
-        dispatch(GetAllComment({ classId: classId}))
+        dispatch(GetAllComment({ classId: classId ,limit:limit}))
         setreplay({ ...replay, open: false })
         Swal.fire({
           position: "top-end",

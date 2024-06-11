@@ -44,6 +44,7 @@ const Academy = (): React.JSX.Element => {
     const { myPlan, loading } = useAppSelector(state => state.GetMySubscription)
     const { commentData } = useAppSelector(state => state.GetAllComment)
     const [replay, setreplay] = useState({ id: '', open: true })
+    const [limit, setLimit] = useState(10)
     const navigate = useNavigate()
     if (!loading && !myPlan?.amount) {
         navigate('/')
@@ -113,14 +114,14 @@ const Academy = (): React.JSX.Element => {
         dispatch(SingleProgram({ id, date: selectedDate, searchTerm: keyword }))
     }, [id, selectedDate, CurrentClass?._id, keyword])
     useEffect(() => {
-        dispatch(GetAllComment({ classId: CurrentClass?._id }))
+        dispatch(GetAllComment({ classId: CurrentClass?._id, limit: limit }))
     }, [CurrentClass?._id])
 
     const onSubmit: SubmitHandler<Inputs> = data => {
         dispatch(AddComment({ comment: data.comment, classId: CurrentClass?._id })).then((res) => {
             if (res.type == 'AddComment/fulfilled') {
                 reset()
-                dispatch(GetAllComment({ classId: CurrentClass?._id }))
+                dispatch(GetAllComment({ classId: CurrentClass?._id ,limit:limit}))
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -201,18 +202,21 @@ const Academy = (): React.JSX.Element => {
                         <p className='text-secondary font-normal text-[14px] leading-7'>
                             {CurrentClass?.description}
                         </p>
-                        <div className='flex justify-start items-start gap-3 mt-4'>
-                            <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${user?.profile_image}`} alt="" />
-                            <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
-                                <div className='w-full text-end'>
-                                    <p className='text-start mb-1'>{user?.email}</p>
-                                    <textarea className='w-full h-32 border resize-none outline-none p-2' {...register("comment", { required: true })}>
-                                    </textarea>
-                                    {errors.comment && <p className='text-red-500 text-start'>This field is required*</p>}
-                                    <button className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Add a comment </button>
-                                </div>
-                            </form>
-                        </div>
+                        {
+                            user?.role == 'USER' && <div className='flex justify-start items-start gap-3 mt-4'>
+                                <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${user?.profile_image}`} alt="" />
+                                <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
+                                    <div className='w-full text-end'>
+                                        <p className='text-start mb-1'>{user?.email}</p>
+                                        <textarea className='w-full h-32 border resize-none outline-none p-2' {...register("comment", { required: true })}>
+                                        </textarea>
+                                        {errors.comment && <p className='text-red-500 text-start'>This field is required*</p>}
+                                        <button className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Add a comment </button>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                        <h3 className='text-3xl font-semibold py-5'>comments</h3>
                         {
                             commentData?.map((item) => <div key={item?._id} className='flex justify-start items-start gap-3 mt-4 my-8'>
                                 <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${item?.userId?.profile_image}`} alt="" />
@@ -225,7 +229,7 @@ const Academy = (): React.JSX.Element => {
                                         }} className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Replay </button>
                                     }
                                     {
-                                        (replay?.id == item?._id && replay.open) && <ReplayCommentForm classId={CurrentClass?._id} id={item?._id} replay={replay} setreplay={setreplay} user={user} />
+                                        (replay?.id == item?._id && replay.open) && <ReplayCommentForm limit={limit} classId={CurrentClass?._id} id={item?._id} replay={replay} setreplay={setreplay} user={user} />
                                     }
                                     {
                                         item?.reply?.map((replays) => <div key={replays?._id} className='flex justify-start items-start gap-3 mt-4'>
@@ -239,6 +243,16 @@ const Academy = (): React.JSX.Element => {
                                 </div>
                             </div>)
                         }
+                        {
+                            limit > 10 && <button className='border border-[red] p-1 px-4 text-[red] ml-4' onClick={() => {
+                                limit > 10 && setLimit(limit - 10)
+                            }}>
+                                see less
+                            </button>
+                        }
+                        <button className='border border-[#B47000] p-1 px-4 text-[#B47000] ml-4' onClick={() => setLimit(limit + 10)}>
+                            see more
+                        </button>
                     </div> : <Empty className='col-span-8 ' />
                 }
 

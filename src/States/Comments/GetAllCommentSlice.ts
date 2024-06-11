@@ -43,12 +43,13 @@ const initialState: initialState = {
 };
 interface Permitter {
     classId: string | undefined,
+    limit:number ,
 }
 export const GetAllComment = createAsyncThunk(
     'GetAllComment',
     async (value: Permitter, thunkApi) => {
         try {
-            const response = await baseURL.get(`/comment/get/${value.classId}`, {
+            const response = await baseURL.get(`/comment/get/${value.classId}?limit=${value?.limit}`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
