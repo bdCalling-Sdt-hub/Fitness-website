@@ -21,7 +21,6 @@ import { SingleProgram } from '../States/Program/SingleProgramSlice';
 import baseURL, { ServerUrl } from '../AxiosConfig/Config';
 import { SiGoogledocs } from 'react-icons/si';
 import { RxCross1 } from 'react-icons/rx';
-import { GetAllProgram } from '../States/Program/GetAllProgramSlice';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AddComment } from '../States/Comments/AddCommentSlice';
 import Swal from 'sweetalert2';
@@ -33,7 +32,6 @@ type Inputs = {
 };
 const Academy = (): React.JSX.Element => {
     const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
-    console.log(user)
     const { id } = useParams()
     const [openCalender, setOpenCalender] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<any>('');
@@ -41,22 +39,26 @@ const Academy = (): React.JSX.Element => {
     const [playing, setPlaying] = useState(false);
     const { SingleProgramData } = useAppSelector(state => state.SingleProgram)
     const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
-    const [anyties, setanalayties] = useState()
+    const [anyties, setanalayties] = useState<any>()
     const { myPlan, loading } = useAppSelector(state => state.GetMySubscription)
     const { commentData } = useAppSelector(state => state.GetAllComment)
     const [replay, setreplay] = useState({ id: '', open: true })
+    const [limit, setLimit] = useState(10)
     const navigate = useNavigate()
     if (!loading && !myPlan?.amount) {
         navigate('/')
     }
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<Inputs>();
     useEffect(() => {
-        baseURL.get(`/class/single/${CurrentClass?._id}`, {
-            headers: {
-                "Content-Type": "application/json",
-                authorization: `Bearer ${localStorage.getItem('token')}`,
-            }
-        }).then((res) => console.log(res.data))
+        if (CurrentClass?._id) {
+            baseURL.get(`/class/single/${CurrentClass?._id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
+                }
+            })
+        }
+
     }, [CurrentClass?._id])
 
     useEffect(() => {
@@ -70,7 +72,7 @@ const Academy = (): React.JSX.Element => {
                 setanalayties(res.data.data)
             }
         })
-    }, [id])
+    }, [id, CurrentClass?._id])
 
     useEffect(() => {
         setCurrentClass(SingleProgramData?.series[0]?.classes[0])
@@ -111,13 +113,14 @@ const Academy = (): React.JSX.Element => {
         dispatch(SingleProgram({ id, date: selectedDate, searchTerm: keyword }))
     }, [id, selectedDate, CurrentClass?._id, keyword])
     useEffect(() => {
-        dispatch(GetAllComment({ classId: CurrentClass?._id }))
-    }, [CurrentClass?._id])
+        dispatch(GetAllComment({ classId: CurrentClass?._id, limit: limit }))
+    }, [CurrentClass?._id, limit])
+
     const onSubmit: SubmitHandler<Inputs> = data => {
         dispatch(AddComment({ comment: data.comment, classId: CurrentClass?._id })).then((res) => {
             if (res.type == 'AddComment/fulfilled') {
                 reset()
-                dispatch(GetAllComment({ classId: CurrentClass?._id }))
+                dispatch(GetAllComment({ classId: CurrentClass?._id, limit: limit }))
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -198,21 +201,24 @@ const Academy = (): React.JSX.Element => {
                         <p className='text-secondary font-normal text-[14px] leading-7'>
                             {CurrentClass?.description}
                         </p>
-                        <div className='flex justify-start items-start gap-3 mt-4'>
-                            <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${user?.profile_image}`} alt="" />
-                            <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
-                                <div className='w-full text-end'>
-                                    <p className='text-start mb-1'>{user?.email}</p>
-                                    <textarea className='w-full h-32 border resize-none outline-none p-2' {...register("comment", { required: true })}>
-                                    </textarea>
-                                    {errors.comment && <p className='text-red-500 text-start'>This field is required*</p>}
-                                    <button className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Add a comment </button>
-                                </div>
-                            </form>
-                        </div>
                         {
-                            commentData?.map((item) => <div key={item?._id} className='flex justify-start items-start gap-3 mt-4 my-8'>
-                                <img className='w-10 h-10 rounded-full' src={`${ServerUrl}${item?.userId?.profile_image}`} alt="" />
+                            user?.role == 'USER' && <div className='flex justify-start items-start gap-3 mt-4'>
+                                <img className='w-10 h-10 rounded-full' src={user.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${user.profile_image}`} alt="" />
+                                <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
+                                    <div className='w-full text-end'>
+                                        <p className='text-start mb-1'>{user?.email}</p>
+                                        <textarea className='w-full h-32 border resize-none outline-none p-2' {...register("comment", { required: true })}>
+                                        </textarea>
+                                        {errors.comment && <p className='text-red-500 text-start'>This field is required*</p>}
+                                        <button className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Add a comment </button>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                        <h3 className='text-3xl font-semibold py-5'>comments</h3>
+                        {
+                            commentData?.comments?.map((item) => <div key={item?._id} className='flex justify-start items-start gap-3 mt-4 my-8'>
+                                <img className='w-10 h-10 rounded-full' src={user.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${user.profile_image}`} alt="" />
                                 <div className='w-full text-end'>
                                     <p className=' mb-3 text-start'>{item?.userId?.email}</p>
                                     <p className='text-start opacity-65'>{item?.comment}</p>
@@ -222,11 +228,11 @@ const Academy = (): React.JSX.Element => {
                                         }} className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Replay </button>
                                     }
                                     {
-                                        (replay?.id == item?._id && replay.open) && <ReplayCommentForm classId={CurrentClass?._id} id={item?._id} replay={replay} setreplay={setreplay} user={user} />
+                                        (replay?.id == item?._id && replay.open) && <ReplayCommentForm limit={limit} classId={CurrentClass?._id} id={item?._id} replay={replay} setreplay={setreplay} user={user} />
                                     }
                                     {
                                         item?.reply?.map((replays) => <div key={replays?._id} className='flex justify-start items-start gap-3 mt-4'>
-                                            <img className='w-10 h-10 rounded-full' src={`https://i.ibb.co/H2TQY14/2304226.png`} alt="" />
+                                            <img className='w-10 h-10 rounded-full'  src={user.profile_image.includes('http') ? 'https://i.ibb.co/H2TQY14/2304226.png' : `${ServerUrl}/${user.profile_image}`} alt="" />
                                             <div className='w-full text-end'>
                                                 <p className=' mb-3 text-start'>{user?.email}</p>
                                                 <p className='text-start opacity-65'>{replays?.reply}</p>
@@ -236,6 +242,19 @@ const Academy = (): React.JSX.Element => {
                                 </div>
                             </div>)
                         }
+                        {
+                            limit > 10 && <button className='border border-[red] p-1 px-4 text-[red] ml-4' onClick={() => {
+                                limit > 10 && setLimit(limit - 10)
+                            }}>
+                                see less
+                            </button>
+                        }
+                        {
+                            (commentData?.totalComment && commentData?.totalComment > 10 && commentData?.totalComment && commentData?.totalComment > limit) && <button className='border border-[#B47000] p-1 px-4 text-[#B47000] ml-4' onClick={() => setLimit(limit + 10)}>
+                                see more
+                            </button>
+                        }
+
                     </div> : <Empty className='col-span-8 ' />
                 }
 
@@ -275,7 +294,7 @@ const Academy = (): React.JSX.Element => {
                                                 return (
                                                     <div onClick={() => setCurrentClass(item)} key={index} className='flex justify-start items-start gap-3 mt-6'>
                                                         <div>
-                                                            <FaCheckCircle className={` ${item?.isRead ? 'text-green-500' : 'text-gray-500'} text-lg`} />
+                                                            <FaCheckCircle className={` ${anyties?.realClasses.includes(item?._id) ? 'text-green-500' : 'text-gray-500'} text-lg`} />
                                                         </div>
                                                         <div>
                                                             <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Class No {index + 1} :{item?.title}</p>

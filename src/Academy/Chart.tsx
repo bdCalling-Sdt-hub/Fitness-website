@@ -11,7 +11,6 @@ interface ChildProp {
 
 }
 const Chart = ({ anyties }: ChildProp): React.JSX.Element => {
-    console.log(anyties)
     const data = [
         { name: 'Complete', value: anyties?.readCount },
         { name: 'Incomplete', value: anyties?.unreadCount }

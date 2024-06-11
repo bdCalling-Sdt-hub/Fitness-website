@@ -6,7 +6,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 const Class = (): React.JSX.Element => {
     const navigate = useNavigate()
     return (
-        <div className='container md:grid md:grid-cols-2 flex flex-col-reverse gap-8'>
+        <div className='container md:grid md:grid-cols-2 flex flex-col-reverse gap-8 mb-10'>
             <div className=' h-fit my-auto'>
                 <Heading title='Free Class ' style='my-6' />
                 <p className='text-secondary text-justify font-normal mb-6 text-[16px] leading-5'>This class is a demo class, you get all the exercises, guidelines and tips related to fitness in our fitness course. So don't delay and join our community now.</p>

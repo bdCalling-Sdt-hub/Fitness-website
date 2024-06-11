@@ -91,14 +91,10 @@ const Navbar = (): React.JSX.Element => {
             name: "Shop",
             path: "/shop"
         },
-        {
-            name: "About Us",
-            path: "/about-us"
-        },
-        {
-            name: "Contacts Us",
-            path: "/contact-us"
-        },
+        // {
+        //     name: "events",
+        //     path: "/about-us"
+        // },
         {
             name: "Blogs",
             path: "/blogs"
