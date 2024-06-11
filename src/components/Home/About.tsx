@@ -3,7 +3,7 @@ import Banner from "../../assets/about_banner.png";
 import Heading from '../common/Heading';
 import { Link } from 'react-router-dom';
 
-const About = (): React.JSX.Element => {
+const About = ({setShowModal}:any): React.JSX.Element => {
 
     return (
         <div className='container flex flex-col md:grid grid-cols-2 gap-10'>
@@ -12,8 +12,8 @@ const About = (): React.JSX.Element => {
             </div>
 
             <div className=' h-fit my-auto'>
-                <Link to={`/about-us`}>
                     <button
+                    onClick={()=>setShowModal(true)}
                         style={{
                             width: 133,
                             border: "none",
@@ -28,8 +28,6 @@ const About = (): React.JSX.Element => {
                     >
                         About Us
                     </button>
-                </Link>
-
                 <Heading title='Why You Choose Us ' style='my-6' />
                 <p className='text-secondary text-justify font-normal mb-6 text-[16px] leading-8'>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here.</p>
 

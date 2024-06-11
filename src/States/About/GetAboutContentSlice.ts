@@ -6,7 +6,7 @@ interface initialState {
     success: boolean;
     loading: boolean;
     isSuccess: boolean;
-    About: {
+    AboutUs: {
         _id: string,
         description: string,
         createdAt: string,
@@ -20,7 +20,7 @@ const initialState: initialState = {
     success: false,
     loading: false,
     isSuccess: false,
-    About: [],
+    AboutUs: [],
 };
 
 export const GetAboutContent = createAsyncThunk(
@@ -55,13 +55,13 @@ export const GetAboutContentSlice = createSlice({
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
-                state.About = action.payload
+                state.AboutUs = action.payload
             }),
             builder.addCase(GetAboutContent.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.About = []
+                state.AboutUs = []
             })
     }
 })

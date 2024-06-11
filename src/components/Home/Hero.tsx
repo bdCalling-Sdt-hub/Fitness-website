@@ -14,7 +14,9 @@ const Hero = (): React.JSX.Element => {
         <>
             <div className='relative w-full' style={{ height: "calc(100vh - 0px)" }}>
                 <video autoPlay muted loop>
-                    <source src={`${ServerUrl}${BannerData?.video}`} />
+                    {
+                        BannerData?.video && <source src={`${ServerUrl}${BannerData?.video}`} />
+                    }
                 </video>
 
                 <div className='absolute top-0 left-0 flex items-center justify-center w-[100%] h-[100%]' style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} >

@@ -33,7 +33,6 @@ type Inputs = {
 };
 const Academy = (): React.JSX.Element => {
     const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
-    console.log(user)
     const { id } = useParams()
     const [openCalender, setOpenCalender] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<any>('');

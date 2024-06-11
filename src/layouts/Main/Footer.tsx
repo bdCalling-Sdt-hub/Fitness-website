@@ -21,13 +21,16 @@ const Footer = (): React.JSX.Element => {
                     <h1 className="mb-[58px] lg:text-[32px] text-xl font-normal leading-[28px] text-[#F7F7F7]">Information</h1>
                     <ul className='grid grid-cols-1 gap-4 text-[16px] font-normal leading-[19px] text-[#F2F2F2]'>
                         <Link to={`/about-us`}>
-                            <li>About Us</li>
+                            <li>Why Choose Us</li>
                         </Link>
                         <Link to={`/privacy-policy`}>
                             <li>Privacy Policy</li>
                         </Link>
                         <Link to={`/terms-conditions`}>
                             <li>Terms & Condition</li>
+                        </Link>
+                        <Link to={`/contact-us`}>
+                            <li>Contacts Us</li>
                         </Link>
                     </ul>
                 </div>
