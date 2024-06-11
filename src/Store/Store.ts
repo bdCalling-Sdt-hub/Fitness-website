@@ -32,6 +32,7 @@ import GetMySubscriptionSlice from '../States/Subscription/GetMySubscriptionSlic
 import BannerDataSlice from '../States/Banner/BannerDataSlice';
 import AddCommentSlice from '../States/Comments/AddCommentSlice';
 import GetAllCommentSlice from '../States/Comments/GetAllCommentSlice';
+import AddReplaySlice from '../States/Comments/AddReplaySlice';
 
 export const Store = configureStore({
     reducer: {
@@ -83,7 +84,8 @@ export const Store = configureStore({
         GetBannerData: BannerDataSlice,
         //comment
         AddComment: AddCommentSlice,
-        GetAllComment : GetAllCommentSlice,
+        GetAllComment: GetAllCommentSlice,
+        AddReplay: AddReplaySlice,
 
     },
 })

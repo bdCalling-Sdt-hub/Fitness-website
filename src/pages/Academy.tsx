@@ -33,6 +33,7 @@ type Inputs = {
 };
 const Academy = (): React.JSX.Element => {
     const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
+    console.log(user)
     const { id } = useParams()
     const [openCalender, setOpenCalender] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<any>('');
@@ -112,15 +113,11 @@ const Academy = (): React.JSX.Element => {
     useEffect(() => {
         dispatch(GetAllComment({ classId: CurrentClass?._id }))
     }, [CurrentClass?._id])
-    // const { AllProgram } = useAppSelector(state => state.GetAllProgram)
-    // useEffect(() => {
-    //     dispatch(GetAllProgram({ page: 1, limit: 4, title: '' }))
-    // }, [keyword])
-    // AddComment
     const onSubmit: SubmitHandler<Inputs> = data => {
         dispatch(AddComment({ comment: data.comment, classId: CurrentClass?._id })).then((res) => {
             if (res.type == 'AddComment/fulfilled') {
                 reset()
+                dispatch(GetAllComment({ classId: CurrentClass?._id }))
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -131,7 +128,6 @@ const Academy = (): React.JSX.Element => {
             }
         })
     };
-    // console.log(user)
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
@@ -221,12 +217,12 @@ const Academy = (): React.JSX.Element => {
                                     <p className=' mb-3 text-start'>{item?.userId?.email}</p>
                                     <p className='text-start opacity-65'>{item?.comment}</p>
                                     {
-                                        item?.reply?.length <= 0 && user?.role == 'USER' && <button onClick={() => {
+                                        item?.reply?.length <= 0 && user?.role == 'ADMIN' && !(replay?.id == item?._id && replay.open) && <button onClick={() => {
                                             setreplay({ id: item?._id, open: true })
                                         }} className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Replay </button>
                                     }
                                     {
-                                        (replay?.id == item?._id && replay.open) && <ReplayCommentForm user={user} />
+                                        (replay?.id == item?._id && replay.open) && <ReplayCommentForm classId={CurrentClass?._id} id={item?._id} replay={replay} setreplay={setreplay} user={user} />
                                     }
                                     {
                                         item?.reply?.map((replays) => <div key={replays?._id} className='flex justify-start items-start gap-3 mt-4'>

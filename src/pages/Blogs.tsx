@@ -34,7 +34,7 @@ const Blogs = (): React.JSX.Element => {
                         return (
                             <div key={_item?._id} className='group'>
                                 <div className='overflow-hidden w-full h-full'>
-                                    <img src={`${ServerUrl}/${_item?.images[0]}`} className='group-hover:scale-125 transition-all duration-300' style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="" />
+                                    <img src={`${ServerUrl}${_item?.images[0]}`} className='group-hover:scale-125 transition-all duration-300' style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="" />
                                 </div>
                                 <div className='flex items-center gap-4 my-2'>
                                     <LuCalendar size={24} color='#555555' />
