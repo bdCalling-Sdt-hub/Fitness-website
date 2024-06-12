@@ -185,7 +185,6 @@ const Academy = (): React.JSX.Element => {
                                 </div>
                             </div>
                         </div>
-
                         {/* video description */}
                         <div className='flex items-center gap-4 my-4'>
                             <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>Topic : {CurrentClass?.topic}</p>

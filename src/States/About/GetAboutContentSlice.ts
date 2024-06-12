@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import baseURL from "../../AxiosConfig/Config";
 import { AxiosError } from "axios";
+import baseURL from "../../AxiosConfig/Config";
 interface initialState {
     error: boolean;
     success: boolean;
