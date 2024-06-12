@@ -12,19 +12,19 @@ interface initialState {
             email: string,
         }[],
 
-        phone: {
+        number: {
             id: string,
-            phone: string,
+            number: string,
         }[],
 
-    }[]
+    } | null
 }
 const initialState: initialState = {
     error: false,
     success: false,
     loading: false,
     isSuccess: false,
-    Contact: [],
+    Contact: null,
 };
 
 export const GetAllContact = createAsyncThunk(
@@ -65,7 +65,7 @@ export const GetAllContactSlice = createSlice({
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.Contact = []
+                state.Contact = null
             })
     }
 })
