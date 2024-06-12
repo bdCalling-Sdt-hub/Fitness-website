@@ -61,7 +61,7 @@ const ContactUs = (): React.JSX.Element => {
                     </div>
                     <div>
                         {
-                            Contact[0]?.email?.map((item) => <p key={item} className='text-secondary text-[16px] leading-[30px] font-normal'>{item}</p>)
+                            Contact[0]?.email?.map((item) => <p key={item?.id} className='text-secondary text-[16px] leading-[30px] font-normal'>{item?.email}</p>)
                         }
                     </div>
                 </div>
@@ -73,7 +73,7 @@ const ContactUs = (): React.JSX.Element => {
                     </div>
                     <div>
                         {
-                            Contact[0]?.phone?.map((item) => <p key={item} className='text-secondary text-[16px] leading-[30px] font-normal'>{item}</p>)
+                            Contact[0]?.phone?.map((item) => <p key={item?.id} className='text-secondary text-[16px] leading-[30px] font-normal'>{item?.phone}</p>)
                         }
                     </div>
                 </div>

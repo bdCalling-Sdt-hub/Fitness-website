@@ -7,8 +7,16 @@ interface initialState {
     loading: boolean;
     isSuccess: boolean;
     Contact: {
-        email: string[],
-        phone: string[],
+        email: {
+            id: string,
+            email: string,
+        }[],
+
+        phone: {
+            id: string,
+            phone: string,
+        }[],
+
     }[]
 }
 const initialState: initialState = {
