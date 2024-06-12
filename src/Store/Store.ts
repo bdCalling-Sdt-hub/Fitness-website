@@ -33,6 +33,7 @@ import BannerDataSlice from '../States/Banner/BannerDataSlice';
 import AddCommentSlice from '../States/Comments/AddCommentSlice';
 import GetAllCommentSlice from '../States/Comments/GetAllCommentSlice';
 import AddReplaySlice from '../States/Comments/AddReplaySlice';
+import GetFAQSlice from '../States/FAQ/GetFAQSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -86,6 +87,8 @@ export const Store = configureStore({
         AddComment: AddCommentSlice,
         GetAllComment: GetAllCommentSlice,
         AddReplay: AddReplaySlice,
+        //faq
+        GetFAQ: GetFAQSlice,
 
     },
 })
