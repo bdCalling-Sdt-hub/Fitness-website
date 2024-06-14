@@ -13,14 +13,14 @@ interface initialState {
         updatedAt: string,
         __v: 0,
         id: string,
-    }[]
+    } | null
 }
 const initialState: initialState = {
     error: false,
     success: false,
     loading: false,
     isSuccess: false,
-    AboutUs: [],
+    AboutUs: null,
 };
 
 export const GetAboutContent = createAsyncThunk(
@@ -61,7 +61,7 @@ export const GetAboutContentSlice = createSlice({
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.AboutUs = []
+                state.AboutUs = null
             })
     }
 })
