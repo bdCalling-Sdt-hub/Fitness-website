@@ -9,10 +9,11 @@ import { Modal } from 'antd';
 const AboutUs = (): React.JSX.Element => {
     const [showMidal,setShowModal]=useState(false)
     const dispatch = useAppDispatch()
-    const { AboutUs } = useAppSelector(state => state.GetAboutContent)
+    const { AboutUs:about } = useAppSelector(state => state.GetAboutContent)
     useEffect(() => {
         dispatch(GetAboutContent())
     }, [])
+    console.log(about)
     return (
         <div className='container pb-20 pt-20'>
             <About setShowModal={setShowModal} />
@@ -23,7 +24,7 @@ const AboutUs = (): React.JSX.Element => {
             footer={false}
             width={700}
             >
-                <div className='p-6 pt-8' dangerouslySetInnerHTML={{ __html: AboutUs[0]?.description }}>
+                <div className='p-6 pt-8 w-full h-full overflow-y-scroll' dangerouslySetInnerHTML={{ __html: about?.description || '' }}>
                 </div>
             </Modal>
         </div>
