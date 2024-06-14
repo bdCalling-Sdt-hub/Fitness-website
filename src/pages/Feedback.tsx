@@ -94,7 +94,7 @@ const Feedback = () => {
                                 <div className='px-14 py-6 font-extralight text-[#555555] text-center flex flex-col justify-center items-center gap-3 '>
                                     <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more.</p>
                                     <div className='h-20 w-20 rounded-full overflow-hidden'>
-                                        <img src={item?.user.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${item?.user.profile_image}`} className='h-full w-full object-cover' alt="" />
+                                        <img src={item?.user?.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${item?.user?.profile_image}`} className='h-full w-full object-cover' alt="" />
                                     </div>
                                     <h4 className='text-[#555555] font-semibold'>{item?.user?.name}</h4>
                                     <p className='text-[#555555] font-thin'>{item?.user?.role}</p>
