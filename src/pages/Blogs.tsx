@@ -6,7 +6,7 @@ import { LuCalendar } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { GetAllBlog } from '../States/Blog/GetAllBlogSlice';
-import { Pagination, PaginationProps } from 'antd';
+import { Empty, Pagination, PaginationProps } from 'antd';
 import { ServerUrl } from '../AxiosConfig/Config';
 const Blogs = (): React.JSX.Element => {
     const [itemPerPage, setItemPerPage] = useState(10)
@@ -14,7 +14,7 @@ const Blogs = (): React.JSX.Element => {
     const dispatch = useAppDispatch()
     const { AllBlog, meta } = useAppSelector(state => state.GetAllBlog)
     useEffect(() => {
-        dispatch(GetAllBlog({page: page, limit: itemPerPage,}))
+        dispatch(GetAllBlog({ page: page, limit: itemPerPage, }))
     }, [])
     const onChange: PaginationProps['onChange'] = (pageNumber) => {
         setPage(pageNumber)
@@ -42,7 +42,7 @@ const Blogs = (): React.JSX.Element => {
                                 </div>
                                 <p className='text-secondary font-medium text-[24px] leading-[34px] mb-2'>{_item?.title}</p>
                                 <p className='text-secondary font-light text-[16px] leading-[29px] mb-6'>
-                                   {_item?.title}
+                                    {_item?.title}
                                 </p>
                                 <Link to={`/blog-details/${_item?._id}`}>
                                     <button
@@ -66,11 +66,20 @@ const Blogs = (): React.JSX.Element => {
                     })
                 }
             </div>
-            <div className='text-center mt-8'>
-                <Pagination defaultCurrent={page} total={meta?.total} pageSize={itemPerPage} onShowSizeChange={onShowSizeChange} onChange={onChange} />
-            </div>
+            {
+                AllBlog.length <= 0 && <Empty />
+            }
+            {
+                AllBlog.length > 0 && <div className='text-center mt-8'>
+                    <Pagination defaultCurrent={page} total={meta?.total} pageSize={itemPerPage} onShowSizeChange={onShowSizeChange} onChange={onChange} />
+                </div>
+            }
+
         </div>
     )
 }
 
+
+
 export default Blogs
+// subtype : premium 

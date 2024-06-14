@@ -9,7 +9,6 @@ const initialState = {
     message: "",
     FAQData: [],
 };
-
 export const GetFAQ = createAsyncThunk(
     "GetFAQ",
     async (value, thunkAPI) => {
@@ -23,20 +22,15 @@ export const GetFAQ = createAsyncThunk(
         } catch (error) {
             //@ts-ignore
             const message = (error.response && error.response.data && error.response.data) || error.message || error.toString();
-
             return thunkAPI.rejectWithValue(message);
         }
     }
 );
-
 export const GetFAQSlice = createSlice({
     name: "GetFAQ",
     initialState,
-
     reducers: {
-
     },
-
     extraReducers: (builder) => {
         builder.addCase(GetFAQ.pending, (state, { payload }) => {
             state.isLoading = true;

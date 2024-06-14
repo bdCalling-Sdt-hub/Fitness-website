@@ -109,7 +109,6 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
         }
         setloading(false);
     };
-
     return (
         <form onSubmit={handleSubmit} className='w-full'>
             <div className='md:grid md:grid-cols-2 gap-2 flex flex-col items-start justify-start md:items-center'>
