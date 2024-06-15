@@ -42,7 +42,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (!data.price || !data._id) return
-        dispatch(PaymentIntant({ _id: data._id, price: Number(data.price) })).then((res) => console.log(res))
+        dispatch(PaymentIntant({ _id: data._id, price: Number(data.price) }))
     }, [data.price, data._id]);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -70,9 +70,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                     },
                 },
             }
-
         });
-
         if (payload.error) {
             console.log('[error]', payload.error);
             setErrorMessage(payload.error.message || null);

@@ -7,6 +7,7 @@ import { Button, Form, FormProps, Input } from 'antd';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { ChangePass } from '../States/Authentication/ChangePassSlice';
 import { EditProfile } from '../States/Authentication/EditProfileSlice';
+import { Profile as getProfile } from '../States/Authentication/ProfileSlice';
 import Swal from 'sweetalert2';
 import { ServerUrl } from '../AxiosConfig/Config';
 interface IValue {
@@ -58,6 +59,15 @@ const Profile = (): React.JSX.Element => {
                     }).then((response) => {
                         form.resetFields();
                     })
+                } else {
+                    Swal.fire({
+                        title: "old password doesn't match",
+                        icon: "error",
+                        showCancelButton: false,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "okey"
+                    });
                 }
             })
     };
@@ -76,6 +86,15 @@ const Profile = (): React.JSX.Element => {
                         position: "top-end",
                         icon: "success",
                         title: "Your profile has been updated",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    dispatch(getProfile())
+                } else {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "error",
+                        title: "something went wrong",
                         showConfirmButton: false,
                         timer: 1500
                     });
@@ -99,13 +118,14 @@ const Profile = (): React.JSX.Element => {
                 <div className='relative w-[140px] h-[124px] mx-auto'>
                     <input type="file" onChange={handleChange} id='img' style={{ display: "none" }} />
                     <img
-                        style={{ width: 140, height: 124, borderRadius: "100%" }}
+                        style={{ width: 140, height: 140, borderRadius: "100%" }}
                         src={`${image ? URL.createObjectURL(image) : user?.profile_image?.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${user.profile_image}`}`}
                         alt=""
                     />
-                    <label
-                        htmlFor="img"
-                        className='
+                    {
+                        tab === "Profile" && <label
+                            htmlFor="img"
+                            className='
                             absolute top-1/2 -right-2 
                             bg-white 
                             rounded-full 
@@ -113,13 +133,15 @@ const Profile = (): React.JSX.Element => {
                             flex items-center justify-center 
                             cursor-pointer
                         '
-                    >
-                        <CiEdit color='#929394' />
-                    </label>
+                        >
+                            <CiEdit color='#929394' />
+                        </label>
+                    }
+
                 </div>
                 <div className='w-full'>
                     <p className=' text-primary text-[16px] leading-5 font-light'>Hello</p>
-                    <p className=' text-[#575757] text-[24px] leading-[32px] font-semibold  '>Asad Admin</p>
+                    <p className=' text-[#575757] text-[24px] leading-[32px] font-semibold  '>{user.name}</p>
                 </div>
             </div>
 
