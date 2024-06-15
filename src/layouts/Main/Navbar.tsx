@@ -51,7 +51,6 @@ const Navbar = (): React.JSX.Element => {
     useEffect(() => {
         dispatch(GetMySubscription())
     }, [])
-
     // search shop items 
     useEffect(() => {
         dispatch(ShopItems({ page: 1, limit: 5, sort: '', searchTerm: searchValue }))

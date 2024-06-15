@@ -25,7 +25,9 @@ const BlogDetails = (): React.JSX.Element => {
             <p className='text-secondary font-normal text-[18px] leading-[25px] mb-10'>Topic: {SingleBlog?.topic} | {SingleBlog?.createdAt.split('T')[0]}</p>
 
             <div>
-                <img src={`${ServerUrl}/${SingleBlog?.images[0]}`} alt="" className='my-6' />
+                <div className='w-full h-[700px]'>
+                    <img src={`${ServerUrl}/${SingleBlog?.images[0]}`} alt="" className='my-6 w-full h-full object-cover ' />
+                </div>
                 <p className='text-secondary text-[16px] leading-[30px] font-normal'>
                     {SingleBlog?.description}
                 </p>
