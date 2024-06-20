@@ -86,7 +86,7 @@ const FreeClass = (): React.JSX.Element => {
                 {
                     plan.map((item: Plans, index) => {
                         return (
-                            <div className='p-10'>
+                            <div className='p-10 h-full flex flex-col justify-between'>
                                 <h1 className='font-light lg:text-2xl text-lg leading-8 text-center text-secondary'>{item?.title}</h1>
                                 <p className='text-[#B47000] text-center my-8 lg:text-[36px] text-xl leading-[49px] '>${item?.price}<sub className='text-[#B47000] text-[18px] leading-6 font-semibold ml-2'>{item?.duration} month</sub></p>
                                 <div className='grid grid-cols-1 gap-6 '>

@@ -64,7 +64,7 @@ const SignUpForm = ({ setOpenPopUp, toggle }: ChildPops) => {
             <input placeholder="Asadujjaman@gmail.com" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("email", { required: true })} />
             {errors.email && <p className="text-red-600 text-left">Email is required</p>}
             <p className="text-left text-[#575757]">Contact no</p>
-            <input placeholder="Asadujjaman@gmail.com" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("contact", { required: true })} />
+            <input type="number" placeholder="Asadujjaman@gmail.com" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("contact", { required: true })} />
             {errors.contact && <p className="text-red-600 text-left">Contact is required</p>}
             <p className="text-left text-[#575757]">Password</p>
             <div className="w-full relative">

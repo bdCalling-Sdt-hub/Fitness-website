@@ -38,7 +38,7 @@ const Academy = (): React.JSX.Element => {
     const [keyword, setKeyword] = useState<string | undefined>("");
     const [playing, setPlaying] = useState(false);
     const { SingleProgramData } = useAppSelector(state => state.SingleProgram)
-    const [CurrentClass, setCurrentClass] = useState(SingleProgramData?.series[0]?.classes[0])
+    const [CurrentClass, setCurrentClass] = useState<any>()
     const [anyties, setanalayties] = useState<any>()
     const { myPlan, loading } = useAppSelector(state => state.GetMySubscription)
     const { commentData } = useAppSelector(state => state.GetAllComment)
@@ -49,17 +49,14 @@ const Academy = (): React.JSX.Element => {
         navigate('/')
     }
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<Inputs>();
-    useEffect(() => {
-        if (CurrentClass?._id) {
-            baseURL.get(`/class/single/${CurrentClass?._id}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    authorization: `Bearer ${localStorage.getItem('token')}`,
-                }
-            })
-        }
-
-    }, [CurrentClass?._id])
+    const handleRead = (id: any) => {
+        baseURL.get(`/class/single/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
+        }).then((res) => console.log(res))
+    }
 
     useEffect(() => {
         baseURL.get(`/program/analytics/${id}`, {
@@ -74,9 +71,6 @@ const Academy = (): React.JSX.Element => {
         })
     }, [id, CurrentClass?._id])
 
-    useEffect(() => {
-        setCurrentClass(SingleProgramData?.series[0]?.classes[0])
-    }, [SingleProgramData])
 
     const dispatch = useAppDispatch()
     const onChange = (value: Dayjs) => {
@@ -93,7 +87,6 @@ const Academy = (): React.JSX.Element => {
     //accordion
     const [openIndex, setOpenIndex] = useState<number | null>(null);
     const contentRefs = useRef<ContentRef[]>([]);
-
     const toggleAccordion = (index: number) => {
         setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
     };
@@ -108,10 +101,17 @@ const Academy = (): React.JSX.Element => {
             }
         });
     }, [openIndex]);
-
+    //accordion
     useEffect(() => {
-        dispatch(SingleProgram({ id, date: selectedDate, searchTerm: keyword }))
-    }, [id, selectedDate, CurrentClass?._id, keyword])
+        dispatch(SingleProgram({ id, date: selectedDate, searchTerm: keyword })).then((res) => {
+            if (res.type == "SingleProgram/fulfilled") {
+                setCurrentClass((res?.payload?.series[0]?.classes[0]))
+                handleRead((res?.payload?.series[0]?.classes[0])?._id)
+            }
+
+        })
+    }, [id, selectedDate, keyword])
+
     useEffect(() => {
         dispatch(GetAllComment({ classId: CurrentClass?._id, limit: limit }))
     }, [CurrentClass?._id, limit])
@@ -131,6 +131,7 @@ const Academy = (): React.JSX.Element => {
             }
         })
     };
+
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
@@ -231,7 +232,7 @@ const Academy = (): React.JSX.Element => {
                                     }
                                     {
                                         item?.reply?.map((replays) => <div key={replays?._id} className='flex justify-start items-start gap-3 mt-4'>
-                                            <img className='w-10 h-10 rounded-full'  src={user.profile_image.includes('http') ? 'https://i.ibb.co/H2TQY14/2304226.png' : `${ServerUrl}/${user.profile_image}`} alt="" />
+                                            <img className='w-10 h-10 rounded-full' src={user.profile_image.includes('http') ? 'https://i.ibb.co/H2TQY14/2304226.png' : `${ServerUrl}/${user.profile_image}`} alt="" />
                                             <div className='w-full text-end'>
                                                 <p className=' mb-3 text-start'>{user?.email}</p>
                                                 <p className='text-start opacity-65'>{replays?.reply}</p>
@@ -291,7 +292,7 @@ const Academy = (): React.JSX.Element => {
                                         {
                                             item?.classes?.map((item, index) => {
                                                 return (
-                                                    <div onClick={() => setCurrentClass(item)} key={index} className='flex justify-start items-start gap-3 mt-6'>
+                                                    <div onClick={() => { handleRead(item?._id); setCurrentClass(item) }} key={index} className='flex justify-start items-start gap-3 mt-6'>
                                                         <div>
                                                             <FaCheckCircle className={` ${anyties?.realClasses.includes(item?._id) ? 'text-green-500' : 'text-gray-500'} text-lg`} />
                                                         </div>
