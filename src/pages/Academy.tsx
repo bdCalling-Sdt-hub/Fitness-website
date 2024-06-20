@@ -49,24 +49,15 @@ const Academy = (): React.JSX.Element => {
         navigate('/')
     }
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<Inputs>();
-    // useEffect(() => {
-    //     if (CurrentClass?._id) {
-    //         baseURL.get(`/class/single/${CurrentClass?._id}`, {
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 authorization: `Bearer ${localStorage.getItem('token')}`,
-    //             }
-    //         })
-    //     }
-    // }, [CurrentClass?._id])
-    const handleRead = (id:any) => {
+    const handleRead = (id: any) => {
         baseURL.get(`/class/single/${id}`, {
             headers: {
                 "Content-Type": "application/json",
                 authorization: `Bearer ${localStorage.getItem('token')}`,
             }
-        }).then((res)=>console.log(res))
+        }).then((res) => console.log(res))
     }
+
     useEffect(() => {
         baseURL.get(`/program/analytics/${id}`, {
             headers: {
@@ -96,7 +87,6 @@ const Academy = (): React.JSX.Element => {
     //accordion
     const [openIndex, setOpenIndex] = useState<number | null>(null);
     const contentRefs = useRef<ContentRef[]>([]);
-
     const toggleAccordion = (index: number) => {
         setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
     };
@@ -111,7 +101,7 @@ const Academy = (): React.JSX.Element => {
             }
         });
     }, [openIndex]);
-
+    //accordion
     useEffect(() => {
         dispatch(SingleProgram({ id, date: selectedDate, searchTerm: keyword })).then((res) => {
             if (res.type == "SingleProgram/fulfilled") {
@@ -121,6 +111,7 @@ const Academy = (): React.JSX.Element => {
 
         })
     }, [id, selectedDate, keyword])
+
     useEffect(() => {
         dispatch(GetAllComment({ classId: CurrentClass?._id, limit: limit }))
     }, [CurrentClass?._id, limit])
@@ -140,6 +131,7 @@ const Academy = (): React.JSX.Element => {
             }
         })
     };
+
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
