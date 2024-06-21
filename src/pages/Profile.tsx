@@ -20,6 +20,7 @@ const Profile = (): React.JSX.Element => {
     const [image, setImage] = useState();
     const [form] = Form.useForm()
     const [tab, setTab] = useState(new URLSearchParams(window.location.search).get('tab') || "Profile");
+    const [passError, setPassError] = useState('')
     const dispatch = useAppDispatch()
     const { user }: any = useAppSelector(state => state.Profile)
     // console.log(user)
@@ -36,16 +37,14 @@ const Profile = (): React.JSX.Element => {
 
     }
     const onFinish: FormProps['onFinish'] = (values) => {
-        if (values?.new_password !== values?.confirm_password) {
-            return Swal.fire({
-                title: "Confirm password doesn't match",
-                icon: "error",
-                showCancelButton: false,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "okey"
-            })
-        }
+        if (values?.new_password === values.current_password) {
+            return setPassError('your old password cannot be your new password')
+          }
+          if (values?.new_password !== values?.confirm_password) {
+            return setPassError("Confirm password doesn't match")
+          } else {
+            setPassError('')
+          }
         form.setFieldsValue(values)
         dispatch(ChangePass({ oldPassword: values.current_password, newPassword: values.new_password }))
             .then((res) => {
@@ -74,13 +73,14 @@ const Profile = (): React.JSX.Element => {
     const onEditProfile: FormProps['onFinish'] = (values) => {
         // console.log(values)
         const data: IValue = {
-            profile_image: image,
+            profile_image: image || user?.profile_image,
             name: values.fullName,
             contact: values.mobileNumber,
             address: values.address
         }
         dispatch(EditProfile(data))
             .then((res) => {
+                console.log(res)
                 if (res.type === 'EditProfile/fulfilled') {
                     Swal.fire({
                         position: "top-end",
@@ -113,7 +113,6 @@ const Profile = (): React.JSX.Element => {
         <div className='container pb-16'>
             <Navigation name={`${tab}`} />
             <Heading title='Profile' style='mb-6' />
-
             <div className='bg-base py-9 px-10 rounded flex items-center gap-6' >
                 <div className='relative w-[140px] h-[124px] mx-auto'>
                     <input type="file" onChange={handleChange} id='img' style={{ display: "none" }} />
@@ -379,7 +378,7 @@ const Profile = (): React.JSX.Element => {
                                     placeholder="Enter Confirm Password"
                                 />
                             </Form.Item>
-
+                            {passError && <p className="text-red-600 -mt-4 mb-2">{passError}</p>}
                             <Form.Item
                                 style={{ marginBottom: 0, display: "flex", alignItems: "center", justifyContent: "center" }}
                             >

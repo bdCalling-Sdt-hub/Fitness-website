@@ -43,7 +43,7 @@ const SignInFoorm = ({ setOpenPopUp, setOpenForgetPass }: ChildPops) => {
                     Swal.fire({
                         position: "center",
                         icon: "error",
-                        title: response?.payload,
+                        title: response?.payload?.message,
                         showConfirmButton: false,
                         timer: 1500,
                         imageWidth: 300,

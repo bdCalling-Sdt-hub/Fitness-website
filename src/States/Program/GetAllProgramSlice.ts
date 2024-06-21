@@ -40,7 +40,7 @@ export const GetAllProgram = createAsyncThunk(
     'GetAllProgram',
     async (value:Permitter, thunkApi) => {
         try {
-            const response = await baseURL.get(`/program/all?page=${value?.page}&limit=${value?.limit}${value.title && `&title=${value.title}`}`, {
+            const response = await baseURL.get(`/program/all?page=${value?.page}&limit=${value?.limit}${value.title && `&searchTerm=${value.title}`}`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,

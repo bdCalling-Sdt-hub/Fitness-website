@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
 import { BsCart2 } from "react-icons/bs";
@@ -46,7 +46,7 @@ const Navbar = (): React.JSX.Element => {
     const dispatch = useAppDispatch()
     const { Products } = useAppSelector(state => state.ShopItems)
     const { myPlan } = useAppSelector(state => state.GetMySubscription)
-
+    const navigate = useNavigate()
     // my plan
     useEffect(() => {
         dispatch(GetMySubscription())
@@ -107,6 +107,7 @@ const Navbar = (): React.JSX.Element => {
     };
     const handleLogOut = () => {
         localStorage.removeItem('token')
+        navigate('/')
         location.reload();
     }
 

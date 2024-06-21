@@ -22,9 +22,18 @@ const VerifyCodeForm = ({ setOpenVerifyPass, setOpenNewPass }: ChildPops): React
     const verifyCode = () => {
         dispatch(VerifyCode({ code: code, email: localStorage.getItem('resetEmail') }))
             .then((res) => {
-                if (res.payload.valid) {
+                if (res.type == 'VerifyCode/fulfilled') {
                     setOpenVerifyPass(false)
                     setOpenNewPass(true)
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Something went wrong!",
+                        timer: 1500,
+                        showConfirmButton: false,
+                        showCloseButton: false
+                    });
                 }
             })
     }
@@ -41,6 +50,15 @@ const VerifyCodeForm = ({ setOpenVerifyPass, setOpenNewPass }: ChildPops): React
                         cancelButtonColor: "#d33",
                         confirmButtonText: "okey"
                     })
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Something went wrong!",
+                        timer: 1500,
+                        showConfirmButton: false,
+                        showCloseButton: false
+                    });
                 }
             })
     }

@@ -30,6 +30,7 @@ export const putFeedBack = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
+            console.log(error)
             const axiosError = error as AxiosError;
             const message = axiosError?.response?.data;
             return thunkApi.rejectWithValue(message);
