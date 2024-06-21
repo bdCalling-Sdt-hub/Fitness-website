@@ -21,7 +21,6 @@ const dataSource = [
 const Order = (): React.JSX.Element => {
     const dispatch = useAppDispatch()
     const {Order}=useAppSelector(state=>state.GetAllOrder)
-    console.log(Order)
     useEffect(()=>{
         dispatch(GetAllOrder())
     },[])
@@ -42,7 +41,7 @@ const Order = (): React.JSX.Element => {
                             <div className='flex flex-col justify-start items-start gap-2 max-w-[350px]'>
                                 <p className='grid grid-cols-9 gap-2 justify-start w-full text-[#555555]'><span className='col-span-4'>Product name</span><span className='col-span-1 text-center'>:</span> <span className='col-span-4'>{item?.product?.productName}</span></p>
                                 <p className='grid grid-cols-9 gap-2 justify-start w-full text-[#555555]'><span className='col-span-4'>Date</span><span className='col-span-1 text-center'>:</span> <span className='col-span-4'>{item?.deliveryDate.split('T')[0]}</span></p>
-                                <p className='grid grid-cols-9 gap-2 justify-start w-full text-[#555555]'><span className='col-span-4'>Price</span><span className='col-span-1 text-center'>:</span> <span className='col-span-4'>{item?.product?.price}</span></p>
+                                <p className='grid grid-cols-9 gap-2 justify-start w-full text-[#555555]'><span className='col-span-4'>Price</span><span className='col-span-1 text-center'>:</span> <span className='col-span-4'>${item?.product?.price}</span></p>
                                 <p className='grid grid-cols-9 gap-2 justify-start w-full text-[#555555]'><span className='col-span-4'>Order Location</span><span className='col-span-1 text-center'>:</span> <span className='col-span-4'>{item?.location}</span></p>
                             </div>
                         </div>
