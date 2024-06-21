@@ -18,7 +18,7 @@ const RelatedProduct = ({ id, gender }: ChildProp): React.JSX.Element => {
     const dispatch = useAppDispatch()
     const { Products } = useAppSelector(state => state.ShopItems)
     useEffect(() => {
-        dispatch(ShopItems({ page: 1, limit: 100, sort: '' }))
+        dispatch(ShopItems({ page: 1, limit: 100, sort: '' ,searchTerm:''}))
     }, [id])
     const navigate = useNavigate()
     return (

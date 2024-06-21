@@ -50,6 +50,15 @@ const SetNewPassword = ({ setOpenNewPass, setOpenChangedPass }: ChildPops) => {/
                     });
                     setOpenNewPass(false)
                     setOpenChangedPass(false)
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Something went wrong!",
+                        timer: 1500,
+                        showConfirmButton: false,
+                        showCloseButton: false
+                    });
                 }
             })
     }

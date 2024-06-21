@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "../../assets/logo.png";
 import { IoIosSend } from "react-icons/io";
 import { IoCallOutline } from "react-icons/io5";
@@ -7,8 +7,15 @@ import { CiFacebook } from "react-icons/ci";
 import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../Store/hook";
+import { GetAllContact } from "../../States/Contact/GetAllContactSlice";
 
 const Footer = (): React.JSX.Element => {
+    const { Contact } = useAppSelector(state => state.GetAllContact)
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(GetAllContact())
+    }, [])
     return (
         <div className="relative bg-primary pt-[70px]">
             <div className='container flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 gap-10'>
@@ -40,14 +47,14 @@ const Footer = (): React.JSX.Element => {
                     <h1 className="mb-[58px] lg:text-[32px] text-xl font-normal leading-[28px] text-[#F7F7F7]">Help & Support</h1>
                     <div className="flex items-center gap-3">
                         <FiMail size={24} color="#F7F7F7" />
-                        <p className="text-[16px] font-normal leading-[30px]  text-[#F7F7F7]">Email : mail@gmail.com</p>
+                        <p className="text-[16px] font-normal leading-[30px]  text-[#F7F7F7]">Email : {Contact?.email?.[0]?.email || 'mail@gmail.com'} </p>
                     </div>
 
                     {/* number */}
 
                     <div className="flex items-center gap-3 mt-4">
                         <IoCallOutline size={24} color="#F7F7F7" />
-                        <p className="text-[16px] font-normal leading-[30px]  text-[#F7F7F7]">Phone : (+188) 750-6866</p>
+                        <p className="text-[16px] font-normal leading-[30px]  text-[#F7F7F7]">Phone : {Contact?.number?.[0]?.number || '+188750-6866'} </p>
                     </div>
 
 

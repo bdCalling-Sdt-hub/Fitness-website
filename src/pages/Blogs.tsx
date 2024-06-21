@@ -32,7 +32,7 @@ const Blogs = (): React.JSX.Element => {
                     AllBlog.map((_item) => {
                         return (
                             <div key={_item?._id} className='group'>
-                                <div className='overflow-hidden w-full h-full'>
+                                <div className='overflow-hidden w-full h-[250px]'>
                                     <img src={`${ServerUrl}${_item?.images[0]}`} className='group-hover:scale-125 transition-all duration-300' style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="" />
                                 </div>
                                 <div className='flex items-center gap-4 my-2'>
