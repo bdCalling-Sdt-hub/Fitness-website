@@ -324,8 +324,8 @@ const Navbar = (): React.JSX.Element => {
                                     <img className='h-full w-full object-cover' src={`${ServerUrl}/${item?.images[0]}`} alt="" />
                                 </div>
                                 <div>
-                                    <p className='text-[16px] lg:text-lg text-[#555555]'>The Dumbbell</p>
-                                    <p className='text-[16px] lg:text-lg text-[#555555]'>150 CND</p>
+                                    <p className='text-[16px] lg:text-lg text-[#555555]'>{item?.productName}</p>
+                                    <p className='text-[16px] lg:text-lg text-[#555555]'>${item?.price}</p>
                                 </div>
                             </div>)
                         }

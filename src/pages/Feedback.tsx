@@ -69,7 +69,7 @@ const Feedback = () => {
         ]
     };
     const dispatch = useAppDispatch()
-    
+
     const { Feedback } = useAppSelector(state => state.GetAllFeedback)
     useEffect(() => {
         dispatch(GetAllFeedback())
@@ -91,8 +91,8 @@ const Feedback = () => {
                                 key={item?._id}
                                 style={{ boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px" }}
                             >
-                                <div className='px-14 py-6 font-extralight text-[#555555] text-center flex flex-col justify-center items-center gap-3 '>
-                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more.</p>
+                                <div className='px-14 py-6  text-black text-center flex flex-col justify-center items-center gap-3 '>
+                                    <p>{item?.text}</p>
                                     <div className='h-20 w-20 rounded-full overflow-hidden'>
                                         <img src={item?.user?.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${item?.user?.profile_image}`} className='h-full w-full object-cover' alt="" />
                                     </div>

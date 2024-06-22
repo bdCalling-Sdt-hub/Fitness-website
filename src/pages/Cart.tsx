@@ -48,7 +48,7 @@ const Cart = (): React.JSX.Element => {
     useEffect(() => {
         dispatch(GetToCart())
     }, [])
-    console.log(cart);
+    console.log(cart.length);
 
     return (
         <div className='container mx-auto'>

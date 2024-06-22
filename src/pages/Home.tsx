@@ -8,12 +8,12 @@ import { Modal } from 'antd';
 
 const Home = (): React.JSX.Element => {
     return (
-        <div className='flex flex-col justify-start items-start gap-10 lg:gap-16 xl:gap-24'>
+        <div className='flex flex-col justify-start items-start gap-10 lg:gap-16 xl:gap-24 mb-20'>
             <Hero />
             <Package />
             <Feedback />
-            <FAQ />
             <Class />
+            <FAQ />
         </div>
     )
 }

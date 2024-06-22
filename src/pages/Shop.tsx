@@ -8,6 +8,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { ShopItems } from '../States/Shop/ShopSlice';
 import { ServerUrl } from '../AxiosConfig/Config';
+import { AddToCart } from '../States/Cart/AddToCartSlice';
+import Swal from 'sweetalert2';
 const { Option } = Select;
 const Shop = (): React.JSX.Element => {
     const [searchTerm, setsearchTerm] = useState('');
@@ -30,6 +32,28 @@ const Shop = (): React.JSX.Element => {
     };
     const onShowSizeChange = (current: any, size: any) => {
         setItemPerPage(size);
+    }
+    const handelAddToCart = (id:any) => {
+        dispatch(AddToCart({ id: id, quantity: 1 }))
+            .then((res) => {
+                if (res.payload.message === 'Already added your cart list') {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Already added your cart list",
+                    });
+                }
+                if (res.type === 'AddToCart/fulfilled') {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Item added to your cart list",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
+
     }
     return (
         <div className='container pb-20'>
@@ -125,6 +149,8 @@ const Shop = (): React.JSX.Element => {
 
                                 <div className='absolute top-4 right-4 bg-white p-1 rounded-full' onClick={(e) => {
                                     (e.stopPropagation())
+                                    handelAddToCart(item?._id)
+                                    console.log('asdfsdf')
                                 }}>
                                     <BsCart2 size={24} color='#905A00' />
                                 </div>

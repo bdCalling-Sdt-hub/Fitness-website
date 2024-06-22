@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
 import { ShopItems } from '../States/Shop/ShopSlice';
 import { ServerUrl } from '../AxiosConfig/Config';
+import { AddToCart } from '../States/Cart/AddToCartSlice';
+import Swal from 'sweetalert2';
 
 interface IItemProps {
     name: string;
@@ -18,9 +20,31 @@ const RelatedProduct = ({ id, gender }: ChildProp): React.JSX.Element => {
     const dispatch = useAppDispatch()
     const { Products } = useAppSelector(state => state.ShopItems)
     useEffect(() => {
-        dispatch(ShopItems({ page: 1, limit: 100, sort: '' ,searchTerm:''}))
+        dispatch(ShopItems({ page: 1, limit: 100, sort: '', searchTerm: '' }))
     }, [id])
     const navigate = useNavigate()
+    const handelAddToCart = (id: any) => {
+        dispatch(AddToCart({ id: id, quantity: 1 }))
+            .then((res) => {
+                if (res.payload.message === 'Already added your cart list') {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Already added your cart list",
+                    });
+                }
+                if (res.type === 'AddToCart/fulfilled') {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Item added to your cart list",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
+
+    }
     return (
         <div className='flex flex-col items-start justify-start md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:items-center  gap-6 mt-10'>
             {
@@ -48,6 +72,7 @@ const RelatedProduct = ({ id, gender }: ChildProp): React.JSX.Element => {
 
                             <div className='absolute top-4 right-4 bg-white p-1 rounded-full' onClick={(e) => {
                                 (e.stopPropagation())
+                                handelAddToCart(item?._id)
                             }}>
                                 <BsCart2 size={24} color='#905A00' />
                             </div>
