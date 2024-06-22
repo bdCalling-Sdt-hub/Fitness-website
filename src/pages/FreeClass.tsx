@@ -67,12 +67,12 @@ const FreeClass = (): React.JSX.Element => {
             }
         };
     }, []);
-    return (
-        <div className='container mx-auto py-6'>
+    return (//ser?.email
+        <div className='container mx-auto py-6 pt-16'>
             <Heading title='Free Class' style='mb-6' />
             <MetaTag title='Free Class' />
             <div className='container mx-auto overflow-hidden w-full py-6 max-h-[658px] min-h-96 sm:min-h-[470px] lg:min-h-[530px] xl:min-h-[658px] rounded-lg relative bg-red-400'>
-                <video ref={videoRef} controls={user?.email} style={{
+                <video ref={videoRef} controls={true} style={{
                 }} className='rounded-lg w-full object-cover'>
                     <source src={Video} type="video/mp4" />
                 </video>

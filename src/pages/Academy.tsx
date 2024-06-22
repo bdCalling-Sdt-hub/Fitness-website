@@ -169,6 +169,8 @@ const Academy = (): React.JSX.Element => {
                                 width='100%'
                                 height='100%'
                                 controls
+                                volume={1}
+                                muted={false}
                                 playing={playing}
                                 onPlay={() => setPlaying(true)}
                                 onPause={() => setPlaying(false)}
@@ -218,7 +220,7 @@ const Academy = (): React.JSX.Element => {
                         <h3 className='text-3xl font-semibold py-5'>comments</h3>
                         {
                             commentData?.comments?.map((item) => <div key={item?._id} className='flex justify-start items-start gap-3 mt-4 my-8'>
-                                <img className='w-10 h-10 rounded-full' src={user.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${user.profile_image}`} alt="" />
+                                <img className='w-10 h-10 rounded-full' src={item?.userId?.profile_image.includes('http') ? 'https://i.ibb.co/d4RSbKx/Ellipse-980.png' : `${ServerUrl}/${item?.userId?.profile_image}`} alt="" />
                                 <div className='w-full text-end'>
                                     <p className=' mb-3 text-start'>{item?.userId?.email}</p>
                                     <p className='text-start opacity-65'>{item?.comment}</p>
@@ -232,7 +234,8 @@ const Academy = (): React.JSX.Element => {
                                     }
                                     {
                                         item?.reply?.map((replays) => <div key={replays?._id} className='flex justify-start items-start gap-3 mt-4'>
-                                            <img className='w-10 h-10 rounded-full' src={user.profile_image.includes('http') ? 'https://i.ibb.co/H2TQY14/2304226.png' : `${ServerUrl}/${user.profile_image}`} alt="" />
+                                            {/* <img className='w-10 h-10 rounded-full' src={user.profile_image.includes('http') ? 'https://i.ibb.co/H2TQY14/2304226.png' : `${ServerUrl}/${user.profile_image}`} alt="" /> */}
+                                            <img className='w-10 h-10 rounded-full' src={'https://i.ibb.co/H2TQY14/2304226.png'} alt="" />
                                             <div className='w-full text-end'>
                                                 <p className=' mb-3 text-start'>{user?.email}</p>
                                                 <p className='text-start opacity-65'>{replays?.reply}</p>

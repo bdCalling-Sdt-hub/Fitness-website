@@ -34,6 +34,7 @@ import AddCommentSlice from '../States/Comments/AddCommentSlice';
 import GetAllCommentSlice from '../States/Comments/GetAllCommentSlice';
 import AddReplaySlice from '../States/Comments/AddReplaySlice';
 import GetFAQSlice from '../States/FAQ/GetFAQSlice';
+import DeleteCartSlice from '../States/Cart/DeleteCartSlice';
 
 export const Store = configureStore({
     reducer: {
@@ -56,6 +57,7 @@ export const Store = configureStore({
         //cart 
         AddToCart: AddToCartSlice,
         GetToCart: GetToCartSlice,
+        DeleteCart:DeleteCartSlice,
         //order
         GetAllOrder: GetAllOrderSlice,
         PlaceOrder: PlaceOrderSlice,

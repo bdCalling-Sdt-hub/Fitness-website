@@ -114,7 +114,7 @@ const Profile = (): React.JSX.Element => {
             <Navigation name={`${tab}`} />
             <Heading title='Profile' style='mb-6' />
             <div className='bg-base py-9 px-10 rounded flex items-center gap-6' >
-                <div className='relative w-[140px] h-[124px] mx-auto'>
+                <div className='relative w-[160px] h-[140px] mx-auto'>
                     <input type="file" onChange={handleChange} id='img' style={{ display: "none" }} />
                     <img
                         style={{ width: 140, height: 140, borderRadius: "100%" }}

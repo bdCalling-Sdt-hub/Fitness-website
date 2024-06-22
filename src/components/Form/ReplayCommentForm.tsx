@@ -4,6 +4,7 @@ import { useAppDispatch } from '../../Store/hook';
 import { AddReplay } from '../../States/Comments/AddReplaySlice';
 import { GetAllComment } from '../../States/Comments/GetAllCommentSlice';
 import Swal from 'sweetalert2';
+import { ServerUrl } from '../../AxiosConfig/Config';
 type Inputs = {
   replay: string,
 };
@@ -28,7 +29,8 @@ const ReplayCommentForm = ({ user, setreplay, replay, id,classId ,limit }: any):
   return (
     <>
       <div className='flex justify-start items-start gap-3 mt-4'>
-        <img className='w-10 h-10 rounded-full' src={`https://i.ibb.co/H2TQY14/2304226.png`} alt="" />
+        {/* <img className='w-10 h-10 rounded-full' src={user.profile_image.includes('http') ? 'https://i.ibb.co/H2TQY14/2304226.png' : `${ServerUrl}/${user.profile_image}`} alt="" /> */}
+        <img className='w-10 h-10 rounded-full' src={'https://i.ibb.co/H2TQY14/2304226.png'} alt="" />
         <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
           <div className='w-full text-end'>
             <p className='text-start mb-1'>{user?.email}</p>
