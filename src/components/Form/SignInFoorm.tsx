@@ -58,7 +58,7 @@ const SignInFoorm = ({ setOpenPopUp, setOpenForgetPass }: ChildPops) => {
             <h3 className="text-[#262727] font-bold text-lg md:text-2xl lg:text-4xl">Login to Account</h3>
             <p className="text-sm py-2 md:py-4 lg:py-6">Please enter your email and password to continue</p>
             <p className="text-left text-[#575757]">Email</p>
-            <input placeholder="Asadujjaman@gmail.com" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("email", { required: true })} />
+            <input placeholder="Enter your email" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("email", { required: true })} />
             {errors.email && <p className="text-red-600 text-left">Email is required</p>}
             <p className="text-left text-[#575757]">Password</p>
             <div className="w-full relative">

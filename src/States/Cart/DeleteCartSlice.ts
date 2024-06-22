@@ -6,7 +6,6 @@ interface initialState {
     success: boolean;
     loading: boolean;
     isSuccess: boolean;
-
 }
 const initialState: initialState = {
     error: false,
@@ -16,19 +15,17 @@ const initialState: initialState = {
 };
 interface Permitter {
     id: string | null | undefined,
-    quantity: number | string | null | undefined,
 }
-export const AddToCart = createAsyncThunk(
-    'AddToCart',
-    async (value: Permitter, thunkApi) => {
+export const DeleteCart = createAsyncThunk(
+    'DeleteCart',
+    async (value:Permitter, thunkApi) => {
         try {
-            const response = await baseURL.post(`/cart/add-to-cart/${value.id}`, { quantity: value.quantity }, {
+            const response = await baseURL.delete(`/cart/delete/${value.id}`, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            console.log(response)
             return response?.data.data;
         } catch (error) {
             const axiosError = error as AxiosError;
@@ -37,27 +34,26 @@ export const AddToCart = createAsyncThunk(
         }
     }
 )
-export const AddToCartSlice = createSlice({
-    name: 'AddToCart',
+export const DeleteCartSlice = createSlice({
+    name: 'DeleteCart',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(AddToCart.pending, (state) => {
+        builder.addCase(DeleteCart.pending, (state) => {
             state.loading = true;
             state.isSuccess = false
         }),
-            builder.addCase(AddToCart.fulfilled, (state, action) => {
+            builder.addCase(DeleteCart.fulfilled, (state, action) => {
                 state.error = false;
                 state.success = true;
                 state.loading = false;
                 state.isSuccess = true;
             }),
-            builder.addCase(AddToCart.rejected, (state) => {
+            builder.addCase(DeleteCart.rejected, (state) => {
                 state.error = true;
                 state.success = false;
                 state.loading = false;
-                state.isSuccess = false;
             })
     }
 })
-export default AddToCartSlice.reducer
+export default DeleteCartSlice.reducer

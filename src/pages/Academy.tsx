@@ -169,6 +169,8 @@ const Academy = (): React.JSX.Element => {
                                 width='100%'
                                 height='100%'
                                 controls
+                                volume={1}
+                                muted={false}
                                 playing={playing}
                                 onPlay={() => setPlaying(true)}
                                 onPause={() => setPlaying(false)}

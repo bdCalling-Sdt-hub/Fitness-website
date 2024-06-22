@@ -128,7 +128,7 @@ const Navbar = (): React.JSX.Element => {
                 </button>
                 <div style={{
                     transition: '.5s'
-                }} className={`flex items-center lg:flex-row flex-col gap-3 z-50 lg:z-0 py-5 lg:py-0 bg-[#F8F1E6] lg:bg-transparent absolute lg:static w-[50%] lg:w-auto  top-20 ${showMenu ? 'right-0 flex showMenu' : '-right-[100%] showClose hidden lg:flex'} h-screen lg:h-fit overflow-y-auto `}>
+                }} className={`flex items-center  lg:flex-row flex-col gap-3 z-50 lg:z-0 py-5 lg:py-0 bg-[#F8F1E6] lg:bg-transparent absolute lg:static w-[50%] lg:w-auto  top-20 ${showMenu ? 'right-0 flex showMenu' : '-right-[100%] showClose hidden lg:flex'} h-screen lg:h-fit overflow-y-auto`}>
                     {/* routes  section*/}
                     <ul className='flex items-center lg:flex-row flex-col gap-6'>
                         {
@@ -148,9 +148,14 @@ const Navbar = (): React.JSX.Element => {
                     {/* others routes and user menu section */}
                     <div className='flex items-center lg:flex-row flex-col gap-6'>
                         {
-                            user?.email && <Link to={"/cart"}>
+                            <button onClick={()=>{
+                                if (!user?.email) {
+                                    return setOpenPopUp(true)
+                                }
+                                navigate('/cart')
+                            }}>
                                 <BsCart2 size={24} color='#555555' />
-                            </Link>
+                            </button>
                         }
 
                         <button onClick={() => setOpenSearchModal(true)}>

@@ -22,9 +22,9 @@ const AboutUs = (): React.JSX.Element => {
             onCancel={()=>setShowModal(false)}
             centered 
             footer={false}
-            width={700}
+            width={800}
             >
-                <div className='p-6 pt-8 w-full h-full overflow-y-scroll' dangerouslySetInnerHTML={{ __html: about?.description || '' }}>
+                <div className='p-6 pt-8 w-full h-[70vh] overflow-y-scroll' dangerouslySetInnerHTML={{ __html: about?.description || '' }}>
                 </div>
             </Modal>
         </div>

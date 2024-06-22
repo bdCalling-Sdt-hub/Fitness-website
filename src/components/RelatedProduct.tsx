@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BsCart2 } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
@@ -6,6 +6,7 @@ import { ShopItems } from '../States/Shop/ShopSlice';
 import { ServerUrl } from '../AxiosConfig/Config';
 import { AddToCart } from '../States/Cart/AddToCartSlice';
 import Swal from 'sweetalert2';
+import { UserContext } from '../Provider/UserProvider';
 
 interface IItemProps {
     name: string;
@@ -17,6 +18,8 @@ interface ChildProp {
     gender: string | null | undefined
 }
 const RelatedProduct = ({ id, gender }: ChildProp): React.JSX.Element => {
+    const { user, loading: userloading }: any = useAppSelector(state => state.Profile)
+    const { openPopUp, setOpenPopUp } = useContext<any>(UserContext)
     const dispatch = useAppDispatch()
     const { Products } = useAppSelector(state => state.ShopItems)
     useEffect(() => {
@@ -24,6 +27,9 @@ const RelatedProduct = ({ id, gender }: ChildProp): React.JSX.Element => {
     }, [id])
     const navigate = useNavigate()
     const handelAddToCart = (id: any) => {
+        if (!user?.email) {
+            return setOpenPopUp(true)
+        }
         dispatch(AddToCart({ id: id, quantity: 1 }))
             .then((res) => {
                 if (res.payload.message === 'Already added your cart list') {

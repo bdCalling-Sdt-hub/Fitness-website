@@ -21,7 +21,9 @@ const Hero = (): React.JSX.Element => {
 
                 <div className='absolute top-0 left-0 flex items-center justify-center w-[100%] h-[100%]' style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} >
                     <div className=''>
-                        <h1 className='text-[#F2F2F2] text-2xl md:text-4xl xl:text-5xl max-w-4xl leading-[60px] font-light text-center'>{BannerData?.title}</h1>
+                        <h1 style={{
+                                lineHeight: '60px'
+                        }} className='text-[#F2F2F2] text-2xl md:text-4xl xl:text-5xl max-w-4xl leading-[300px] font-light text-center'>{BannerData?.title}</h1>
                         <Link to={`/free-class`}
                             style={{
                                 width: 226,
