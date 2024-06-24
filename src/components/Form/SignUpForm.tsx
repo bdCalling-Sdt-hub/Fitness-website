@@ -10,6 +10,7 @@ type Inputs = {
     password: string,
     username: string | null,
     contact: string | null,
+    gender: string | null,
 }
 interface ChildPops {
     setOpenPopUp: (arg0: boolean) => void
@@ -23,7 +24,7 @@ const SignUpForm = ({ setOpenPopUp, toggle }: ChildPops) => {
         formState: { errors }, reset
     } = useForm<Inputs>()
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        dispatch(signUp({ username: data.username, email: data.email, contact: data.contact, password: data.password }))
+        dispatch(signUp({ username: data.username, email: data.email, contact: data.contact, password: data.password ,gender:data.gender }))
             .then(response => {
                 if (response?.payload._id) {
                     Swal.fire({
@@ -66,6 +67,12 @@ const SignUpForm = ({ setOpenPopUp, toggle }: ChildPops) => {
             <p className="text-left text-[#575757]">Contact no</p>
             <input type="text" placeholder="Enter your contact number" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("contact", { required: true })} />
             {errors.contact && <p className="text-red-600 text-left">Contact is required</p>}
+            <p className="text-left text-[#575757]">Gender</p>
+            <select className="w-full text-[#959595] border p-3 outline-none rounded-md my-2"  {...register("gender", { required: true })} id="">
+                <option selected value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            {errors.gender && <p className="text-red-600 text-left">gender is required</p>}
             <p className="text-left text-[#575757]">Password</p>
             <div className="w-full relative">
                 <input type={inputType} placeholder="Password" className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" {...register("password", { required: true })} />

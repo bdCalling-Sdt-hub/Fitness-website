@@ -15,6 +15,8 @@ interface IValue {
     name: string | null,
     contact: string | null,
     address: string | null,
+    gender: string | null,
+    age: string | null,
 }
 const Profile = (): React.JSX.Element => {
     const [image, setImage] = useState();
@@ -39,12 +41,12 @@ const Profile = (): React.JSX.Element => {
     const onFinish: FormProps['onFinish'] = (values) => {
         if (values?.new_password === values.current_password) {
             return setPassError('your old password cannot be your new password')
-          }
-          if (values?.new_password !== values?.confirm_password) {
+        }
+        if (values?.new_password !== values?.confirm_password) {
             return setPassError("Confirm password doesn't match")
-          } else {
+        } else {
             setPassError('')
-          }
+        }
         form.setFieldsValue(values)
         dispatch(ChangePass({ oldPassword: values.current_password, newPassword: values.new_password }))
             .then((res) => {
@@ -71,12 +73,13 @@ const Profile = (): React.JSX.Element => {
             })
     };
     const onEditProfile: FormProps['onFinish'] = (values) => {
-        // console.log(values)
         const data: IValue = {
             profile_image: image || user?.profile_image,
             name: values.fullName,
             contact: values.mobileNumber,
-            address: values.address
+            address: values.address,
+            gender:values.gender || user.gender || 'male',
+            age:values.age 
         }
         dispatch(EditProfile(data))
             .then((res) => {
@@ -105,7 +108,9 @@ const Profile = (): React.JSX.Element => {
         const data = {
             fullName: user.name,
             mobileNumber: user.phone_number,
-            address: user.address
+            address: user.address,
+            age:user.age,
+            gender:user.gender
         }
         form.setFieldsValue(data)
     }, [user])
@@ -234,25 +239,6 @@ const Profile = (): React.JSX.Element => {
                                     placeholder="Enter Contact Number"
                                 />
                             </Form.Item>
-
-                            {/* <Form.Item
-                                name="designation"
-                                label={<p className="text-[#919191] text-[16px] leading-5 font-normal">Designation</p>}
-                            >
-                                <Input
-                                    style={{
-                                        width: "100%",
-                                        height: 48,
-                                        border: "1px solid #DCDDDE",
-                                        borderRadius: "8px",
-                                        color: "#919191",
-                                        outline: "none"
-                                    }}
-                                    className='text-[16px] leading-5'
-                                    placeholder="Enter Designation"
-                                />
-                            </Form.Item> */}
-
                             <Form.Item
                                 name="address"
                                 label={<p className="text-[#919191] text-[16px] leading-5 font-normal">Address</p>}
@@ -269,6 +255,33 @@ const Profile = (): React.JSX.Element => {
                                     className='text-[16px] leading-5'
                                     placeholder="Enter Address"
                                 />
+                            </Form.Item>
+                            <Form.Item
+                                name="age"
+                                label={<p className="text-[#919191] text-[16px] leading-5 font-normal">Age</p>}
+                            >
+                                <Input
+                                    type='number'
+                                    style={{
+                                        width: "100%",
+                                        height: 48,
+                                        border: "1px solid #DCDDDE",
+                                        borderRadius: "8px",
+                                        color: "#919191",
+                                        outline: "none"
+                                    }}
+                                    className='text-[16px] leading-5'
+                                    placeholder="Enter Age"
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                name="gender"
+                                label={<p className="text-[#919191] text-[16px] leading-5 font-normal">Gender</p>}
+                            >
+                                <select defaultValue={user?.gender} className="w-full text-[#959595] border p-3 outline-none rounded-md my-2" id="">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
                             </Form.Item>
 
                             <Form.Item
