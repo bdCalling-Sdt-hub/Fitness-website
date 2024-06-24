@@ -9,14 +9,16 @@ const initialState = {
     isSuccess: false,
 };
 interface Permitter {
-    planId : string,
-    amount : number
+    planId: string,
+    amount: number
+    transactionId: string,
+    payment_status: string,
 }
 export const BuyPlan = createAsyncThunk(
     'BuyPlan',
-    async (value:Permitter, thunkApi) => {
+    async (value: Permitter, thunkApi) => {
         try {
-            const response = await baseURL.post(`/subscriptions/upgrade-plan`,{planId:value.planId,amount:value.amount},{
+            const response = await baseURL.post(`/subscriptions/upgrade-plan`, { planId: value.planId, amount: value.amount,transactionId:value.transactionId, payment_status:value.payment_status}, {
                 headers: {
                     "Content-Type": "application/json",
                     authorization: `Bearer ${localStorage.getItem('token')}`,

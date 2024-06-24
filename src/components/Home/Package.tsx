@@ -36,7 +36,7 @@ const Package = (): React.JSX.Element => {
     useEffect(() => {
         setOpenPayment(false)
         if (paymentStatus?.status === 'paid') {
-            dispatch(BuyPlan({ planId: paymentStatus?.productId, amount: paymentStatus?.amount }))
+            dispatch(BuyPlan({ planId: paymentStatus?.productId, amount: paymentStatus?.amount ,transactionId:paymentStatus?.transactionID,payment_status:'paid'}))
             dispatch(GetMySubscription())
         }
     }, [paymentStatus])

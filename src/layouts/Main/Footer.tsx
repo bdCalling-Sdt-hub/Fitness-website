@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Logo from "../../assets/logo.png";
 import { IoIosSend } from "react-icons/io";
 import { IoCallOutline } from "react-icons/io5";
@@ -9,10 +9,13 @@ import { FaXTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../Store/hook";
 import { GetAllContact } from "../../States/Contact/GetAllContactSlice";
+import baseURL from "../../AxiosConfig/Config";
+import Swal from "sweetalert2";
 
 const Footer = (): React.JSX.Element => {
     const { Contact } = useAppSelector(state => state.GetAllContact)
     const dispatch = useAppDispatch()
+    const emailRef = useRef<any>()
     useEffect(() => {
         dispatch(GetAllContact())
     }, [])
@@ -65,12 +68,45 @@ const Footer = (): React.JSX.Element => {
                     <p className="text-[16px] font-normal leading-[30px]  text-[#F7F7F7]">Get Alert Directly Into Your Inbox After Each Post.</p>
                     <div className="bg-white w-full relative h-[56px] flex items-center gap-2 rounded-[100px] px-3 mt-11">
                         <input
-                            type="text"
+                            ref={emailRef}
+                            type="email"
                             placeholder="enter your email"
                             className="font-normal  capitalize text-[14px] leading-[24px] text-secondary border-none outline-none w-full pl-2 pr-11"
                         />
 
-                        <div className="bg-base w-[51px] h-[48px] absolute top-[4px] right-1 rounded-full flex  items-center justify-center">
+                        <div onClick={() => {
+                                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                const isEmail = emailRegex.test(emailRef.current.value);
+                                if (isEmail) {
+                                    baseURL.post('subscribe/send', { email: emailRef.current.value })
+                                        .then((res) => {
+                                            if (res.status == 200) {
+                                                emailRef.current.value = ''
+                                                Swal.fire({
+                                                    position: "top-end",
+                                                    icon: "success",
+                                                    title: "you have successfully subscribed",
+                                                    showConfirmButton: false,
+                                                    timer: 1500
+                                                });
+                                            } else {
+                                                Swal.fire({
+                                                    icon: "error",
+                                                    title: "Oops...",
+                                                    text: "Something went wrong!",
+                                                    showConfirmButton: false
+                                                });
+                                            }
+                                        })
+                                } else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: "Something went wrong!",
+                                        showConfirmButton: false
+                                    });
+                                }
+                            }} className="bg-base w-[51px] h-[48px] absolute top-[4px] right-1 rounded-full flex  items-center justify-center cursor-pointer">
                             <IoIosSend size={24} color="#3F2700" />
                         </div>
                     </div>

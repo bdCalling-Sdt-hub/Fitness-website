@@ -30,6 +30,7 @@ const FAQ = (): React.JSX.Element => {
             }
         });
     }, [openIndex]);
+    console.log(FAQData)
     return (
         <div className='container'>
             <Heading title='Frequently Asked Questions' style='text-center' />
@@ -46,11 +47,10 @@ const FAQ = (): React.JSX.Element => {
                                         maxHeight: openIndex === index ? `${contentRefs.current[index]?.scrollHeight}px` : '0px'
                                     }}
                                 >
-                                    <MdKeyboardArrowRight  className={`absolute top-[6px] right-2 border rounded-full text-2xl transition-all ${openIndex === index?'rotate-90':''} `}/>
+                                    <MdKeyboardArrowRight className={`absolute top-[6px] right-2 border rounded-full text-2xl transition-all ${openIndex === index ? 'rotate-90' : ''} `} />
                                     <p className='text-[20px] leading-5 font-normal text-secondary'>{_item?.question}</p>
                                     <div className='text-[16px] leading-6 font-normal text-secondary mt-2'>
-                                        convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada
-                                        tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet
+                                        {_item?.answer}
                                     </div>
                                 </div>
                             )

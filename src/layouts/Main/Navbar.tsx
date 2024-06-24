@@ -22,6 +22,7 @@ import { putFeedBack } from '../../States/FeedBack/putFeedbackSlice';
 import Swal from 'sweetalert2';
 import { UserContext } from '../../Provider/UserProvider';
 import { GetMySubscription } from '../../States/Subscription/GetMySubscriptionSlice';
+import { GetBannerData } from '../../States/Banner/BannerDataSlice';
 interface IRoutes {
     name: string;
     path: string
@@ -47,6 +48,10 @@ const Navbar = (): React.JSX.Element => {
     const { Products } = useAppSelector(state => state.ShopItems)
     const { myPlan } = useAppSelector(state => state.GetMySubscription)
     const navigate = useNavigate()
+    const { BannerData } = useAppSelector(state => state.GetBannerData)
+    useEffect(() => {
+        dispatch(GetBannerData())
+    }, [])
     // my plan
     useEffect(() => {
         dispatch(GetMySubscription())
@@ -119,7 +124,7 @@ const Navbar = (): React.JSX.Element => {
         <div className='bg-base fixed top-0 h-[80px] z-50 flex items-center justify-center  w-full'>
             <div className='container flex items-center justify-between'>
                 <Link to="/">
-                    <img src={Logo} style={{ width: 162, height: 62 }} alt="" />
+                    <img src={`${ServerUrl}${BannerData?.logo}`} style={{ height: 62 }} alt="" />
                 </Link>
                 <button style={{
                     transition: '.5s'
