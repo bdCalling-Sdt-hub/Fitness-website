@@ -86,46 +86,7 @@ const Shop = (): React.JSX.Element => {
                         <Option value="price">price Low to High</Option>
                         <Option value="-price">price  High to Low</Option>
                     </Select>
-                    {/* <Select
-                        style={{
-                            width: "49.5%",
-                            height: 48,
-                            border: "1px solid #E7EBED",
-                            outline: "none",
-                            borderRadius: 8
-                        }}
-                        className="poppins-regular text-[#6A6A6A] text-[14px] leading-5"
-                        value={"Category"}
-                    >
-                        <Option key={`1`}>
-                            <label onClick={() => {
-                                if (category.find(item => item == 'Starter Kit')) {
-                                    const newCategory = category.filter(item => item != 'Starter Kit')
-                                    //console.log(newCategory)
-                                    setCategory(newCategory)
-                                } else {
-                                    setCategory([...category, 'Starter Kit'])
-                                }
-                            }} className='w-full flex justify-start items-center gap-2 z-50' htmlFor="Starter">
-                                <input type="checkbox" name="" id="Starter" />
-                                Starter Kit
-                            </label>
-                        </Option>
-                        <Option key={`2`}>
-                            <label onClick={() => {
-                                if (category.find(item => item == 'Travel Kit')) {
-                                    const newCategory = category.filter(item => item != 'Travel Kit')
-                                    setCategory(newCategory)
-                                } else {
-                                    setCategory([...category, 'Travel Kit'])
-                                }
-                            }} className='w-full flex justify-start items-center gap-2 z-50' htmlFor="Travel">
-                                <input type="checkbox" name="" id="Travel" />
-                                Travel Kit
-                            </label>
-                        </Option>
-
-                    </Select> */}
+                   
                 </div>
             </div>
 
