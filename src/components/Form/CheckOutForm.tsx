@@ -79,7 +79,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
         } else {
             console.log('[PaymentMethod]', payload)
             const orderData: any = {
-                transactionID: payload?.paymentIntent?.id,
+                transactionID: payload.paymentIntent.id,
                 // @ts-ignore
                 address: target.address.value,
                 // @ts-ignore
