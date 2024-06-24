@@ -10,6 +10,7 @@ interface InitialState {
         _id: string,
         video: string,
         title: string,
+        logo:string,
         createdAt: string,
         updatedAt: string,
         __v: 0
