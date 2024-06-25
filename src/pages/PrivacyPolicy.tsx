@@ -14,10 +14,8 @@ const PrivacyPolicy = (): React.JSX.Element => {
         <div className='container pb-20'>
             <Navigation name='Privacy Policy' />
             <Heading title='Privacy Policy' style='mb-6' />
-
             <div dangerouslySetInnerHTML={{ __html: PrivecyPolicyData[0]?.description }}>
             </div>
-
         </div>
     )
 }

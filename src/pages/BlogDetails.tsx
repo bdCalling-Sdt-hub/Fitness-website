@@ -3,9 +3,10 @@ import Navigation from '../components/common/Navigation'
 import Heading from '../components/common/Heading';
 import MetaTag from '../components/common/MetaTag';
 import { useAppDispatch, useAppSelector } from '../Store/hook';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { GetSingleBlog } from '../States/Blog/GetSingleBlogSlice';
 import { ServerUrl } from '../AxiosConfig/Config';
+import { FaYoutube } from 'react-icons/fa';
 
 const BlogDetails = (): React.JSX.Element => {
     const { SingleBlog } = useAppSelector(state => state.SingleBlog)
@@ -28,7 +29,10 @@ const BlogDetails = (): React.JSX.Element => {
                 <div className='w-full h-[500px]'>
                     <img src={`${ServerUrl}/${SingleBlog?.images[0]}`} alt="" className='my-6 w-full h-full object-cover ' />
                 </div>
-                <p className='text-secondary text-[16px] leading-[30px] font-normal mt-6'>
+                {
+                    SingleBlog?.youtubeUrl && <Link target='_blank' to={SingleBlog?.youtubeUrl} ><button className='flex justify-start items-center gap-2 p-2 px-4 bg-[#F8F1E6] my-3'><FaYoutube /> see video</button></Link>
+                }
+                <p className='text-secondary text-[16px] leading-[30px] font-normal'>
                     {SingleBlog?.description}
                 </p>
             </div>
