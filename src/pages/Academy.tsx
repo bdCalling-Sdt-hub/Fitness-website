@@ -49,8 +49,6 @@ const Academy = (): React.JSX.Element => {
     if (!loading && !myPlan?.amount) {
         navigate('/')
     }
-    console.log(myPlan)
-    console.log(SingleProgramData)
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<Inputs>();
     const handleRead = (id: any) => {
         baseURL.get(`/class/single/${id}`, {
@@ -58,7 +56,7 @@ const Academy = (): React.JSX.Element => {
                 "Content-Type": "application/json",
                 authorization: `Bearer ${localStorage.getItem('token')}`,
             }
-        }).then((res) => console.log(res))
+        }).then((res) => {})
     }
 
     useEffect(() => {

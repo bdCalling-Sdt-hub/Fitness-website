@@ -58,10 +58,8 @@ export const GetAllComment = createAsyncThunk(
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            console.log(response)
             return response?.data.data;
         } catch (error) {
-            console.log(error)
             const axiosError = error as AxiosError;
             const message = axiosError?.response?.data;
             return thunkApi.rejectWithValue(message);

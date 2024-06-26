@@ -18,7 +18,6 @@ export const SetNewPass = createAsyncThunk(
     async (value: IValue, thunkApi) => {
         try {
             const response = await baseURL.post(`/auth/reset-password`, { email: value.email, newPassword: value.password, confirmPassword: value.confirmPassword });
-            //console.log(response)
             return response?.data.data;
         } catch (error) {
             const axiosError = error as AxiosError;

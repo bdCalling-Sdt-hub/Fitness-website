@@ -30,7 +30,6 @@ const FAQ = (): React.JSX.Element => {
             }
         });
     }, [openIndex]);
-    console.log(FAQData)
     return (
         <div className='container'>
             <Heading title='Frequently Asked Questions' style='text-center' />

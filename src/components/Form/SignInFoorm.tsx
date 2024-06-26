@@ -23,9 +23,6 @@ const SignInFoorm = ({ setOpenPopUp, setOpenForgetPass }: ChildPops) => {
         formState: { errors },
     } = useForm<Inputs>()
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log("email", data.email, "password", data?.password)
-
-
         dispatch(login({ email: data.email, password: data.password }))
             .then(response => {
                 if (response?.type === 'login/fulfilled') {

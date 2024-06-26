@@ -29,7 +29,6 @@ const Shop = (): React.JSX.Element => {
     useEffect(() => {
         dispatch(ShopItems({ page: page, limit: itemPerPage, sort: sortOrder, searchTerm: searchTerm }))
     }, [itemPerPage, page, sortOrder, searchTerm])
-    // console.log(meta)
     const onChange: PaginationProps['onChange'] = (pageNumber) => {
         setPage(pageNumber)
     };
@@ -117,7 +116,6 @@ const Shop = (): React.JSX.Element => {
                                 <div className='absolute top-4 right-4 bg-white p-1 rounded-full' onClick={(e) => {
                                     (e.stopPropagation())
                                     handelAddToCart(item?._id)
-                                    console.log('asdfsdf')
                                 }}>
                                     <BsCart2 size={24} color='#905A00' />
                                 </div>

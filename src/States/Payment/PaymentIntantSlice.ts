@@ -33,7 +33,6 @@ export const PaymentIntant = createAsyncThunk(
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            console.log(response.data.data)
             return response?.data.data.client_secret;
         } catch (error) {
             const axiosError = error as AxiosError;

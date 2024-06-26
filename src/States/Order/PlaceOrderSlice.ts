@@ -26,7 +26,6 @@ interface Permitter {
 export const PlaceOrder = createAsyncThunk(
     'PlaceOrder',
     async (value:Permitter, thunkApi) => {
-        console.log('response')
         try {
             const response = await baseURL.post(`/order/place-order`,{...value} ,{
                 headers: {
@@ -34,10 +33,8 @@ export const PlaceOrder = createAsyncThunk(
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            console.log(response)
             return response?.data.data;
         } catch (error) {
-            console.log(error)
             const axiosError = error as AxiosError;
             const message = axiosError?.response?.data;
             return thunkApi.rejectWithValue(message);

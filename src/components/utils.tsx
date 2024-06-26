@@ -5,7 +5,6 @@ interface ResultProps {
 import React, {useState, useEffect} from 'react';
   // @ts-ignore
 export const logEvent = (name) => (event) => {
-  console.log(`[${name}]`, event);
 };
 export const Result: React.FC<ResultProps> = ({children}) => <div className="result">{children}</div>;
 
