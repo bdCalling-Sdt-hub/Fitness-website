@@ -27,7 +27,6 @@ const Profile = (): React.JSX.Element => {
     const [passError, setPassError] = useState('')
     const dispatch = useAppDispatch()
     const { user }: any = useAppSelector(state => state.Profile)
-    // console.log(user)
     const handlePageChange = (tab: string) => {
         setTab(tab);
         const params = new URLSearchParams(window.location.search);
@@ -85,7 +84,6 @@ const Profile = (): React.JSX.Element => {
         }
         dispatch(EditProfile(data))
             .then((res) => {
-                console.log(res)
                 if (res.type === 'EditProfile/fulfilled') {
                     Swal.fire({
                         position: "top-end",
@@ -226,7 +224,6 @@ const Profile = (): React.JSX.Element => {
                                     placeholder={user.email}
                                 />
                             </Form.Item>
-
                             <Form.Item
                                 name="mobileNumber"
                                 label={<p className="text-[#919191] text-[16px] leading-5 font-normal">Contact Number</p>}

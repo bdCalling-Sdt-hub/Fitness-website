@@ -20,7 +20,6 @@ interface Permitter {
 export const AddComment = createAsyncThunk(
     'AddComment',
     async (value: Permitter, thunkApi) => {
-        console.log(value)
         try {
             const response = await baseURL.post(`/comment/add/`, { ...value }, {
                 headers: {
@@ -28,10 +27,8 @@ export const AddComment = createAsyncThunk(
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            console.log(response)
             return response?.data.data;
         } catch (error) {
-            console.log(error)
             const axiosError = error as AxiosError;
             const message = axiosError?.response?.data;
             return thunkApi.rejectWithValue(message);

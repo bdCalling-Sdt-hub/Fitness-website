@@ -28,7 +28,6 @@ const ProductDetails = (): React.JSX.Element => {
         if (paymentStatus?.status === 'paid') {
             let date = new Date();
             date.setDate(date.getDate() + 7);
-            console.log('order')
             dispatch(PlaceOrder({
                 location: paymentStatus?.address,
                 contactNumber: paymentStatus?.phone,
@@ -53,7 +52,6 @@ const ProductDetails = (): React.JSX.Element => {
     const handelAddToCart = () => {
         dispatch(AddToCart({ id: id, quantity: quantity }))
             .then((res) => {
-                console.log(res);
                 if (res.payload.message === 'Already added your cart list') {
                     Swal.fire({
                         icon: "error",

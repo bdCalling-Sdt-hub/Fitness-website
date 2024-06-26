@@ -15,15 +15,9 @@ interface IValue {
 export const login = createAsyncThunk(
     'login',
     async (value: IValue, thunkApi) => {
-        console.log(value)
         try {
             const response = await baseURL.post(`/auth/login`, { ...value });
-
-
-            console.log(response)
             localStorage.setItem('token', response?.data.data.accessToken)
-
-
             return response?.data.data.accessToken;
         } catch (error) {
             const axiosError = error as AxiosError;

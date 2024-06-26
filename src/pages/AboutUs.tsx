@@ -13,7 +13,6 @@ const AboutUs = (): React.JSX.Element => {
     useEffect(() => {
         dispatch(GetAboutContent())
     }, [])
-    console.log(about)
     return (
         <div className='container pb-20 pt-20'>
             <About setShowModal={setShowModal} />

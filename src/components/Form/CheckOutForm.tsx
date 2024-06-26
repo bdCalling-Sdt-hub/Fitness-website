@@ -34,7 +34,6 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
     const [loading, setloading] = useState<boolean>(false)
     const [postal, setPostal] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    console.log(user)
     // @ts-ignore
     const [paymentMethod, setPaymentMethod] = useState<Stripe.PaymentMethod | null>(null);
     const { clientSecret } = useAppSelector(state => state.PaymentIntant)
@@ -55,7 +54,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
         }
 
         const cardElement = elements.getElement(CardNumberElement);
-        console.log(cardElement)
+
         if (!cardElement) {
             return setloading(false);
         }
@@ -73,12 +72,10 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
             }
         });
         if (payload.error) {
-            console.log('[error]', payload.error);
             setErrorMessage(payload.error.message || null);
             setPaymentMethod(null);
             setloading(false);
         } else {
-            console.log('[PaymentMethod]', payload)
             const orderData: any = {
                 transactionID: payload.paymentIntent.id,
                 // @ts-ignore

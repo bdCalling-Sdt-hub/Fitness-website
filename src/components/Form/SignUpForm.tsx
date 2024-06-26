@@ -51,7 +51,6 @@ const SignUpForm = ({ setOpenPopUp, toggle }: ChildPops) => {
                     })
                 }
             })
-        // //console.log(data)
     }
     const [inputType, setInputType] = useState('password')
     return (
