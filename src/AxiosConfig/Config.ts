@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseURL = axios.create({
-  baseURL: "http://server.unityinmotion.ca",
+  baseURL: "https://server.unityinmotion.ca",
   timeout: 10000,
   headers: { "X-Custom-Header": "foobar" },
 })
