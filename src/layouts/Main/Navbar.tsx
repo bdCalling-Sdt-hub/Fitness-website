@@ -142,12 +142,15 @@ const Navbar = (): React.JSX.Element => {
                                 )
                             })
                         }
+                        <Link target='_blank' to={`https://app.arketa.co/iframe/unityinmotion/schedule`}>
+                            <li className={`text-secondary font-light text-[16px] leading-[21px]`}>schedule</li>
+                        </Link>
                     </ul>
 
                     {/* others routes and user menu section */}
                     <div className='flex items-center lg:flex-row flex-col gap-6'>
                         {
-                            <button onClick={()=>{
+                            <button onClick={() => {
                                 if (!user?.email) {
                                     return setOpenPopUp(true)
                                 }
