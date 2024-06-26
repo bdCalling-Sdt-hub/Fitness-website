@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseURL = axios.create({
-  baseURL: "http://192.168.10.116:8000",
+  baseURL: "http://server.unityinmotion.ca",
   timeout: 10000,
   headers: { "X-Custom-Header": "foobar" },
 })
@@ -9,4 +9,4 @@ const baseURL = axios.create({
 export default baseURL;
 
 
-export const ServerUrl = 'http://192.168.10.116:8000'
+export const ServerUrl = 'http://server.unityinmotion.ca'
