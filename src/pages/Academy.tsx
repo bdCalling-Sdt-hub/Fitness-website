@@ -26,6 +26,7 @@ import { AddComment } from '../States/Comments/AddCommentSlice';
 import Swal from 'sweetalert2';
 import { GetAllComment } from '../States/Comments/GetAllCommentSlice';
 import ReplayCommentForm from '../components/Form/ReplayCommentForm';
+import { GetMySubscription } from '../States/Subscription/GetMySubscriptionSlice';
 type ContentRef = HTMLDivElement | null;
 type Inputs = {
     comment: string,
@@ -48,6 +49,8 @@ const Academy = (): React.JSX.Element => {
     if (!loading && !myPlan?.amount) {
         navigate('/')
     }
+    console.log(myPlan)
+    console.log(SingleProgramData)
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<Inputs>();
     const handleRead = (id: any) => {
         baseURL.get(`/class/single/${id}`, {
@@ -115,7 +118,9 @@ const Academy = (): React.JSX.Element => {
     useEffect(() => {
         dispatch(GetAllComment({ classId: CurrentClass?._id, limit: limit }))
     }, [CurrentClass?._id, limit])
-
+    useEffect(() => {
+        dispatch(GetMySubscription())
+    }, [user])
     const onSubmit: SubmitHandler<Inputs> = data => {
         dispatch(AddComment({ comment: data.comment, classId: CurrentClass?._id })).then((res) => {
             if (res.type == 'AddComment/fulfilled') {
@@ -131,7 +136,6 @@ const Academy = (): React.JSX.Element => {
             }
         })
     };
-
     return (
         <div className='container pb-20'>
             <Navigation name='Demand Library' />
@@ -164,7 +168,10 @@ const Academy = (): React.JSX.Element => {
             <div className='md:grid flex flex-col grid-cols-12 gap-10 mt-8 group'>
                 {
                     CurrentClass ? <div className='col-span-8 '>
-                        <div className='video_player flex items-center justify-center'>
+                        <div className={`video_player flex items-center relative ${myPlan?.plan_type == SingleProgramData?.program?.accessType ? '' : 'select-none pointer-events-none'} justify-center`}>
+                            {myPlan?.plan_type != SingleProgramData?.program?.accessType && <p className='z-50 bg-white p-4 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-red-600 text-xl text-center'>
+                            {`This video is for ${SingleProgramData?.program?.accessType} plan you don't have access `}
+                            </p>}
                             <ReactPlayer
                                 width='100%'
                                 height='100%'
@@ -181,17 +188,17 @@ const Academy = (): React.JSX.Element => {
                                     {
                                         playing
                                             ?
-                                            <IoPlaySharp size={40} color='#FEFEFE' />
-                                            :
                                             <GrPauseFill size={40} color='#FEFEFE' />
+                                            :
+                                            <IoPlaySharp size={40} color='#FEFEFE' />
                                     }
                                 </div>
                             </div>
                         </div>
                         {/* video description */}
                         <div className='flex items-center gap-4 my-4'>
-                            <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>Topic : {CurrentClass?.topic}</p>
-                            <p className='text-[#3C3C3C] font-normal text-[16px] leading-[13px]'>{CurrentClass?.date.split('T')[0]}</p>
+                            <p className='text-[#3C3C3C] font-normal text-[16px] '>Topic : {CurrentClass?.topic}</p>
+                            <p className='text-[#3C3C3C] font-normal text-[16px] '>{CurrentClass?.date.split('T')[0]}</p>
                             <a className='flex justify-start items-center gap-1 hover:text-blue-500' href={`${ServerUrl}/${CurrentClass?.pdfFile}`} target="_blank" rel="noopener noreferrer">
                                 <FaRegFilePdf /> PDF File
                             </a>
@@ -199,8 +206,8 @@ const Academy = (): React.JSX.Element => {
                                 <SiGoogledocs /> Doc File
                             </a>
                         </div>
-                        <p className='text-[#242424] font-semibold text-[24px] leading-[18px] mb-6'>{CurrentClass?.title}</p>
-                        <p className='text-secondary font-normal text-[14px] leading-7'>
+                        <p className='text-[#242424] font-semibold text-[24px] mb-6'>{CurrentClass?.title}</p>
+                        <p className='text-secondary font-normal text-[14px] '>
                             {CurrentClass?.description}
                         </p>
                         {
@@ -225,7 +232,7 @@ const Academy = (): React.JSX.Element => {
                                     <p className=' mb-3 text-start'>{item?.userId?.email}</p>
                                     <p className='text-start opacity-65'>{item?.comment}</p>
                                     {
-                                        item?.reply?.length <= 0 && user?.role == 'ADMIN' && !(replay?.id == item?._id && replay.open) && <button onClick={() => {
+                                        item?.reply?.length <= 0 && user?.role !== 'USER' && !(replay?.id == item?._id && replay.open) && <button onClick={() => {
                                             setreplay({ id: item?._id, open: true })
                                         }} className='border border-[#B47000] p-1 px-4 text-[#B47000] '>Replay </button>
                                     }
@@ -265,7 +272,7 @@ const Academy = (): React.JSX.Element => {
                     <div className='w-full rounded h-[280px] p-4 mb-6 select-none pointer-events-none'
                         style={{ boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px' }}
                     >
-                        <h1 className='text-secondary text-[16px] leading-[12px] font-bold'>Your Progress</h1>
+                        <h1 className='text-secondary text-[16px]  font-bold'>Your Progress</h1>
                         <Chart anyties={anyties} />
                         <StatusLabel />
                     </div>
@@ -278,7 +285,7 @@ const Academy = (): React.JSX.Element => {
                             {
                                 SingleProgramData?.series?.map((item, index) => <div key={index} className='cursor-pointer p-3 bg-[#F2F2F2]'>
                                     <div onClick={() => toggleAccordion(index)} className=' relative'>
-                                        <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Series No {index + 1} : {item?.title}</p>
+                                        <p className='text-[#555555] font-semibold text-[16px] '>Series No {index + 1} : {item?.title}</p>
                                         <div className='flex justify-start items-center gap-3 mt-3'>
                                             <p className='text-[#919191] text-xs'>Total video : {item?.classes?.length}</p>
                                             <p className='text-[#919191] text-xs font-semibold'>Duration {item?.totalVideoDuration} H</p>
@@ -300,7 +307,7 @@ const Academy = (): React.JSX.Element => {
                                                             <FaCheckCircle className={` ${anyties?.realClasses.includes(item?._id) ? 'text-green-500' : 'text-gray-500'} text-lg`} />
                                                         </div>
                                                         <div>
-                                                            <p className='text-[#555555] font-semibold text-[16px] leading-[12px]'>Class No {index + 1} :{item?.title}</p>
+                                                            <p className='text-[#555555] font-semibold text-[16px] '>Class No {index + 1} :{item?.title}</p>
                                                             <div className='flex justify-start items-center gap-3 mt-2'>
                                                                 <p className='text-[#919191] text-sm'>{item?.description.slice(0, 150)}..</p>
                                                             </div>

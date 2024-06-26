@@ -55,7 +55,7 @@ const Navbar = (): React.JSX.Element => {
     // my plan
     useEffect(() => {
         dispatch(GetMySubscription())
-    }, [])
+    }, [user])
     // search shop items 
     useEffect(() => {
         dispatch(ShopItems({ page: 1, limit: 5, sort: '', searchTerm: searchValue }))
@@ -95,17 +95,12 @@ const Navbar = (): React.JSX.Element => {
             name: "Shop",
             path: "/shop"
         },
-        // {
-        //     name: "events",
-        //     path: "/about-us"
-        // },
         {
             name: "Blogs",
             path: "/blogs"
         }
     ]
     const onChange: GetProp<typeof Input.OTP, 'onChange'> = (text) => {
-        //console.log('onChange:', text);
     };
     const sharedProps: OTPProps = {
         onChange,
@@ -119,7 +114,6 @@ const Navbar = (): React.JSX.Element => {
     const handleChange = (e: any) => {
         setSearchValue(e.target.value)
     }
-
     return (
         <div className='bg-base fixed top-0 h-[80px] z-50 flex items-center justify-center  w-full'>
             <div className='container flex items-center justify-between'>
