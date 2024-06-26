@@ -17,6 +17,7 @@ interface initialState {
         updatedAt: string,
         __v: 0,
         id: string,
+        youtubeUrl:string | null | undefined,
     } | null | undefined
 }
 const initialState: initialState = {

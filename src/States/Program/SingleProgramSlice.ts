@@ -11,6 +11,7 @@ interface initialState {
             _id: string,
             title: string,
             image: string,
+            accessType: string,
             createdAt: string,
             updatedAt: string,
             __v: 0,

@@ -34,6 +34,7 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
     const [loading, setloading] = useState<boolean>(false)
     const [postal, setPostal] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    console.log(user)
     // @ts-ignore
     const [paymentMethod, setPaymentMethod] = useState<Stripe.PaymentMethod | null>(null);
     const { clientSecret } = useAppSelector(state => state.PaymentIntant)
@@ -160,13 +161,13 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                 <div className='w-full'>
                     <label className=' block' htmlFor="Number">Phone Number</label>
                     <input
-                        type='number'
+                        type='text'
                         className='outline-none p-1'
                         style={{
                             width: "100%",
                             borderBottom: "2px solid #9494943D",
                         }}
-                        defaultValue={Number(user?.phone_number)}
+                        defaultValue={user?.phone_number}
                         required
                         placeholder="01566026301"
                         name='number'

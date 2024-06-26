@@ -16,6 +16,7 @@ interface initialState {
         createdAt: string,
         updatedAt: string,
         id: string,
+        youtubeUrl:string,
     }[]
     meta: {
         page: number,

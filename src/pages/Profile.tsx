@@ -10,6 +10,7 @@ import { EditProfile } from '../States/Authentication/EditProfileSlice';
 import { Profile as getProfile } from '../States/Authentication/ProfileSlice';
 import Swal from 'sweetalert2';
 import { ServerUrl } from '../AxiosConfig/Config';
+import { GetMySubscription } from '../States/Subscription/GetMySubscriptionSlice';
 interface IValue {
     profile_image: File | undefined,
     name: string | null,
@@ -19,6 +20,7 @@ interface IValue {
     age: string | null,
 }
 const Profile = (): React.JSX.Element => {
+    const { myPlan, loading } = useAppSelector(state => state.GetMySubscription)
     const [image, setImage] = useState();
     const [form] = Form.useForm()
     const [tab, setTab] = useState(new URLSearchParams(window.location.search).get('tab') || "Profile");
@@ -114,6 +116,9 @@ const Profile = (): React.JSX.Element => {
         }
         form.setFieldsValue(data)
     }, [user])
+    useEffect(() => {
+        dispatch(GetMySubscription())
+    }, [user])
     return (
         <div className='container pb-16'>
             <Navigation name={`${tab}`} />
@@ -144,8 +149,8 @@ const Profile = (): React.JSX.Element => {
 
                 </div>
                 <div className='w-full'>
-                    <p className=' text-primary text-[16px] leading-5 font-light'>Hello</p>
-                    <p className=' text-[#575757] text-[24px] leading-[32px] font-semibold  '>{user.name}</p>
+                    <p className=' text-[#575757] text-[24px] leading-[32px] font-semibold capitalize'>{user.name}</p>
+                    <p className=' text-primary text-[16px] leading-5 font-light capitalize mt-1'><span className='text-black'>plan type :</span> {myPlan?.plan_type || 'no plan'}</p>
                 </div>
             </div>
 
