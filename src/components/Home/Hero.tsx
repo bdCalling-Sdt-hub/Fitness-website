@@ -40,7 +40,7 @@ const Hero = (): React.JSX.Element => {
                         '
                         >
                             <MdOutlineArrowOutward color='#F2F2F2' size={24} />
-                            Join our Class
+                            Join the team
                         </Link>
                     </div>
                 </div>

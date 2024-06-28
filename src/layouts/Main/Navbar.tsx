@@ -143,7 +143,7 @@ const Navbar = (): React.JSX.Element => {
                             })
                         }
                         <Link target='_blank' to={`https://app.arketa.co/iframe/unityinmotion/schedule`}>
-                            <li className={`text-secondary font-light text-[16px] leading-[21px]`}>Schedule</li>
+                            <li className={`text-secondary font-light text-[16px] leading-[21px]`}>Workout With Me</li>
                         </Link>
                     </ul>
 
