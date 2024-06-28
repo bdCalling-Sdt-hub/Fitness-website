@@ -9,4 +9,4 @@ const baseURL = axios.create({
 export default baseURL;
 
 
-export const ServerUrl = 'http://server.unityinmotion.ca'
+export const ServerUrl = 'https://server.unityinmotion.ca'
