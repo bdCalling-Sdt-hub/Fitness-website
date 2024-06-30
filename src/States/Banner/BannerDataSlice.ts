@@ -11,6 +11,7 @@ interface InitialState {
         video: string,
         title: string,
         logo:string,
+        buttonName:string,
         createdAt: string,
         updatedAt: string,
         __v: 0
