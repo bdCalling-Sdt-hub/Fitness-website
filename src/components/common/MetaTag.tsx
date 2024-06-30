@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 const MetaTag = ({title} : {title: string} ):React.JSX.Element => {
     return (
         <Helmet>
-            <title> {`Fitness - ${title}`}</title>
+            <title> {`Unity & Motion ${ title ? "-" : "" } ${title}`}</title>
         </Helmet>
     )
 }
