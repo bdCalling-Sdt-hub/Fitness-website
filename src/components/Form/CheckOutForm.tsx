@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import {
     CardNumberElement,
     CardCvcElement,
@@ -10,6 +10,7 @@ import { logEvent, Result, ErrorResult } from '../utils';
 import { useAppDispatch, useAppSelector } from '../../Store/hook';
 import { PaymentIntant } from '../../States/Payment/PaymentIntantSlice';
 import Swal from 'sweetalert2';
+import baseURL from '../../AxiosConfig/Config';
 const ELEMENT_OPTIONS = {
     style: {
         base: {
@@ -40,10 +41,44 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
     const stripe = useStripe();
     const elements = useElements();
     const dispatch = useAppDispatch()
+    const TokenRef = useRef<any>()
+    const [price, setPrice] = useState(data.price)
+    const [applyingToken, setApplyingToken] = useState(false)
     useEffect(() => {
-        if (!data.price || !data._id) return
-        dispatch(PaymentIntant({ _id: data._id, price: Number(data.price) }))
-    }, [data.price, data._id]);
+        setPrice(data.price)
+    }, [data.price])
+    useEffect(() => {
+        if (!price || !data._id) return
+        setApplyingToken(true)
+        dispatch(PaymentIntant({ _id: data._id, price: Number(price) }))
+        setApplyingToken(false)
+    }, [price, data._id]);
+
+    const HandleApplyToken = async () => {
+        if (!TokenRef.current.value) {
+            return
+        }
+        try {
+            setApplyingToken(true)
+            const res = await baseURL.get(`discount/single/${TokenRef.current.value}`, {
+                headers: {
+                    // "Content-Type": "application/json",
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
+                }
+            });
+            const discount = ((res.data.data.discountPercent * data?.price) / 100)
+            setPrice(data?.price - discount)
+            setApplyingToken(false)
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                // @ts-ignore
+                text: `${error?.response.data.message}`,
+                timer: 1500
+            });
+        }
+    }
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -52,13 +87,10 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
         if (!stripe || !elements || !clientSecret) {
             return setloading(false);
         }
-
         const cardElement = elements.getElement(CardNumberElement);
-
         if (!cardElement) {
             return setloading(false);
         }
-
         const payload = await stripe.confirmCardPayment(clientSecret, {
             payment_method: {
                 card: cardElement,
@@ -114,7 +146,6 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                         className='outline-none p-1'
                         style={{
                             width: "100%",
-
                             borderBottom: "2px solid #9494943D",
                         }}
                         defaultValue={user?.name}
@@ -220,15 +251,22 @@ const CheckoutForm = ({ setPaymentStatus, data }: ChildProps): React.JSX.Element
                     </div>
                 </div>
             </div>
+            <p className='capitalize mt-2'>token optional</p>
+            <div className='flex justify-between items-center gap-1 border-b pb-2'>
+                <input ref={TokenRef} className='w-full border rounded outline-none py-1 px-2' type="text" name="" id="" />
+                <button onClick={HandleApplyToken} className='w-20 bg-yellow-100 py-[5px]' type='button'>
+                    apply
+                </button>
+            </div>
             <div className='border-b-2  p-2 pt-4 flex justify-between items-center'>
-                <p>Total</p> <p>${data?.price}</p>
+                <p>Total</p> <p>${price}</p>
             </div>
             {errorMessage && <ErrorResult><p className='text-red-500'>{errorMessage}</p></ErrorResult>}
             {paymentMethod && (
                 <Result>Got PaymentMethod: {paymentMethod.id}</Result>
             )}
-            <button className='w-full block text-white bg-[#3C3C3C] mt-6 py-3 disabled:bg-gray-400 disabled:pointer-events-none' type="submit" disabled={!stripe || loading}>
-                {loading ? 'please wait....' : ' Confirm Pay'}
+            <button className='w-full block text-white bg-[#3C3C3C] mt-6 py-3 disabled:bg-gray-400 disabled:pointer-events-none' type="submit" disabled={!stripe || loading || applyingToken}>
+                {loading ? 'please wait....' : applyingToken ? 'creating payment' : ' Confirm Pay'}
             </button>
         </form>
     );
