@@ -55,10 +55,11 @@ const Hero = (): React.JSX.Element => {
                             <MdOutlineArrowOutward color='#F2F2F2' size={24} />
                             {BannerData?.buttonName || 'Join The Team'}
                         </Link>
-                        <div className='bg-primary absolute bottom-[-50px] w-[70%] left-[50%] translate-x-[-50%] text-center h-[100px] flex flex-col justify-center items-center gap-2 box-border'>
-                            {token?.map((item: any) => <p key={item?._id}>get {item?.discountPercent}% discount by using  <strong className='text-white'>{item?.code}</strong> this code</p>)}
-                        </div>
-
+                        {
+                            token && <div className='bg-primary absolute bottom-[-50px] w-[70%] left-[50%] translate-x-[-50%] text-center h-[100px] flex flex-col justify-center items-center gap-2 box-border'>
+                                {token?.map((item: any) => <p key={item?._id}>get {item?.discountPercent}% discount by using  <strong className='text-white'>{item?.code}</strong> this code</p>)}
+                            </div>
+                        }
                     </div>
                 </div>
 
