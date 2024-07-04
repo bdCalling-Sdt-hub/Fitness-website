@@ -22,7 +22,7 @@ const Hero = (): React.JSX.Element => {
             }
         })
     }, [])
-    console.log(BannerData)
+    console.log(token)
     return (
         <>
             <div className='relative w-full' style={{ height: "calc(100vh - 0px)" }}>
@@ -56,14 +56,14 @@ const Hero = (): React.JSX.Element => {
                             {BannerData?.buttonName || 'Join The Team'}
                         </Link>
                         {
-                            token && <div className='bg-primary absolute bottom-[-50px] w-[70%] left-[50%] translate-x-[-50%] text-center h-[100px] flex flex-col justify-center items-center gap-2 box-border'>
-                                {token?.map((item: any) => <p key={item?._id}>get {item?.discountPercent}% discount by using  <strong className='text-white'>{item?.code}</strong> this code</p>)}
-                            </div>
-                        }
+                            token && token?.length > 0 && <div className='bg-primary absolute bottom-[-50px] w-[70%] left-[50%] translate-x-[-50%] text-center h-[100px] flex flex-col justify-center items-center gap-2 box-border'>
+                        {token?.map((item: any) => <p key={item?._id}>get {item?.discountPercent}% discount by using  <strong className='text-white'>{item?.code}</strong> this code</p>)}
                     </div>
+                        }
                 </div>
-
             </div>
+
+        </div >
         </>
     )
 }
