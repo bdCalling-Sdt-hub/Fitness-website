@@ -29,8 +29,8 @@ export const SignUpContainer = styled.div<SignInProps>`
    transform: translateX(100%);
    opacity: 1;
    z-index: 5;
- ` 
- : null}
+ `
+    : null}
 `;
 
 
@@ -106,7 +106,7 @@ overflow: hidden;
 transition: transform 0.6s ease-in-out;
 z-index: 100;
 ${props =>
- props.signinIn !== true ? `transform: translateX(-100%);` : null}
+    props.signinIn !== true ? `transform: translateX(-100%);` : null}
 `;
 
 export const Overlay = styled.div<SignInProps>`
@@ -140,12 +140,12 @@ export const OverlayPanel = styled.div`
     transition: transform 0.6s ease-in-out;
 `;
 
-export const LeftOverlayPanel = styled(OverlayPanel)<SignInProps>`
+export const LeftOverlayPanel = styled(OverlayPanel) <SignInProps>`
   transform: translateX(-20%);
   ${props => props.signinIn !== true ? `transform: translateX(0);` : null}
 `;
 
-export const RightOverlayPanel = styled(OverlayPanel)<SignInProps>`
+export const RightOverlayPanel = styled(OverlayPanel) <SignInProps>`
     right: 0;
     transform: translateX(0);
     ${props => props.signinIn !== true ? `transform: translateX(20%);` : null}
