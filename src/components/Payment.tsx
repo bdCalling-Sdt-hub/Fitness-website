@@ -4,7 +4,7 @@ import { Stripe, loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from './Form/CheckOutForm';
 import cards from '../assets/cards.webp'
-const stripePromise = loadStripe('pk_test_51JwnGrLiLwVG3jO00U7B3YmokwdPnB6FKd1uresJgkbsL4f5xUfCmbFdBaGO42KvLmLfVzsgo1oIQToXABSTyypS00xQsEgKZ6');
+const stripePromise = loadStripe('pk_live_5101x8BJesfjdiX0tXp52KU9YUXIBM50J81CrLtuWDEX6busAVDUHt1uWTOYDnJYKdY7Sp7FPHx9uARgoqjEpSg3K00581lNf7Z');
 interface ChildProps {
     setPaymentStatus: (arg0: any) => void
     data: any
